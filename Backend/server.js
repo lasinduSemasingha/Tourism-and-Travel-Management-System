@@ -23,6 +23,10 @@ app.use(express.json());  // Parse JSON bodies
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/tickets', ticketRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/discounts', discountRoutes);
 
 // Error Handling Middleware
 app.use(notFound);
