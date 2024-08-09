@@ -1,8 +1,19 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+
+//importing auth routes for the user authentication when loggin
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+//importing ticket routing
+const ticketRoutes = require('./routes/ticketRoutes');
+//importing booking routing
+const bookingRoutes = require('./routes/bookingRoutes');
+//importing feedback routing
+const feedbackRoutes = require('./routes/feedbackRoutes');
+//importing discount routing
+const discountRoutes = require('./routes/discountRoutes');
+
 const cors = require('cors');
 const morgan = require('morgan');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
