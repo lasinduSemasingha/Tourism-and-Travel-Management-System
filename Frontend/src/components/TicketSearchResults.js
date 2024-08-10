@@ -36,7 +36,7 @@ const TicketSearchResults = () => {
             <Typography>Arrival: {ticket.arrival}</Typography>
             <Typography>Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
             <Typography>Price: ${ticket.price}</Typography>
-            <Button href={`/tickets/${ticket._id}`}>Book Now</Button>
+            <Button href={`/bookings/${ticket._id}`}>Book Now</Button>
           </Card>
         ))
       ) : (
