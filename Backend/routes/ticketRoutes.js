@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const ticketController = require('../controllers/ticketController');
 
-router.get('/', ticketController.getTickets);  // Handle GET requests to /api/tickets
+// Route to get all tickets with optional filters
+router.get('/', ticketController.getTickets);
+
+// Route to create a new ticket
 router.post('/', ticketController.createTicket);
+
+// Route to get a ticket by ID
+router.get('/:id', ticketController.getTicketById);
 
 module.exports = router;
