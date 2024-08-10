@@ -1,53 +1,87 @@
 const Reservation = require('../../models/travel_destination/reservation');
+const Destination = require('../../models/travel_destination/destination');
 
-// Get all reservations for a user
+// Get all reservations with destination details
 exports.getReservations = async (req, res) => {
-  const reservations = await Reservation.find({ user: req.user._id }).populate('destination');
-  res.json(reservations);
-};
-
-// Add a new reservation
-exports.addReservation = async (req, res) => {
-  const { destination, ticketDetails } = req.body;
-
-  const reservation = new Reservation({
-    user: req.user._id,
-    destination,
-    ticketDetails,
-  });
-
-  const createdReservation = await reservation.save();
-  res.status(201).json(createdReservation);
-};
-
-// Update reservation status or ticket details
-exports.updateReservation = async (req, res) => {
-  const { id } = req.params;
-  const { status, ticketDetails } = req.body;
-
-  const reservation = await Reservation.findById(id);
-
-  if (reservation) {
-    reservation.status = status || reservation.status;
-    reservation.ticketDetails = ticketDetails || reservation.ticketDetails;
-
-    const updatedReservation = await reservation.save();
-    res.json(updatedReservation);
-  } else {
-    res.status(404).json({ message: 'Reservation not found' });
+  try {
+    const reservations = await Reservation.find()
+      .populate('destinationId', 'name location price description');
+    res.json(reservations);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching reservations', error: error.message });
   }
 };
+
+// Add a new reservation with destination details
+exports.addReservation = async (req, res) => {
+  const { destinationId, fromDate, toDate, totalPrice } = req.body;
+
+  try {
+    // Check if destination exists
+    const destination = await Destination.findById(destinationId);
+    if (!destination) {
+      return res.status(404).json({ message: 'Destination not found' });
+    }
+
+    const reservation = new Reservation({
+      destinationId,
+      fromDate,
+      toDate,
+      totalPrice,
+      status: 'pending' // Default status
+    });
+
+    const createdReservation = await reservation.save();
+    // Fetch reservation with destination details
+    const populatedReservation = await Reservation.findById(createdReservation._id)
+      .populate('destinationId', 'name location price description');
+    res.status(201).json(populatedReservation);
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding reservation', error: error.message });
+  }
+};
+
+// Update a reservation
+exports.updateReservation = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    // Find the reservation by ID
+    const reservation = await Reservation.findById(id)
+      .populate('destinationId', 'name location price description');
+
+    if (reservation) {
+      // Update the status if provided
+      if (status) {
+        reservation.status = status;
+      }
+
+      // Save the updated reservation
+      const updatedReservation = await reservation.save();
+      res.json(updatedReservation);
+    } else {
+      res.status(404).json({ message: 'Reservation not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating reservation', error: error.message });
+  }
+};
+
 
 // Delete a reservation
 exports.deleteReservation = async (req, res) => {
   const { id } = req.params;
 
-  const reservation = await Reservation.findById(id);
+  try {
+    const result = await Reservation.deleteOne({ _id: id });
 
-  if (reservation) {
-    await reservation.remove();
-    res.json({ message: 'Reservation removed' });
-  } else {
-    res.status(404).json({ message: 'Reservation not found' });
+    if (result.deletedCount > 0) {
+      res.json({ message: 'Reservation removed' });
+    } else {
+      res.status(404).json({ message: 'Reservation not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting reservation', error: error.message });
   }
 };

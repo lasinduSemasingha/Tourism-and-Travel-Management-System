@@ -7,12 +7,16 @@ const {
 } = require('../../controllers/travel_destination/destinationController');
 const router = express.Router();
 
-router.route('/')
-  .get(getDestinations)
+router.route('/add')
   .post(addDestination);
 
 router.route('/:id')
   .put(updateDestination)
-  .delete(deleteDestination);
+  .get(getDestinations);
+
+  //fetch all the destinations
+router.get('/', getDestinations);
+router.delete('/:id', deleteDestination);
 
 module.exports = router;
+

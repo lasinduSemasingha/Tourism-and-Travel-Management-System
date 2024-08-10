@@ -6,13 +6,17 @@ import BookingPage from './components/TicketBookingPage';
 import FeedbackPage from './components/FeedbackPage';
 import ReceiptPage from './components/ReceiptPage';
 import DestinationList from './components/Destination/DestinationList';
-import DestinationDetails from './components/Destination/DestinationDetails';
+//import DestinationDetails from './components/Destination/DestinationDetails';
 import AddDestination from './components/Destination/AddDestination';
 import UpdateDestination from './components/Destination/UpdateDestination';
+import DestinationListUser from './components/Destination/DestinationListUser';
 import ReservationList from './components/Reservation/ReservationList';
-import ReservationDetails from './components/Reservation/ReservationDetails';
-import AddReservation from './components/Reservation/AddReservation';
-import UpdateReservation from './components/Reservation/UpdateReservation';
+
+import UserLogin from './components/Users/UserLogin';
+import AdminLogin from './components/Users/AdminLogin';
+import UserRegister from './components/Users/Register';
+import AdminRegister from './components/Users/AdminRegister';
+
 
 function App() {
   return (
@@ -28,12 +32,16 @@ function App() {
 
        <Route path="/destination" element={<DestinationList />} />
             <Route path="/destination/add" element={<AddDestination />} />
-            <Route path="/destination/:id" element={<DestinationDetails />} />
             <Route path="/destination/update/:id" element={<UpdateDestination />} />
-            <Route path="/reservations" element={<ReservationList />} />
-            <Route path="/reservation/add" element={<AddReservation />} />
-            <Route path="/reservation/:id" element={<ReservationDetails />} />
-            <Route path="/reservation/update/:id" element={<UpdateReservation />} />
+            <Route path="/destinationuser" element={<DestinationListUser />} />
+            <Route path="/ReservationList" element={<ReservationList />} />
+
+
+                    {/* User and Admin Authentication routes */}
+        <Route path="/userlogin" element={<UserLogin />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/register" element={<UserRegister />} />
+        <Route path="/admin/register" element={<AdminRegister />} />
             
       </Routes>
     </Router>

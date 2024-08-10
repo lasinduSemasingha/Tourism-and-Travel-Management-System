@@ -42,16 +42,19 @@ exports.updateDestination = async (req, res) => {
   }
 };
 
-// Delete a destination
+//delete a destination
 exports.deleteDestination = async (req, res) => {
   const { id } = req.params;
 
-  const destination = await Destination.findById(id);
+  try {
+    const result = await Destination.deleteOne({ _id: id });
 
-  if (destination) {
-    await destination.remove();
-    res.json({ message: 'Destination removed' });
-  } else {
-    res.status(404).json({ message: 'Destination not found' });
+    if (result.deletedCount > 0) {
+      res.json({ message: 'Destination removed' });
+    } else {
+      res.status(404).json({ message: 'Destination not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting destination', error: error.message });
   }
 };

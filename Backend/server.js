@@ -6,6 +6,7 @@ const userRoutes = require('./routes/user_managemnt/userRoutes');
 const adminRoutes = require('./routes/user_managemnt/adminRoutes');
 const destinationRoutes = require('./routes/travel_destination/destinationRoutes');
 const reservationRoutes = require('./routes/travel_destination/reservationRoutes');
+const cors = require('cors');
 
 // Load environment variables
 dotenv.config();
@@ -16,6 +17,7 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+app.use(cors()); 
 
 
 
