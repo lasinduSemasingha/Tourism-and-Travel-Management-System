@@ -31,7 +31,7 @@ const TicketBookingPage = () => {
   
   const handleBooking = async () => {
     try {
-      await axios.post('/api/bookings', {
+      await axios.post('http://localhost:5000/api/bookings', {
         ticketId: id,
         numOfPassengers,
         date,
@@ -57,7 +57,7 @@ const TicketBookingPage = () => {
         type='date'
         value={date}
         onChange={(e) => setDate(e.target.value)}
-      />
+      /><br /><br />
       <TextField 
         label="Number of Passengers" 
         type="number" 

@@ -3,13 +3,17 @@ const Booking = require('../models/Booking');
 exports.createBooking = async (req, res) => {
   try {
     const { ticketId, noOfPassengers, bookingDate, totalAmount } = req.body;
+    console.log('Request Body:', req.body); // Log the request body
+
     if (!ticketId || !noOfPassengers || !bookingDate || !totalAmount) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
+
     const newBooking = new Booking({ ticketId, noOfPassengers, bookingDate, totalAmount });
     await newBooking.save();
     res.status(201).json(newBooking);
   } catch (err) {
+    console.error('Error creating booking:', err); // Log the error
     res.status(500).json({ error: err.message });
   }
 };
