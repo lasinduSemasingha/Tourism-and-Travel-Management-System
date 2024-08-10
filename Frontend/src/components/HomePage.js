@@ -1,24 +1,48 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Updated import
+import { useNavigate } from 'react-router-dom';
+import '../css/homepage.css';
 
 const HomePage = () => {
-  let [departure, setDeparture] = useState('');
-  let [arrival, setArrival] = useState('');
-  let [travelDate, setTravelDate] = useState('');
-  let [passengers, setPassengers] = useState('');
-  let navigate = useNavigate(); // Updated to useNavigate
+  const [departure, setDeparture] = useState('');
+  const [arrival, setArrival] = useState('');
+  const [travelDate, setTravelDate] = useState('');
+  const [passengers, setPassengers] = useState('');
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/search?departure=${departure}&arrival=${arrival}&date=${travelDate}&passengers=${passengers}`); // Updated to useNavigate
+    const queryParams = new URLSearchParams();
+    if (departure) queryParams.append('departure', departure);
+    if (arrival) queryParams.append('arrival', arrival);
+    if (travelDate) queryParams.append('date', travelDate);
+    if (passengers) queryParams.append('passengers', passengers);
+
+    navigate(`/search?${queryParams.toString()}`);
   };
 
   return (
-    <div>
-      <TextField label="Departure" value={departure} onChange={(e) => setDeparture(e.target.value)} />
-      <TextField label="Arrival" value={arrival} onChange={(e) => setArrival(e.target.value)} />
-      <TextField type="date" value={travelDate} onChange={(e) => setTravelDate(e.target.value)} />
-      <TextField label="Number of Passengers" type="number" value={passengers} onChange={(e) => setPassengers(e.target.value)} />
+    <div className='container'>
+      <TextField
+        label="Departure"
+        value={departure}
+        onChange={(e) => setDeparture(e.target.value)}
+      />
+      <TextField
+        label="Arrival"
+        value={arrival}
+        onChange={(e) => setArrival(e.target.value)}
+      />
+      <TextField
+        type="date"
+        value={travelDate}
+        onChange={(e) => setTravelDate(e.target.value)}
+      />
+      <TextField
+        label="Number of Passengers"
+        type="number"
+        value={passengers}
+        onChange={(e) => setPassengers(e.target.value)}
+      />
       <Button onClick={handleSearch}>Search</Button>
     </div>
   );

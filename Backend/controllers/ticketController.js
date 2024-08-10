@@ -1,21 +1,26 @@
 const Ticket = require('../models/Ticket');
 
 exports.getTickets = async (req, res) => {
+  const { departure, arrival, date, passengers } = req.query;
+
   try {
-    const { departure, arrival, travelDate } = req.query;
-    if (!departure || !arrival || !travelDate) {
-      return res.status(400).json({ error: 'Missing required query parameters' });
-    }
-    const tickets = await Ticket.find({
-      departure,
-      arrival,
-      travelDate: new Date(travelDate).toISOString().slice(0, 10) // Ensure date format
-    });
+    // Construct query object
+    const query = {};
+
+    if (departure) query.departure = departure;
+    if (arrival) query.arrival = arrival;
+    if (date) query.travelDate = date;
+    if (passengers) query.passengers = { $gte: passengers };
+
+    // Find tickets based on query object
+    const tickets = await Ticket.find(query);
+
     res.status(200).json(tickets);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.createTicket = async (req, res) => {
   const { departure, arrival, travelDate, availableSeats, price } = req.body;

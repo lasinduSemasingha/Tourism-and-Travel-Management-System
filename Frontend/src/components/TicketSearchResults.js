@@ -13,9 +13,10 @@ const TicketSearchResults = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/tickets', {
           params: {
-            departure: query.get('departure'),
-            arrival: query.get('arrival'),
-            travelDate: query.get('date'),
+            departure: query.get('departure') || '', // Provide default empty string if null
+            arrival: query.get('arrival') || '',     // Provide default empty string if null
+            date: query.get('date') || '',            // Provide default empty string if null
+            passengers: query.get('passengers') || '' // Provide default empty string if null
           }
         });
         setTickets(response.data);
@@ -28,15 +29,19 @@ const TicketSearchResults = () => {
 
   return (
     <div>
-      {tickets.map(ticket => (
-        <Card key={ticket._id}>
-          <Typography>Departure: {ticket.departure}</Typography>
-          <Typography>Arrival: {ticket.arrival}</Typography>
-          <Typography>Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
-          <Typography>Price: ${ticket.price}</Typography>
-          <Button href={`/booking/${ticket._id}`}>Book Now</Button>
-        </Card>
-      ))}
+      {tickets.length > 0 ? (
+        tickets.map(ticket => (
+          <Card key={ticket._id} style={{ margin: '20px', padding: '20px' }}>
+            <Typography>Departure: {ticket.departure}</Typography>
+            <Typography>Arrival: {ticket.arrival}</Typography>
+            <Typography>Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
+            <Typography>Price: ${ticket.price}</Typography>
+            <Button href={`/booking/${ticket._id}`}>Book Now</Button>
+          </Card>
+        ))
+      ) : (
+        <Typography>No tickets available for the given search criteria.</Typography>
+      )}
     </div>
   );
 };
