@@ -8,34 +8,71 @@ const TicketBookingPage = () => {
   const [ticket, setTicket] = useState(null);
   const [numOfPassengers, setNumOfPassengers] = useState('');
   const [totalAmount, setTotalAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTicket = async () => {
-      const response = await axios.get(`/api/tickets/${id}`);
-      setTicket(response.data);
+      console.log('Fetching ticket with ID:', id); // Log the ID
+      try {
+        const response = await axios.get(`http://localhost:5000/api/tickets/${id}`);
+        setTicket(response.data);
+      } catch (err) {
+        console.error("Error fetching data:", err.response ? err.response.data : err.message);
+        setError('Error fetching data');
+      } finally {
+        setLoading(false);
+      }
     };
+    
     fetchTicket();
   }, [id]);
-
+  
   const handleBooking = async () => {
-    await axios.post('/api/tickets', {
-      ticketId: id,
-      numOfPassengers,
-      totalAmount,
-    });
-    // Handle booking confirmation
+    try {
+      await axios.post('http://localhost:5000/api/bookings', {
+        ticketId: id,
+        noOfPassengers: numOfPassengers, // Ensure field names match
+        bookingDate: date,
+        totalAmount: totalAmount,
+      });
+      alert("Success");
+      // Handle booking confirmation (e.g., navigate to a confirmation page or show a success message)
+    } catch (err) {
+      console.error("Error booking ticket:", err.response ? err.response.data : err.message);
+      setError('Error booking ticket');
+    }
   };
+  
 
-  if (!ticket) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+  if (!ticket) return <div>No ticket found</div>;
 
   return (
     <div>
       <Typography>Departure: {ticket.departure}</Typography>
       <Typography>Arrival: {ticket.arrival}</Typography>
-      <Typography>Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
+      <Typography>Last Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
       <Typography>Price per Seat: ${ticket.price}</Typography>
-      <TextField label="Number of Passengers" type="number" value={numOfPassengers} onChange={(e) => setNumOfPassengers(e.target.value)} />
-      <TextField label="Total Amount" type="number" value={totalAmount} onChange={(e) => setTotalAmount(e.target.value)} />
+      <TextField
+        type='date'
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      /><br /><br />
+      <TextField 
+        label="Number of Passengers" 
+        type="number" 
+        value={numOfPassengers} 
+        onChange={(e) => setNumOfPassengers(e.target.value)} 
+      />
+      <TextField 
+        label="Total Amount" 
+        type="number" 
+        value={totalAmount} 
+        onChange={(e) => setTotalAmount(e.target.value)} 
+      />
       <Button onClick={handleBooking}>Confirm Booking</Button>
     </div>
   );
