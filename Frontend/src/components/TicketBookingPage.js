@@ -33,15 +33,18 @@ const TicketBookingPage = () => {
     try {
       await axios.post('http://localhost:5000/api/bookings', {
         ticketId: id,
-        numOfPassengers,
-        date,
-        totalAmount,
+        noOfPassengers: numOfPassengers, // Ensure field names match
+        bookingDate: date,
+        totalAmount: totalAmount,
       });
-      // Handle booking confirmation
+      alert("Success");
+      // Handle booking confirmation (e.g., navigate to a confirmation page or show a success message)
     } catch (err) {
-      console.log("Error booking ticket");
+      console.error("Error booking ticket:", err.response ? err.response.data : err.message);
+      setError('Error booking ticket');
     }
   };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
