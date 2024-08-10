@@ -11,14 +11,14 @@ const TicketBookingPage = () => {
 
   useEffect(() => {
     const fetchTicket = async () => {
-      const response = await axios.get(`/bookings/${id}`);
+      const response = await axios.get(`/api/tickets/${id}`);
       setTicket(response.data);
     };
     fetchTicket();
   }, [id]);
 
   const handleBooking = async () => {
-    await axios.post('/api/bookings', {
+    await axios.post('/api/tickets', {
       ticketId: id,
       numOfPassengers,
       totalAmount,
