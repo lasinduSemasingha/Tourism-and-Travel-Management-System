@@ -12,7 +12,7 @@ const TicketSearchResults = () => {
     const fetchTickets = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/tickets', {
-          params: {
+          params: {//lasindu
             departure: query.get('departure') || '', // Provide default empty string if null
             arrival: query.get('arrival') || '',     // Provide default empty string if null
             date: query.get('date') || '',            // Provide default empty string if null
