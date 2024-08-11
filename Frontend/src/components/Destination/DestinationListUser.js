@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button, Grid, TextField, DialogActions }
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const DestinationListUser = () => {
     const [destinations, setDestinations] = useState([]);
     const [error, setError] = useState(null);
@@ -45,6 +46,10 @@ const DestinationListUser = () => {
 
     const handleReserve = async (destinationId) => {
         const { fromDate, toDate } = reservationDates[destinationId] || {};
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+        console.log('User Info:', userInfo);
+
         if (!fromDate || !toDate) {
             setError('Please select both start and end dates.');
             return;
@@ -55,17 +60,22 @@ const DestinationListUser = () => {
                 destinationId,  // Send the correct destination ID
                 fromDate,
                 toDate,
+                userId: userInfo._id,
                 totalPrice: calculateTotalPrice(
                     destinations.find(dest => dest._id === destinationId),
                     fromDate,
                     toDate
                 )
             });
-            navigate('/reservations');
+            navigate('/addedreservations');
         } catch (err) {
             console.error("Error adding reservation:", err.response ? err.response.data : err.message);
             setError('Error adding reservation');
         }
+    };
+
+    const handleViewAddedReservations = () => {
+        navigate('/addedreservations'); // Redirect to AddedReservations page
     };
 
     return (
@@ -116,6 +126,16 @@ const DestinationListUser = () => {
                     </Grid>
                 ))}
             </Grid>
+
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleViewAddedReservations}
+                style={{ marginTop: '20px' }}
+            >
+                View Added Reservations
+            </Button>
+
         </div>
     );
 };

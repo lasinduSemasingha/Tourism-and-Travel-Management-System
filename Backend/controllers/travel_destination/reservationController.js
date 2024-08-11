@@ -14,7 +14,7 @@ exports.getReservations = async (req, res) => {
 
 // Add a new reservation with destination details
 exports.addReservation = async (req, res) => {
-  const { destinationId, fromDate, toDate, totalPrice } = req.body;
+  const { destinationId, fromDate, toDate, totalPrice, userId } = req.body;
 
   try {
     // Check if destination exists
@@ -27,6 +27,7 @@ exports.addReservation = async (req, res) => {
       destinationId,
       fromDate,
       toDate,
+      userId,
       totalPrice,
       status: 'pending' // Default status
     });
@@ -85,3 +86,38 @@ exports.deleteReservation = async (req, res) => {
     res.status(500).json({ message: 'Error deleting reservation', error: error.message });
   }
 };
+
+ 
+exports.getReservationsByUser = async (req, res) => {
+  const { userId } = req.params;
+
+  // Log the userId for debugging
+  console.log('Fetching reservations for user ID:', userId);
+
+  try {
+    // Check if userId is provided
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    // Find reservations by userId and populate destination details
+    const reservations = await Reservation.find({ user: userId })
+      .populate('destinationId', 'name location price description'); // Adjust fields as needed
+
+    // Log reservations for debugging
+    console.log('Reservations found:', reservations);
+
+    // If no reservations are found
+    if (reservations.length === 0) {
+      return res.status(404).json({ message: 'No reservations found for this user' });
+    }
+
+    // Respond with the reservations data
+    res.json(reservations);
+  } catch (error) {
+    // Log the error and send a response
+    console.error('Error fetching reservations:', error.message);
+    res.status(500).json({ message: 'Error fetching reservations', error: error.message });
+  }
+};
+

@@ -19,8 +19,12 @@ const UserLogin = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-            localStorage.setItem('userInfo', JSON.stringify(response.data));
-            navigate('/user-profile'); // Redirect to user profile page
+            if (response.data && response.data._id) {  // Ensure the response contains user info
+                localStorage.setItem('userInfo', JSON.stringify(response.data));
+                navigate('/destinationuser'); // Redirect to DestinationListUser page
+            } else {
+                setError('Login failed: User information is missing.');
+            }
         } catch (err) {
             setError('Invalid email or password');
         }

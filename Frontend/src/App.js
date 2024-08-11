@@ -11,6 +11,7 @@ import AddDestination from './components/Destination/AddDestination';
 import UpdateDestination from './components/Destination/UpdateDestination';
 import DestinationListUser from './components/Destination/DestinationListUser';
 import ReservationList from './components/Reservation/ReservationList';
+import AddedReservation from './components/Reservation/AddedReservation';
 
 import UserLogin from './components/Users/UserLogin';
 import AdminLogin from './components/Users/AdminLogin';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/destination/update/:id" element={<UpdateDestination />} />
             <Route path="/destinationuser" element={<DestinationListUser />} />
             <Route path="/ReservationList" element={<ReservationList />} />
+            <Route path="/addedreservations" element={<AddedReservation />} /> 
 
 
       {/* User and Admin Authentication routes */}
