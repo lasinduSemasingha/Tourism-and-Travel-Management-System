@@ -20,7 +20,8 @@ const UserLogin = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', formData);
             localStorage.setItem('userInfo', JSON.stringify(response.data));
-            navigate('/user-profile'); // Redirect to user profile page
+            navigate('/')
+            window.location.reload()
         } catch (err) {
             setError('Invalid email or password');
         }

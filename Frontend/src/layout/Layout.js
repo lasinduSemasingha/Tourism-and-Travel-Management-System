@@ -1,12 +1,20 @@
 import React from 'react';
-import App from '../App'
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './header/Header';
+import App from '../App';
+import '../css/layout.css'
+import { AuthProvider } from '.././contexts/AuthContext'; // Import the AuthProvider
 
 function Layout() {
   return (
-    <div>
+    <AuthProvider>
+      <Router>
+        <Header />
         <App />
-    </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
 export default Layout;
+

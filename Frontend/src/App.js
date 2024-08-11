@@ -17,10 +17,11 @@ import AdminLogin from './components/Users/AdminLogin';
 import UserRegister from './components/Users/Register';
 import AdminRegister from './components/Users/AdminRegister';
 
+import Tickets from './components/ticket_booking/TicketsFilter';
+
 
 function App() {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchResults />} />
@@ -42,9 +43,14 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin/register" element={<AdminRegister />} />
+
+
+        <Route path="/tickets" element={<Tickets />} />
+
+
+        <Route path="*" />
             
       </Routes>
-    </Router>
   );
 }
 
