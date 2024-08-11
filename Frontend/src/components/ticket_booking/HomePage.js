@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../css/homepage.css';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Bookmark } from '@mui/icons-material';
+import SlideShow from './HomePageSlider/SlidShow';
+import CategoryBoxes from './CategoryBoxes';
 
 const HomePage = () => {
-  
   return (
     <>
-      <h1>Home Page</h1>
-      <Button variant='contained' startIcon={<Bookmark />} color="success" component={Link} to="/tickets">Book a Ticket</Button>
+      <h1>Welcome to Travel Sphere</h1>
+      <div className='container'><SlideShow /></div><br /><br />
+      <CategoryBoxes /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     </>
   );
 };
