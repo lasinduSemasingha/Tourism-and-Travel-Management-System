@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('userInfo');
     setIsAuthenticated(false);
     setUser(null);
+    window.location.href = '/';
   };
 
   return (
