@@ -21,6 +21,16 @@ const Navbar = () => {
         <div style={{ flexGrow: 1 }}>
           <Button color="inherit" component={Link} to="/">Home</Button>
           <Button color="inherit" component={Link} to="/about">About</Button>
+            {!isAuthenticated ? (
+              <>
+                
+              </>
+            ) : (
+              <>
+                <Button color="inherit" component={Link} to="/destination">Destinations</Button>
+                <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
+              </>
+            )}
         </div>
         <div>
           {!isAuthenticated ? (
@@ -31,7 +41,6 @@ const Navbar = () => {
           ) : (
             <>
               <Button color="inherit" component={Link} to="/profile">Profile</Button>
-              <Button color="inherit" component={Link} to="/bookings">Bookings</Button>
               <Button color="inherit" onClick={logout}>Logout</Button>
             </>
           )}

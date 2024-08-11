@@ -31,3 +31,12 @@ exports.getBookingById = async (req, res) => {
   }
 };
 
+exports.getBookings = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming you have middleware to set req.user
+    const bookings = await Booking.find({ userId }).populate('ticketId');
+    res.status(200).json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
