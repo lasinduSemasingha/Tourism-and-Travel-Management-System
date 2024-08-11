@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Grid, Card, CardContent, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import axios from 'axios';
 
 const TicketBookingPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Add this line to get the navigate function
   const [ticket, setTicket] = useState(null);
   const [numOfPassengers, setNumOfPassengers] = useState('');
   const [totalAmount, setTotalAmount] = useState('');
@@ -79,6 +80,9 @@ const TicketBookingPage = () => {
       console.log('Processing payment with card details:', cardDetails);
       alert("Payment successful!");
       setOpenPaymentModal(false);
+      
+      // Redirect to the ticket search page
+      navigate('/search');
     } catch (err) {
       setError('Error processing payment');
     }

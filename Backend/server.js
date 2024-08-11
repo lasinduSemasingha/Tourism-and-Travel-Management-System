@@ -14,7 +14,6 @@ const bookingRoutes = require('./routes/ticket_booking/bookingRoutes');
 const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 //importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
-const bookedTickets = require('./routes/ticket_booking/bookedTicketRoutes')
 const cors = require('cors');
 
 // Load environment variables
@@ -42,7 +41,6 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/discounts', discountRoutes);
-app.use('api/bookedTickets', bookedTickets)
 
 
 // Environment Variables & Port Configuration

@@ -7,7 +7,10 @@ import { Home } from '@mui/icons-material';
 import { green } from '@mui/material/colors';
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth(); // Access user from context
+
+  // Safely access user ID
+  const userId = user ? user._id : null;
 
   return (
     <AppBar position="static" sx={{ backgroundColor: green[900] }}>
@@ -26,7 +29,7 @@ const Navbar = () => {
           {isAuthenticated && (
             <>
               <Button color="inherit" component={Link} to="/destination">Destinations</Button>
-              <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
+              {userId && <Button color="inherit" component={Link} to={`/booked-tickets/${userId}`}>Bookings</Button>}
             </>
           )}
         </div>
