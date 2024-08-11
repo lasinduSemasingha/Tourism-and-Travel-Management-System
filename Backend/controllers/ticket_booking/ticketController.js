@@ -1,4 +1,4 @@
-const Ticket = require('../models/Ticket');
+const Ticket = require('../../models/ticket_booking/Ticket');
 
 exports.getTickets = async (req, res) => {
   const { departure, arrival, date, passengers } = req.query;

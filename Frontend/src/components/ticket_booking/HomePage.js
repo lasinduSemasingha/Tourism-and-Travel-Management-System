@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import '../css/homepage.css';
+import '../../css/homepage.css';
 
 const HomePage = () => {
   const [departure, setDeparture] = useState('');

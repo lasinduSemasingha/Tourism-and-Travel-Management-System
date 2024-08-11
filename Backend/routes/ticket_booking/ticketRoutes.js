@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ticketController = require('../controllers/ticketController');
+const ticketController = require('../../controllers/ticket_booking/ticketController');
 
 // Route to get all tickets with optional filters
 router.get('/', ticketController.getTickets);

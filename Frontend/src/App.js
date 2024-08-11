@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import SearchResults from './components/TicketSearchResults';
-import BookingPage from './components/TicketBookingPage';
-import FeedbackPage from './components/FeedbackPage';
-import ReceiptPage from './components/ReceiptPage';
+import HomePage from './components/ticket_booking/HomePage';
+import SearchResults from './components/ticket_booking/TicketSearchResults';
+import BookingPage from './components/ticket_booking/TicketBookingPage';
+import FeedbackPage from './components/ticket_booking/FeedbackPage';
+import ReceiptPage from './components/ticket_booking/ReceiptPage';
 import DestinationList from './components/Destination/DestinationList';
 //import DestinationDetails from './components/Destination/DestinationDetails';
 import AddDestination from './components/Destination/AddDestination';

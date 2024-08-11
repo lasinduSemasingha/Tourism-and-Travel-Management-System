@@ -1,4 +1,4 @@
-const Feedback = require('../models/Feedback');
+const Feedback = require('../../models/ticket_booking/Feedback');
 
 exports.submitFeedback = async (req, res) => {
   const { userId, rating, comment } = req.body;
