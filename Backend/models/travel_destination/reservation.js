@@ -22,6 +22,10 @@ const reservationSchema = new mongoose.Schema({
   totalPrice: {
     type: Number,
     required: true
+  },
+  userId: { // Changed from user to userId
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 }, { timestamps: true });
 

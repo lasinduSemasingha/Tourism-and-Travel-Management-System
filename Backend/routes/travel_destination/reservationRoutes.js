@@ -14,4 +14,8 @@ router.put('/update/:id', reservationController.updateReservation);
 // Delete a reservation
 router.delete('/:id', reservationController.deleteReservation);
 
+// Get reservations for a specific user
+router.get('/:userId', reservationController.getReservationsByUser);
+
+
 module.exports = router;

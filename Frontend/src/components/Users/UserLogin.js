@@ -22,6 +22,12 @@ const UserLogin = () => {
             localStorage.setItem('userInfo', JSON.stringify(response.data));
             navigate('/')
             window.location.reload()
+            if (response.data && response.data._id) {  // Ensure the response contains user info
+                localStorage.setItem('userInfo', JSON.stringify(response.data));
+                navigate('/destinationuser'); // Redirect to DestinationListUser page
+            } else {
+                setError('Login failed: User information is missing.');
+            }
         } catch (err) {
             setError('Invalid email or password');
         }
