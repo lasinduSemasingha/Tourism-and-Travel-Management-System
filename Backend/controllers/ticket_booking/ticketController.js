@@ -7,8 +7,8 @@ exports.getTickets = async (req, res) => {
     // Construct query object
     const query = {};
 
-    if (departure) query.departure = departure;
-    if (arrival) query.arrival = arrival;
+    if (departure) query.departure = new RegExp(departure, 'i');
+    if (arrival) query.arrival = new RegExp(arrival, 'i');
     if (date) query.travelDate = date;
     if (passengers) query.passengers = { $gte: passengers };
 

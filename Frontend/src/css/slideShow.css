@@ -1,0 +1,19 @@
+.slideshow {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+  }
+  
+  .slideshow-wrapper {
+    display: flex;
+    transition: transform 1s ease-in-out;
+    width: 300%; /* Adjust based on the number of slides (3 images * 100%) */
+  }
+  
+  .slideshow-image {
+    width: 100%; /* Each image takes full width of the container */
+    height: 100%;
+    object-fit: cover; /* Ensure images cover the container */
+  }
+  

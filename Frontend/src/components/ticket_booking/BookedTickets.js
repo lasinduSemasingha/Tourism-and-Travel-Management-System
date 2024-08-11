@@ -6,7 +6,7 @@ const BookedTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   useEffect(() => {
     const fetchBookedTickets = async () => {
       try {
@@ -17,13 +17,15 @@ const BookedTickets = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:5000/api/bookedTickets', {
+        const response = await axios.get(`http://localhost:5000/api/bookings/user/${userInfo._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 
         setTickets(response.data);
+        console.log(response.data)
       } catch (err) {
         setError('Error fetching booked tickets');
+        console.log(userInfo._id)
       } finally {
         setLoading(false);
       }
