@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import '../css/homepage.css';
+import '../../css/homepage.css';
 
-const HomePage = () => {
+const TicketFilter = () => {
   const [departure, setDeparture] = useState('');
   const [arrival, setArrival] = useState('');
   const [travelDate, setTravelDate] = useState('');
@@ -48,4 +48,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default TicketFilter;

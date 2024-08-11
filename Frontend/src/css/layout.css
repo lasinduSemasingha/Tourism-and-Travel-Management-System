@@ -1,0 +1,5 @@
+body {
+    background: url("../../public/background.jpg"); /* No file extension needed if it's directly in the public folder */
+    background-repeat: no-repeat;
+    background-size: cover; /* Optional: Ensures the image covers the entire container */
+}

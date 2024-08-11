@@ -1,4 +1,4 @@
-const Discount = require('../models/Discount');
+const Discount = require('../../models/ticket_booking/Discount');
 
 exports.applyDiscount = async (req, res) => {
   const { code } = req.body;

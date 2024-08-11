@@ -19,6 +19,9 @@ const UserLogin = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+            localStorage.setItem('userInfo', JSON.stringify(response.data));
+            navigate('/')
+            window.location.reload()
             if (response.data && response.data._id) {  // Ensure the response contains user info
                 localStorage.setItem('userInfo', JSON.stringify(response.data));
                 navigate('/destinationuser'); // Redirect to DestinationListUser page
