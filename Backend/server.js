@@ -1,22 +1,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-
-//importing auth routes for the user authentication when loggin
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-//importing ticket routing
-const ticketRoutes = require('./routes/ticketRoutes');
-//importing booking routing
-const bookingRoutes = require('./routes/bookingRoutes');
-//importing feedback routing
-const feedbackRoutes = require('./routes/feedbackRoutes');
-//importing discount routing
-const discountRoutes = require('./routes/discountRoutes');
-
+const authRoutes = require('./routes/user_managemnt/authRoutes');
+const userRoutes = require('./routes/user_managemnt/userRoutes');
+const adminRoutes = require('./routes/user_managemnt/adminRoutes');
+const destinationRoutes = require('./routes/travel_destination/destinationRoutes');
+const reservationRoutes = require('./routes/travel_destination/reservationRoutes');
 const cors = require('cors');
-const morgan = require('morgan');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 // Load environment variables
 dotenv.config();
@@ -26,22 +16,18 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());  // Enable CORS
-app.use(morgan('dev'));  // Log HTTP requests
-app.use(express.json());  // Parse JSON bodies
+app.use(express.json());
+app.use(cors()); 
+
+
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/tickets', ticketRoutes);
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/feedback', feedbackRoutes);
-app.use('/api/discounts', discountRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/destinations', destinationRoutes);
+app.use('/api/reservations', reservationRoutes);
 
-// Error Handling Middleware
-app.use(notFound);
-app.use(errorHandler);
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;

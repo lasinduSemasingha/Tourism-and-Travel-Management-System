@@ -1,9 +1,8 @@
-const User = require('../models/user');
-const generateToken = require('../utils/generateToken');
+const User = require('../../models/user_managemnt/user');
 
 // Register a new user
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, address, country, gender } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -15,6 +14,9 @@ exports.registerUser = async (req, res) => {
     name,
     email,
     password,
+    address,   // Added field
+    country,   // Added field
+    gender,    // Added field
   });
 
   if (user) {
@@ -22,8 +24,10 @@ exports.registerUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      address: user.address,  // Added field
+      country: user.country,  // Added field
+      gender: user.gender,    // Added field
       role: user.role,
-      token: generateToken(user._id),
     });
   } else {
     res.status(400).json({ message: 'Invalid user data' });
@@ -41,8 +45,11 @@ exports.authUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      address: user.address,  // Added field
+      country: user.country,  // Added field
+      gender: user.gender,    // Added field
       role: user.role,
-      token: generateToken(user._id),
+
     });
   } else {
     res.status(401).json({ message: 'Invalid email or password' });

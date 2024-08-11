@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 // Function to generate a JSON Web Token (JWT)
-const generateToken = (user) => {
+const generateTokenUser = (user) => {
   return jwt.sign(
     {
       id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      
     },
     process.env.JWT_SECRET,  // Secret key for signing the token
     {
@@ -15,4 +16,6 @@ const generateToken = (user) => {
   );
 };
 
-module.exports = generateToken;
+
+
+module.exports = generateTokenUser;
