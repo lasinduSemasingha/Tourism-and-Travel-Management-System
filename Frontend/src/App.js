@@ -19,6 +19,7 @@ import AdminRegister from './components/Users/AdminRegister';
 
 import Tickets from './components/ticket_booking/TicketsFilter';
 import BookedTickets from './components/ticket_booking/BookedTickets';
+import TicketForm from './components/ticket_booking/TicketForm';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
 
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/booked-tickets" element={<BookedTickets />} />
+        <Route path="/add-tickets" element={<TicketForm />} />
 
 
         <Route path="*" />
