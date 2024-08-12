@@ -31,6 +31,13 @@ import UserProfilePage from './components/Users/UserProfile';
 
 import AboutUsPage from './components/site_data/AboutUs';
 
+//ADMIN
+import AdminAddRestaurantPage from './components/Restaurant/Admin/AdminAddRestaurantPage';
+import AdminManageRestaurantsPage from './components/Restaurant/Admin/AdminManageRestaurantsPage';
+import AvailableRestaurants from './components/Restaurant/AvailableRestaurant';
+import RestaurantFood from './components/Restaurant/RestaurantFood';
+import ManageReservations from './components/Restaurant/ManageReservations';
+
 
 function App() {
   return (
@@ -69,7 +76,18 @@ function App() {
 
 
         <Route path="/aboutus" element={<AboutUsPage />} />
-        <Route path="*" />
+
+
+        <Route path="/search-restaurants" element={<AvailableRestaurants />} />
+        <Route path="/restaurant/:id" element={<RestaurantFood />} />
+        <Route path="/restaurant-reservations" element={<ManageReservations />} />
+
+
+        {/*
+        <Route path="*" />*/}
+        {/*ADMIN Routes */}
+        <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
+        <Route path="/manage-restaurants" element={<AdminManageRestaurantsPage />} />
             
       </Routes>
   );

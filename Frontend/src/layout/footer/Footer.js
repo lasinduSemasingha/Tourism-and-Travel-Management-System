@@ -21,7 +21,7 @@ const Footer = () => {
               </ListItem>
               <ListItem>
                 <ListItemText>
-                  <Link href="/about" color="inherit" underline="hover">About Us</Link>
+                  <Link href="/aboutus" color="inherit" underline="hover">About Us</Link>
                 </ListItemText>
               </ListItem>
               <ListItem>

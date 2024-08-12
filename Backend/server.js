@@ -15,6 +15,12 @@ const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 //importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
+
+//restaurant management
+const restaurantRoutes = require('./routes/restaurants/restaurants');
+const rest_reservations = require('./routes/restaurants/reservations');
+const rest_feedback = require('./routes/restaurants/feedback');
+
 const cors = require('cors');
 
 // Load environment variables
@@ -44,6 +50,10 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/discounts', discountRoutes);
 
 app.use('/api/packages', packageRoutes);
+
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/reservations', rest_reservations);
+app.use('/api/feedback', rest_feedback);
 
 
 // Environment Variables & Port Configuration
