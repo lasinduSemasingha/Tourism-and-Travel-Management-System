@@ -12,7 +12,7 @@ const Navbar = () => {
   const userId = user ? user._id : null;
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: green[900] }}>
+    <AppBar position="static" sx={{ backgroundColor: '#1A385A' }}>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
