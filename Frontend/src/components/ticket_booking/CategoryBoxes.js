@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
@@ -13,51 +12,52 @@ const images = [
     link: '/tickets',
   },
   {
-    url: '/ella.jpg',
-    title: 'Ella',
+    url: '/hotel.jpg',
+    title: 'Hotel & Accommodation',
     link: '/ella',
   },
   {
     url: '/stupa.jpg',
-    title: 'Stupa',
+    title: 'Tour Packages',
     link: '/stupa',
   },
   {
-    url: '/example1.jpg',
-    title: 'Example 1',
+    url: '/food.jpg',
+    title: 'Restaurants',
     link: '/example1',
   },
   {
-    url: '/example2.jpg',
-    title: 'Example 2',
+    url: '/sports.jpg',
+    title: 'Special Activities',
     link: '/example2',
   },
   {
-    url: '/example3.jpg',
-    title: 'Example 3',
+    url: '/vehicle.jpg',
+    title: 'Vehicle Reservation',
     link: '/example3',
   },
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
-  position: 'relative', // Increased height
-  margin: '10px',
-  width: 400,
-  height: 400,
+  position: 'relative',
+  width: '100%',
+  height: '300px',
+  overflow: 'hidden',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   [theme.breakpoints.down('sm')]: {
-    height: '100px', // Adjusted height for small screens
+    height: '200px',
   },
   '&:hover, &.Mui-focusVisible': {
     zIndex: 1,
     '& .MuiImageBackdrop-root': {
-      opacity: 0,
-    },
-    '& .MuiImageMarked-root': {
-      opacity: 0,
+      opacity: 0.6
     },
     '& .MuiTypography-root': {
       border: '5px solid white',
-      height: -70
+      opacity: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
   },
 }));
@@ -94,13 +94,17 @@ const ImageMarked = styled('span')(({ theme }) => ({
 }));
 
 const CategoryBoxes = () => {
+  const handleClick = (link) => {
+    window.location.href = link;
+  };
+
   return (
     <Box sx={{ flexGrow: 1, padding: '40px', textAlign: 'center' }}>
       <Typography variant="h4" gutterBottom>Select Your Option</Typography>
       <Grid container spacing={2} justifyContent="center">
         {images.map((image) => (
           <Grid item xs={12} sm={6} md={4} key={image.title}>
-            <ImageButton component={Link} to={image.link} style={{ height: '100%' }}>
+            <ImageButton onClick={() => handleClick(image.link)}>
               <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />
               <Typography
@@ -109,10 +113,15 @@ const CategoryBoxes = () => {
                 color="inherit"
                 sx={{
                   color: 'white',
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 10px)`,
+                  position: 'absolute',
+                  p: 2,
+                  textAlign: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  opacity: 0.8,
+                  transition: 'opacity 0.3s',
+                  width: '80%',
+                  maxWidth: '300px',
+                  borderRadius: '8px',
                 }}
               >
                 {image.title}
@@ -124,6 +133,6 @@ const CategoryBoxes = () => {
       </Grid>
     </Box>
   );
-}
+};
 
 export default CategoryBoxes;

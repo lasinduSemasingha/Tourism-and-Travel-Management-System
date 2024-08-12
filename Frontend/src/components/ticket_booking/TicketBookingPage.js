@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Grid, Card, CardContent, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import { TextField, Button, Typography, Container, Grid, Card, CardContent, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Divider } from '@mui/material';
+import { CalendarToday, People, AttachMoney, CreditCard, DateRange, Payment } from '@mui/icons-material';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const TicketBookingPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [ticket, setTicket] = useState(null);
   const [numOfPassengers, setNumOfPassengers] = useState('');
   const [totalAmount, setTotalAmount] = useState('');
@@ -20,7 +24,7 @@ const TicketBookingPage = () => {
   const [isCardValid, setIsCardValid] = useState(false);
 
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const userID = userInfo ? userInfo._id : null; // Get user ID
+  const userID = userInfo ? userInfo._id : null;
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -33,10 +37,10 @@ const TicketBookingPage = () => {
         setLoading(false);
       }
     };
-    
+
     fetchTicket();
   }, [id]);
-  
+
   useEffect(() => {
     if (ticket && numOfPassengers) {
       setTotalAmount(numOfPassengers * ticket.price);
@@ -48,9 +52,9 @@ const TicketBookingPage = () => {
   useEffect(() => {
     const validateCardDetails = () => {
       const { cardNumber, expiryDate, cvv } = cardDetails;
-      const cardNumberValid = cardNumber.length === 16; // Simple check for 16 digits
-      const expiryDateValid = /^((0[1-9]|1[0-2])\/\d{2})$/.test(expiryDate); // MM/YY format
-      const cvvValid = cvv.length === 3; // Simple check for 3 digits
+      const cardNumberValid = cardNumber.length === 16;
+      const expiryDateValid = /^((0[1-9]|1[0-2])\/\d{2})$/.test(expiryDate);
+      const cvvValid = cvv.length === 3;
       
       setIsCardValid(cardNumberValid && expiryDateValid && cvvValid);
     };
@@ -75,22 +79,65 @@ const TicketBookingPage = () => {
 
   const handlePayment = async () => {
     try {
-      // Replace with actual payment processing logic
       console.log('Processing payment with card details:', cardDetails);
+  
+      // Generate receipt
+      const doc = new jsPDF();
+      
+      // Set the title
+      doc.setFontSize(22);
+      doc.setFont("Helvetica", "bold");
+      doc.text('Travel Sphere', 105, 20, { align: 'center' });
+  
+      // Draw a thinner border around the receipt
+      const margin = 10;
+      const width = 190;
+      const height = 130;
+      doc.setLineWidth(1); // Reduced thickness
+      doc.rect(margin, 30, width, height);
+  
+      // Set content font size and style
+      doc.setFontSize(12);
+      doc.setFont("Helvetica", "normal");
+  
+      // Add content with centered alignment
+      const lineHeight = 10;
+      let y = 40; // Starting Y position after title
+      
+      const centerX = margin + width / 2;
+      
+      doc.text(`Ticket ID: ${id}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Number of Passengers: ${numOfPassengers}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Total Amount: $${totalAmount}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Booking Date: ${date}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Departure: ${ticket.departure}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Arrival: ${ticket.arrival}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Travel Date: ${new Date(ticket.travelDate).toLocaleDateString()}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Price per Seat: $${ticket.price}`, centerX, y, { align: 'center' });
+  
+      doc.save('receipt.pdf');
+  
       alert("Payment successful!");
       setOpenPaymentModal(false);
+      
+      navigate('/feedback'); // Redirect to feedback page
     } catch (err) {
       setError('Error processing payment');
     }
   };
 
-  // Format card number to limit to 16 digits
   const handleCardNumberChange = (e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 16);
     setCardDetails(prev => ({ ...prev, cardNumber: value }));
   };
 
-  // Format expiry date to MM/YY
   const handleExpiryDateChange = (e) => {
     let value = e.target.value.replace(/\D/g, '').slice(0, 4);
     if (value.length > 2) {
@@ -99,7 +146,6 @@ const TicketBookingPage = () => {
     setCardDetails(prev => ({ ...prev, expiryDate: value }));
   };
 
-  // Format CVV to limit to 3 digits
   const handleCVVChange = (e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 3);
     setCardDetails(prev => ({ ...prev, cvv: value }));
@@ -110,19 +156,63 @@ const TicketBookingPage = () => {
   if (!ticket) return <Alert severity="info">No ticket found</Alert>;
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: '2rem' }}>
-      <Card>
+    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      <Card style={{ padding: '1rem', marginBottom: '1rem' }}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
             Confirm Your Booking
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h6">Departure: {ticket.departure}</Typography>
-              <Typography variant="h6">Arrival: {ticket.arrival}</Typography>
-              <Typography variant="h6">Last Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
-              <Typography variant="h6">Price per Seat: ${ticket.price}</Typography>
+            <Grid item xs={12} sm={6}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <CalendarToday color="primary" /> Departure
+                  </Typography>
+                  <Typography variant="body1">{ticket.departure}</Typography>
+                </CardContent>
+              </Card>
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <CalendarToday color="primary" /> Arrival
+                  </Typography>
+                  <Typography variant="body1">{ticket.arrival}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <DateRange color="primary" /> Travel Date
+                  </Typography>
+                  <Typography variant="body1">{new Date(ticket.travelDate).toLocaleDateString()}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <AttachMoney color="primary" /> Price per Seat
+                  </Typography>
+                  <Typography variant="body1">Rs. {ticket.price}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            Booking Details
+          </Typography>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -132,6 +222,13 @@ const TicketBookingPage = () => {
                 onChange={(e) => setDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
                 margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CalendarToday />
+                    </InputAdornment>
+                  ),
+                }}
               />
               <TextField
                 fullWidth
@@ -140,6 +237,13 @@ const TicketBookingPage = () => {
                 value={numOfPassengers}
                 onChange={(e) => setNumOfPassengers(e.target.value)}
                 margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <People />
+                    </InputAdornment>
+                  ),
+                }}
               />
               <TextField
                 fullWidth
@@ -148,6 +252,13 @@ const TicketBookingPage = () => {
                 value={totalAmount}
                 margin="normal"
                 disabled
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      Rs. 
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -156,6 +267,7 @@ const TicketBookingPage = () => {
                 color="primary"
                 onClick={handleBooking}
                 fullWidth
+                style={{ marginTop: '1rem' }}
               >
                 Confirm Booking
               </Button>
@@ -175,6 +287,13 @@ const TicketBookingPage = () => {
             value={cardDetails.cardNumber}
             onChange={handleCardNumberChange}
             margin="normal"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CreditCard />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             fullWidth
@@ -183,6 +302,13 @@ const TicketBookingPage = () => {
             value={cardDetails.expiryDate}
             onChange={handleExpiryDateChange}
             margin="normal"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DateRange />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             fullWidth
@@ -191,6 +317,13 @@ const TicketBookingPage = () => {
             value={cardDetails.cvv}
             onChange={handleCVVChange}
             margin="normal"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Payment />
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>

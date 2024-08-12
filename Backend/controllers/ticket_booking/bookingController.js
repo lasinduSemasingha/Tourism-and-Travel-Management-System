@@ -17,34 +17,32 @@ exports.createBooking = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Get booking by ID
+ 
+// Get bookings by user ID
 exports.getBookingsByUserId = async (req, res) => {
   try {
-    // Log the user ID from the request parameters
-    console.log('Fetching bookings for user ID:', req.params.userId);
+    const userId = req.params.userId;
 
-    // Check if userId exists in request parameters
-    if (!req.params.userId) {
+    // Log and validate userId
+    console.log('Fetching bookings for user ID:', userId);
+    if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
 
-    // Find all bookings associated with the userId
-    const bookings = await Booking.find({ userId: req.params.userId }).populate('ticketId');
+    // Query for bookings matching the userId
+    const bookings = await Booking.find({ userId }).populate('ticketId');
 
     if (bookings.length === 0) {
       return res.status(404).json({ error: 'No bookings found for this user' });
     }
 
-    // Return the found bookings
+    // Return the bookings
     res.status(200).json(bookings);
   } catch (err) {
-    // Log and return the error
     console.error('Error fetching bookings:', err);
     res.status(500).json({ error: err.message });
   }
 };
-
 
 
 // Get all bookings for the logged-in user

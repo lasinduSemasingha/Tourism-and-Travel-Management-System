@@ -11,7 +11,7 @@ const HomePage = () => {
     <>
       <h1>Welcome to Travel Sphere</h1>
       <div className='container'><SlideShow /></div><br /><br />
-      <CategoryBoxes /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <CategoryBoxes />
     </>
   );
 };

@@ -4,13 +4,15 @@ import Header from './header/Header';
 import '../css/layout.css'
 import App from '../App';
 import { AuthProvider } from '.././contexts/AuthContext'; // Import the AuthProvider
+import Footer from './footer/Footer';
 
 function Layout() {
   return (
     <AuthProvider>
       <Router>
         <Header />
-        <App />
+        <App /><br /><br /><br />
+        <Footer />
       </Router>
     </AuthProvider>
   );
