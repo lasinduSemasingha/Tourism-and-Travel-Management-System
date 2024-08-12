@@ -55,7 +55,7 @@ const Footer = () => {
 
           {/* Legal Section */}
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" gutterBottom>
+            <Typography style={{ marginLeft: '20px' }} variant="h6" gutterBottom>
               Legal
             </Typography>
             <List>
