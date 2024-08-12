@@ -27,7 +27,8 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Button color="inherit" component={Link} to="/destination">Destinations</Button>
+                <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
+                <Button color="inherit" component={Link} to="/addedreservations">Reservations</Button>
                 <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
               </>
             )}
