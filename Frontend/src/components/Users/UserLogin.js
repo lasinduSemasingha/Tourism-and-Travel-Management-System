@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container } from '@mui/material';
+import { TextField, Button, Typography, Container, Card, CardContent, InputAdornment, IconButton } from '@mui/material';
+import { Email, Lock } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,12 +20,9 @@ const UserLogin = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-            localStorage.setItem('userInfo', JSON.stringify(response.data));
-            navigate('/')
-            window.location.reload()
-            if (response.data && response.data._id) {  // Ensure the response contains user info
+            if (response.data && response.data._id) {
                 localStorage.setItem('userInfo', JSON.stringify(response.data));
-                navigate('/destinationuser'); // Redirect to DestinationListUser page
+                window.location.href = '/'; // Redirect to DestinationListUser page
             } else {
                 setError('Login failed: User information is missing.');
             }
@@ -34,34 +32,52 @@ const UserLogin = () => {
     };
 
     return (
-        <Container maxWidth="sm">
-            <Typography variant="h4" gutterBottom>
-                User Login
-            </Typography>
-            {error && <Typography color="error">{error}</Typography>}
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    type="email"
-                />
-                <TextField
-                    label="Password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    type="password"
-                />
-                <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Login
-                </Button>
-            </form>
+        <Container maxWidth="sm" style={{ marginTop: '2rem' }}>
+            <Card>
+                <CardContent>
+                    <Typography variant="h4" gutterBottom align="center">
+                        User Login
+                    </Typography>
+                    {error && <Typography color="error" align="center" paragraph>{error}</Typography>}
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            label="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            fullWidth
+                            margin="normal"
+                            type="email"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Email />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <TextField
+                            label="Password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            fullWidth
+                            margin="normal"
+                            type="password"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Lock />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }}>
+                            Login
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </Container>
     );
 };

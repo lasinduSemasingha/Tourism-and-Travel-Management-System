@@ -27,6 +27,9 @@ import TicketForm from './components/ticket_booking/TicketForm';
 import PackageManagement from './components/tour_packages/PackageManagement';
 import PackageList from './components/tour_packages/PackageList';
 import PackageDetails from './components/tour_packages/PackageDetails';
+import UserProfilePage from './components/Users/UserProfile';
+
+import AboutUsPage from './components/site_data/AboutUs';
 
 
 function App() {
@@ -50,6 +53,7 @@ function App() {
 
       {/* User and Admin Authentication routes */}
         <Route path="/userlogin" element={<UserLogin />} />
+        <Route path="/userprofile" element={<UserProfilePage />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin/register" element={<AdminRegister />} />
@@ -64,6 +68,7 @@ function App() {
         <Route path="/packages/:id" element={<PackageDetails />} />
 
 
+        <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="*" />
             
       </Routes>
