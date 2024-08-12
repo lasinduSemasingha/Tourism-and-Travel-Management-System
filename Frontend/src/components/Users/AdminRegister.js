@@ -17,11 +17,15 @@ const AdminRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        console.log('Form Data:', formData);
+
         try {
             const response = await axios.post('http://localhost:5000/api/admin/create', formData);
             setSuccess('Admin registered successfully');
             setError('');
         } catch (err) {
+            console.error('Error response:', err.response);
             setError('Error registering admin');
             setSuccess('');
         }

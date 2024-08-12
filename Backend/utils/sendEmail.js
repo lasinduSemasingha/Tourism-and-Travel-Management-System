@@ -1,22 +1,26 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async (options) => {
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+const sendEmail = async (to, subject, text) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'Outlook365', // or use another email service
+      auth: {
+        user: 'travelmateofficial2024@outlook.com', // replace with your email
+        pass: 'travel1234//', // replace with your email password or app-specific password
+      },
+    });
 
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: options.to,
-    subject: options.subject,
-    text: options.text,
-  };
+    await transporter.sendMail({
+      from: 'travelmateofficial2024@outlook.com', // replace with your email
+      to,
+      subject,
+      text,
+    });
 
-  await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 };
 
 module.exports = sendEmail;
