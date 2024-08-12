@@ -52,7 +52,7 @@ const TicketSearchResults = () => {
                 <div>
                   <Typography variant="h6" gutterBottom>{ticket.departure} to {ticket.arrival}</Typography>
                   <Typography variant="body1" color="textSecondary">Date: {new Date(ticket.travelDate).toLocaleDateString()}</Typography>
-                  <Typography variant="h5" color="primary">Price: ${ticket.price}</Typography>
+                  <Typography variant="h5" color="primary">Price: Rs. {ticket.price}</Typography>
                 </div>
                 <Button
                   variant="contained"
