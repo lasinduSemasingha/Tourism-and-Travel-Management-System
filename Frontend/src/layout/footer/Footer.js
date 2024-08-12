@@ -5,11 +5,11 @@ import { green } from '@mui/material/colors';
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: green[900], color: 'white', padding: '1rem 0' }}>
+    <footer style={{ backgroundColor: '#1A385A', color: 'white', padding: '1rem 0' }}>
       <Container>
-        <Grid container spacing={3}>
+        <Grid container spacing={40}>
           {/* Quick Links Section */}
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3.9}>
             <Typography variant="h6" gutterBottom>
               Quick Links
             </Typography>
