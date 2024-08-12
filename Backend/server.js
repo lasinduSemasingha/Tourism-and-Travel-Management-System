@@ -17,6 +17,14 @@ const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
 const cors = require('cors');
 
+const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+
+
+
+
+
+
+
 // Load environment variables
 dotenv.config();
 
@@ -44,6 +52,8 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/discounts', discountRoutes);
 
 app.use('/api/packages', packageRoutes);
+
+app.use('/api/vehicles', vehicleRoutes);
 
 
 // Environment Variables & Port Configuration
