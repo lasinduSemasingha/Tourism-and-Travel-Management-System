@@ -23,6 +23,12 @@ import BookedTickets from './components/ticket_booking/UserBookings';
 import TicketForm from './components/ticket_booking/TicketForm';
 
 
+//Tour Packages Management
+import PackageManagement from './components/tour_packages/PackageManagement';
+import PackageList from './components/tour_packages/PackageList';
+import PackageDetails from './components/tour_packages/PackageDetails';
+
+
 function App() {
   return (
       <Routes>
@@ -52,6 +58,10 @@ function App() {
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/booked-tickets/:id" element={<BookedTickets />} />
         <Route path="/add-tickets" element={<TicketForm />} />
+
+        <Route path="/package-manager" element={<PackageManagement />} />
+        <Route path="/packages" element={<PackageList />} />
+        <Route path="/packages/:id" element={<PackageDetails />} />
 
 
         <Route path="*" />
