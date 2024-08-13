@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Reservation = require('../../models/restaurant/Rest_Reservation');
-const auth = require('../../middleware/auth');
+const auth = require('../../middlewares/auth');
 
 // Get reservations for a specific user
 router.get('/user/:userId', async (req, res) => {
