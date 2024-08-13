@@ -64,7 +64,7 @@ const VehicleListUser = () => {
       {error && <Typography color="error">{error}</Typography>}
       <Grid container spacing={1}>
         {vehicles.map(vehicle => (
-          <Grid item xs={12} sm={6} md={4} key={vehicle._id}>
+          <Grid item xs={12} sm={6} md={3} key={vehicle._id}>
             <Card
               style={{
                 display: 'flex',
