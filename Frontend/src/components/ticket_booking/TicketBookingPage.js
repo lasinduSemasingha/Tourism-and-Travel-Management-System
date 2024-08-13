@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Grid, Card, CardContent, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Divider } from '@mui/material';
 import { CalendarToday, People, AttachMoney, CreditCard, DateRange, Payment } from '@mui/icons-material';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const TicketBookingPage = () => {
   const { id } = useParams();
@@ -71,17 +73,64 @@ const TicketBookingPage = () => {
       });
       setOpenPaymentModal(true);
     } catch (err) {
-      setError('Error booking ticket');
+      setError('Error booking ticket You must login to book a ticket');
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000); // Delay of 2 seconds
     }
   };
 
   const handlePayment = async () => {
     try {
       console.log('Processing payment with card details:', cardDetails);
+  
+      // Generate receipt
+      const doc = new jsPDF();
+      
+      // Set the title
+      doc.setFontSize(22);
+      doc.setFont("Helvetica", "bold");
+      doc.text('Travel Sphere', 105, 20, { align: 'center' });
+  
+      // Draw a thinner border around the receipt
+      const margin = 10;
+      const width = 190;
+      const height = 130;
+      doc.setLineWidth(1); // Reduced thickness
+      doc.rect(margin, 30, width, height);
+  
+      // Set content font size and style
+      doc.setFontSize(12);
+      doc.setFont("Helvetica", "normal");
+  
+      // Add content with centered alignment
+      const lineHeight = 10;
+      let y = 40; // Starting Y position after title
+      
+      const centerX = margin + width / 2;
+      
+      doc.text(`Ticket ID: ${id}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Number of Passengers: ${numOfPassengers}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Total Amount: $${totalAmount}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Booking Date: ${date}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Departure: ${ticket.departure}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Arrival: ${ticket.arrival}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Travel Date: ${new Date(ticket.travelDate).toLocaleDateString()}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Price per Seat: $${ticket.price}`, centerX, y, { align: 'center' });
+  
+      doc.save('receipt.pdf');
+  
       alert("Payment successful!");
       setOpenPaymentModal(false);
       
-      navigate('/search');
+      navigate('/feedback'); // Redirect to feedback page
     } catch (err) {
       setError('Error processing payment');
     }
@@ -153,7 +202,7 @@ const TicketBookingPage = () => {
                   <Typography variant="h6" gutterBottom>
                     <AttachMoney color="primary" /> Price per Seat
                   </Typography>
-                  <Typography variant="body1">${ticket.price}</Typography>
+                  <Typography variant="body1">Rs. {ticket.price}</Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -209,7 +258,7 @@ const TicketBookingPage = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AttachMoney />
+                      Rs. 
                     </InputAdornment>
                   ),
                 }}

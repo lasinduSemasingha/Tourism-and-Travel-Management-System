@@ -10,7 +10,7 @@ function Layout() {
   return (
     <AuthProvider>
       <Router>
-        <Header />
+        <Header /><br /><br /><br /><br />
         <App /><br /><br /><br />
         <Footer />
       </Router>

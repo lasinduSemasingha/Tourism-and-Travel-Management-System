@@ -14,7 +14,25 @@ const bookingRoutes = require('./routes/ticket_booking/bookingRoutes');
 const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 //importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
+const packageRoutes = require('./routes/tour_packages/packages');
+
+//importing special activity routing
+const specialActivityRoutes = require('./routes/special_activity/activities');
+
+//restaurant management
+const restaurantRoutes = require('./routes/restaurants/restaurants');
+const rest_reservations = require('./routes/restaurants/reservations');
+const rest_feedback = require('./routes/restaurants/feedback');
+
 const cors = require('cors');
+
+const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+
+
+
+
+
+
 
 // Load environment variables
 dotenv.config();
@@ -41,6 +59,17 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/discounts', discountRoutes);
+
+app.use('/api/packages', packageRoutes);
+
+app.use('/api/vehicles', vehicleRoutes);
+
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/reservations', rest_reservations);
+app.use('/api/feedback', rest_feedback);
+app.use('/api/activities', specialActivityRoutes)
+
+app.use('/uploads', express.static('uploads'));
 
 
 // Environment Variables & Port Configuration

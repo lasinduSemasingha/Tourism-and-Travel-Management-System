@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, IconButton, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, Button, Grid, IconButton, CircularProgress, Container } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 
 const DestinationList = () => {
     const [destinations, setDestinations] = useState([]);
     const [error, setError] = useState(null);
     const [deletingId, setDeletingId] = useState(null);
     const navigate = useNavigate();
-
-
 
     useEffect(() => {
         const fetchDestinations = async () => {
@@ -41,9 +38,11 @@ const DestinationList = () => {
     };
 
     return (
-        <div>
-            <Typography variant="h4">All Destinations</Typography>
-            
+        <Container maxWidth="lg" style={{ padding: '0 16px' }}>
+            <Typography variant="h4" gutterBottom>
+                All Destinations
+            </Typography>
+
             <Button
                 variant="contained"
                 color="primary"
@@ -87,7 +86,7 @@ const DestinationList = () => {
                     </Grid>
                 ))}
             </Grid>
-        </div>
+        </Container>
     );
 };
 
