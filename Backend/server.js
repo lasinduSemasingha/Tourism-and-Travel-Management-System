@@ -18,6 +18,7 @@ const packageRoutes = require('./routes/tour_packages/packages');
 const cors = require('cors');
 
 const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
 
 
 
@@ -54,9 +55,12 @@ app.use('/api/discounts', discountRoutes);
 app.use('/api/packages', packageRoutes);
 
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/vehiclereservations', vehicleReservationRoutes);
 
 
-// Environment Variables & Port Configuration
+
+
+// Environment Variables & Port Confniguration
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

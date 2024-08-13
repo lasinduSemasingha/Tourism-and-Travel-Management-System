@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
 
 const vehicleSchema = new mongoose.Schema({
-  ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   vehicleType: {
     type: String,
-    enum: ['car', 'bike', 'truck','wheel'],
+    enum: ['car', 'bike', 'truck'],
     required: true
   },
   registrationNumber: {
@@ -28,8 +23,9 @@ const vehicleSchema = new mongoose.Schema({
     enum: ['available', 'unavailable'],
     default: 'available'
   },
-  image: {  // Add this field
-    type: String
+  image: { 
+    data: Buffer,
+    contentType: String
   }
 }, { timestamps: true });
 

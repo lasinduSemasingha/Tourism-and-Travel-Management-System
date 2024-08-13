@@ -22,11 +22,20 @@ import Tickets from './components/ticket_booking/TicketsFilter';
 import BookedTickets from './components/ticket_booking/UserBookings';
 import TicketForm from './components/ticket_booking/TicketForm';
 
-
 //Tour Packages Management
 import PackageManagement from './components/tour_packages/PackageManagement';
 import PackageList from './components/tour_packages/PackageList';
 import PackageDetails from './components/tour_packages/PackageDetails';
+
+import AddVehicle from './components/vehicle/AddVehicle';
+import VehicleList from './components/vehicle/VehicleList';
+import UpdateVehicle from './components/vehicle/UpdateVehicle';
+import VehicleListUser from './components/vehicle/VehicleListUser';
+import VehicleReservationList from './components/vehicle_reservation/VehicleReservationList';
+import AddedVehicleReservation from './components/vehicle_reservation/AddedVehicleReservation';
+import Checkout from './components/vehicle_reservation/Checkout';
+import Payment from './components/vehicle_reservation/Payment';
+
 
 
 function App() {
@@ -62,6 +71,16 @@ function App() {
         <Route path="/package-manager" element={<PackageManagement />} />
         <Route path="/packages" element={<PackageList />} />
         <Route path="/packages/:id" element={<PackageDetails />} />
+
+
+        <Route path="/vehicle/add" element={<AddVehicle />} />
+        <Route path="/vehiclelist" element={<VehicleList />} />
+        <Route path="/vehicle/update/:id" element={<UpdateVehicle />} />
+        <Route path="/vehicleuser" element={<VehicleListUser />} />
+        <Route path="/vehiclereservationlist" element={<VehicleReservationList />} />
+        <Route path="/addedvehiclereservations" element={<AddedVehicleReservation />} /> 
+        <Route path="/Checkout" element={<Checkout />} /> 
+        <Route path="/Payment" element={<Payment />} /> 
 
 
         <Route path="*" />
