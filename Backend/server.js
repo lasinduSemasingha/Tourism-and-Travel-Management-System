@@ -16,6 +16,9 @@ const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
 
+//importing special activity routing
+const specialActivityRoutes = require('./routes/special_activity/activities');
+
 //restaurant management
 const restaurantRoutes = require('./routes/restaurants/restaurants');
 const rest_reservations = require('./routes/restaurants/reservations');
@@ -64,6 +67,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/reservations', rest_reservations);
 app.use('/api/feedback', rest_feedback);
+app.use('/api/activities', specialActivityRoutes)
 
 app.use('/uploads', express.static('uploads'));
 
