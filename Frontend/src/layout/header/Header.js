@@ -52,6 +52,17 @@ const Navbar = () => {
               </Menu>
             </>
           )}
+            {!isAuthenticated ? (
+              <>
+                
+              </>
+            ) : (
+              <>
+                <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
+                <Button color="inherit" component={Link} to="/addedreservations">Reservations</Button>
+                <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
+              </>
+            )}
         </div>
         <div>
           {!isAuthenticated ? (

@@ -23,6 +23,14 @@ const rest_feedback = require('./routes/restaurants/feedback');
 
 const cors = require('cors');
 
+const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+
+
+
+
+
+
+
 // Load environment variables
 dotenv.config();
 
@@ -50,6 +58,8 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/discounts', discountRoutes);
 
 app.use('/api/packages', packageRoutes);
+
+app.use('/api/vehicles', vehicleRoutes);
 
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/reservations', rest_reservations);
