@@ -55,6 +55,8 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/reservations', rest_reservations);
 app.use('/api/feedback', rest_feedback);
 
+app.use('/uploads', express.static('uploads'));
+
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;

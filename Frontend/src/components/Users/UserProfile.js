@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, TextField, Button, Card, CardContent, Avatar, IconButton, CircularProgress, Alert } from '@mui/material';
-import { Edit, Save, Cancel } from '@mui/icons-material';
+import { Edit, Save, Cancel, Upload } from '@mui/icons-material';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
+import CheckIcon from '@mui/icons-material/Check';
 
 const UserProfilePage = () => {
   const { users } = useAuth();
@@ -11,10 +12,9 @@ const UserProfilePage = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // State to hold selected image
 
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
-  console.log("userID : ",userInfo._id);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -36,7 +36,7 @@ const UserProfilePage = () => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [userInfo._id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +45,7 @@ const UserProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/users/${userInfo._id}`, formData); // Replace with actual user ID
+      await axios.put(`http://localhost:5000/api/users/${userInfo._id}`, formData);
       setUser(prevUser => ({ ...prevUser, ...formData }));
       setEditing(false);
     } catch (err) {
@@ -64,6 +64,39 @@ const UserProfilePage = () => {
     setEditing(false);
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        setError('File size exceeds 5MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result); // Set base64 image data
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedImage) {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/api/users/${userInfo._id}/upload`,
+          { profilePicture: selectedImage },
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        setUser(prevUser => ({ ...prevUser, profilePicture: selectedImage }));
+        setSelectedImage(null);
+        window.location.href = '/userprofile';
+      } catch (err) {
+        console.error(err);
+        setError('Error uploading profile picture');
+      }
+    }
+  };
+
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
@@ -75,10 +108,36 @@ const UserProfilePage = () => {
             <Grid item xs={12} sm={4} style={{ textAlign: 'center' }}>
               <Avatar
                 alt={user.name}
-                src="/profile-picture.jpg" // Replace with actual profile picture URL
+                src={user.profilePicture || "/profile-picture.jpg"} // Display uploaded profile picture
                 sx={{ width: 100, height: 100, margin: 'auto' }}
               />
               <Typography variant="h6" gutterBottom>{user.name}</Typography>
+              <input
+                accept="image/*"
+                type="file"
+                style={{ display: 'none' }}
+                id="profile-picture-upload"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="profile-picture-upload">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  startIcon={<Upload />}
+                >
+                </Button>
+              </label><br />
+              {selectedImage && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleUpload}
+                  style={{ marginTop: '1rem' }}
+                  startIcon={<CheckIcon />}
+                >
+                </Button>
+              )}
             </Grid>
             <Grid item xs={12} sm={8}>
               <Typography variant="h6" gutterBottom>Profile Information</Typography>
