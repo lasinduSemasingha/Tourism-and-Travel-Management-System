@@ -19,7 +19,7 @@ const images = [
   {
     url: '/stupa.jpg',
     title: 'Tour Packages',
-    link: '/stupa',
+    link: '/packages',
   },
   {
     url: '/food.jpg',

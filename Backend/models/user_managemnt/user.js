@@ -5,10 +5,11 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  address: { type: String, required: true },  // New field
-  country: { type: String, required: true },  // New field
-  gender: { type: String, required: true },   // New field
+  address: { type: String, required: true },
+  country: { type: String, required: true },
+  gender: { type: String, required: true },
   role: { type: String, default: 'user' },
+  profilePicture: { type: String }  // Field for base64 profile picture
 });
 
 // Password hashing before saving the user

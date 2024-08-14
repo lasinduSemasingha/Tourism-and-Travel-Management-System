@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1A385A' }}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1A385A' }}>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -30,7 +30,7 @@ const Navbar = () => {
         </Typography>
         <div style={{ flexGrow: 1 }}>
           <Button startIcon={<Home />} color="inherit" component={Link} to="/">Home</Button>
-          <Button color="inherit" component={Link} to="/about">About</Button>
+          <Button color="inherit" component={Link} to="/aboutus">About</Button>
           {isAuthenticated && (
             <>
              <Button color="inherit" component={Link} to="/destination">Destinations</Button>
@@ -73,7 +73,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/profile">Profile</Button>
+              <Button color="inherit" component={Link} to="/userprofile">Profile</Button>
               <Button color="inherit" onClick={logout}>Logout</Button>
             </>
           )}

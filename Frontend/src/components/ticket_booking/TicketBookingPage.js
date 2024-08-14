@@ -73,7 +73,10 @@ const TicketBookingPage = () => {
       });
       setOpenPaymentModal(true);
     } catch (err) {
-      setError('Error booking ticket');
+      setError('Error booking ticket You must login to book a ticket');
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000); // Delay of 2 seconds
     }
   };
 
