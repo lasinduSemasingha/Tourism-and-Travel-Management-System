@@ -4,19 +4,21 @@ const {
   addDestination,
   updateDestination,
   deleteDestination,
+  getDestinationImage,
 } = require('../../controllers/travel_destination/destinationController');
+const upload = require('../../middlewares/upload');
 const router = express.Router();
 
-router.route('/add')
-  .post(addDestination);
-
+router.post('/add', upload.single('image'),addDestination);
+router.put('/:id', upload.single('image'),updateDestination);
 router.route('/:id')
-  .put(updateDestination)
   .get(getDestinations);
 
   //fetch all the destinations
 router.get('/', getDestinations);
 router.delete('/:id', deleteDestination);
+
+router.route('/image/:id').get(getDestinationImage);
 
 module.exports = router;
 

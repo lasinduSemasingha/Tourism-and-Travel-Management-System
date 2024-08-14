@@ -1,21 +1,32 @@
 const express = require('express');
-const router = express.Router();
-const vehicleController = require('../../controllers/vehicle_reservation/vehicleController');
-const upload = require('../../middlewares/upload');
+const {
+  getVehicles,
+  addVehicle,
+  updateVehicle,
+  deleteVehicle,
+  getVehicleById,
+  getVehicleImage,
+} = require('../../controllers/vehicle_reservation/vehicleController');
+const upload = require('../../middlewares/upload'); // Adjust the path as needed
 
-// Register a new vehicle with image
-router.post('/register', upload.single('image'), vehicleController.addVehicle);
+const router = express.Router();
+
+// Fetch all vehicles
+router.get('/', getVehicles);
+
+// Add a new vehicle with image upload
+router.post('/register', upload.single('image'), addVehicle);
 
 // Update vehicle details, including image
-router.put('/update/:id', upload.single('image'), vehicleController.updateVehicle);
+router.put('/update/:id', upload.single('image'), updateVehicle);
 
-// Get all vehicles
-router.get('/', vehicleController.getAllVehicles);  // Changed from getVehicles to getAllVehicles
+// Get a vehicle by ID
+router.get('/:id', getVehicleById);
 
-// Get vehicles by owner
-router.get('/owner/:ownerId', vehicleController.getVehiclesByOwner);
+// Delete a vehicle by ID
+router.delete('/:id', deleteVehicle);
 
-// Delete a vehicle
-router.delete('/:id', vehicleController.deleteVehicle);
+// Get a vehicle's image by ID
+router.get('/image/:id', getVehicleImage);
 
 module.exports = router;

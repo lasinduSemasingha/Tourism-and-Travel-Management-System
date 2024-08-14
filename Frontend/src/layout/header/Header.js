@@ -33,7 +33,7 @@ const Navbar = () => {
           <Button color="inherit" component={Link} to="/aboutus">About</Button>
           {isAuthenticated && (
             <>
-              <Button color="inherit" component={Link} to="/destination">Destinations</Button>
+             <Button color="inherit" component={Link} to="/destination">Destinations</Button>
               {userId && <Button color="inherit" component={Link} to={`/booked-tickets/${userId}`}>Bookings</Button>}
               <Button
                 color="inherit"
@@ -60,6 +60,7 @@ const Navbar = () => {
               <>
                 <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
                 <Button color="inherit" component={Link} to="/addedreservations">Reservations</Button>
+                <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
                 <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
               </>
             )}

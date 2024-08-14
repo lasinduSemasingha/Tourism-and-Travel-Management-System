@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Paper, Snackbar, Alert, InputAdornment } from '@mui/material';
+import { TextField, Button, Typography, Container, Paper, Snackbar, Alert, InputAdornment, Input } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { LocationOn, AttachMoney, Description, FlightTakeoff } from '@mui/icons-material';
@@ -11,6 +11,7 @@ const AddDestination = () => {
         price: '',
         description: '',
     });
+    const [image, setImage] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -19,10 +20,25 @@ const AddDestination = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const submitData = new FormData();
+        submitData.append('name', formData.name);
+        submitData.append('location', formData.location);
+        submitData.append('price', formData.price);
+        submitData.append('description', formData.description);
+        if (image) submitData.append('image', image);
+
         try {
-            const response = await axios.post('http://localhost:5000/api/destinations/add', formData);
+            const response = await axios.post('http://localhost:5000/api/destinations/add', submitData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             setSuccessMessage('Destination added successfully!');
             setFormData({
                 name: '',
@@ -30,6 +46,7 @@ const AddDestination = () => {
                 price: '',
                 description: '',
             });
+            setImage(null);
             setTimeout(() => {
                 navigate('/destination'); // Redirect to the destination list page
             }, 1000);
@@ -115,6 +132,14 @@ const AddDestination = () => {
                                 </InputAdornment>
                             ),
                         }}
+                    />
+                    <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        fullWidth
+                        margin="normal"
+                        sx={{ mt: 2 }}
                     />
                     <Button type="submit" variant="contained" color="primary" style={{ marginTop: '1rem' }}>
                         Add Destination

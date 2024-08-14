@@ -27,6 +27,7 @@ const rest_feedback = require('./routes/restaurants/feedback');
 const cors = require('cors');
 
 const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
 
 
 
@@ -63,6 +64,7 @@ app.use('/api/discounts', discountRoutes);
 app.use('/api/packages', packageRoutes);
 
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/vehiclereservations', vehicleReservationRoutes);
 
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/reservations', rest_reservations);
@@ -72,7 +74,9 @@ app.use('/api/activities', specialActivityRoutes)
 app.use('/uploads', express.static('uploads'));
 
 
-// Environment Variables & Port Configuration
+
+
+// Environment Variables & Port Confniguration
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

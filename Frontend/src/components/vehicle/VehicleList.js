@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Tabs, Tab, Box, InputAdornment, Card, CardContent, Typography, Grid, IconButton, CircularProgress, Container } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, IconButton, CircularProgress, TextField, Tabs, Tab, Box, InputAdornment } from '@mui/material';
 import { Edit, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-const DestinationList = () => {
-  const [destinations, setDestinations] = useState([]);
-  const [filteredDestinations, setFilteredDestinations] = useState([]);
+
+const VehicleList = () => {
+  const [vehicles, setVehicles] = useState([]);
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [error, setError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,45 +17,45 @@ const DestinationList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchVehicles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/destinations');
-        const destinationsWithImages = await Promise.all(response.data.map(async (destination) => {
-          if (destination.image) {
-            const imageResponse = await axios.get(`http://localhost:5000/api/destinations/image/${destination._id}`);
-            return { ...destination, image: imageResponse.data.imgSrc };
+        const response = await axios.get('http://localhost:5000/api/vehicles');
+        const vehiclesWithImages = await Promise.all(response.data.map(async (vehicle) => {
+          if (vehicle.image) {
+            const imageResponse = await axios.get(`http://localhost:5000/api/vehicles/image/${vehicle._id}`);
+            return { ...vehicle, image: imageResponse.data.imgSrc };
           }
-          return destination;
+          return vehicle;
         }));
-        setDestinations(destinationsWithImages);
-        setFilteredDestinations(destinationsWithImages);
+        setVehicles(vehiclesWithImages);
+        setFilteredVehicles(vehiclesWithImages);
       } catch (err) {
-        console.error("Error fetching destinations:", err.response ? err.response.data : err.message);
-        setError('Error fetching destinations');
+        console.error("Error fetching vehicles:", err.response ? err.response.data : err.message);
+        setError('Error fetching vehicles');
       }
     };
 
-    fetchDestinations();
+    fetchVehicles();
   }, []);
 
   useEffect(() => {
-    setFilteredDestinations(
-      destinations.filter(destination =>
-        destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        destination.location.toLowerCase().includes(searchQuery.toLowerCase())
+    setFilteredVehicles(
+      vehicles.filter(vehicle =>
+        vehicle.vehicleType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vehicle.registrationNumber.toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
-  }, [searchQuery, destinations]);
+  }, [searchQuery, vehicles]);
 
   const handleDelete = async (id) => {
     setDeletingId(id);
     try {
-      await axios.delete(`http://localhost:5000/api/destinations/${id}`);
-      setDestinations(destinations.filter(destination => destination._id !== id));
-      setFilteredDestinations(filteredDestinations.filter(destination => destination._id !== id));
+      await axios.delete(`http://localhost:5000/api/vehicles/delete/${id}`);
+      setVehicles(vehicles.filter(vehicle => vehicle._id !== id));
+      setFilteredVehicles(filteredVehicles.filter(vehicle => vehicle._id !== id));
     } catch (err) {
-      console.error("Error deleting destination:", err.response ? err.response.data : err.message);
-      setError('Error deleting destination');
+      console.error("Error deleting vehicle:", err.response ? err.response.data : err.message);
+      setError('Error deleting vehicle');
     } finally {
       setDeletingId(null);
     }
@@ -70,37 +71,37 @@ const DestinationList = () => {
       alert('No data available to generate the report');
       return;
     }
-
+  
     const doc = new jsPDF();
     const images = [];
-
+  
     // Add title
     doc.setFontSize(18);
-    doc.text('Destination Report', 14, 22);
-
+    doc.text('Vehicle Report', 14, 22);
+  
     // Add images and generate their data URLs
-    for (const destination of data) {
-      if (destination.image) {
+    for (const vehicle of data) {
+      if (vehicle.image) {
         try {
-          const image = await fetch(destination.image);
+          const image = await fetch(vehicle.image);
           const imageBlob = await image.blob();
           const imageUrl = URL.createObjectURL(imageBlob);
-          images.push({ id: destination._id, url: imageUrl });
+          images.push({ id: vehicle._id, url: imageUrl });
         } catch (error) {
-          console.error(`Error fetching image for destination ${destination._id}:`, error);
+          console.error(`Error fetching image for vehicle ${vehicle._id}:`, error);
         }
       }
     }
-
+  
     // Define columns for the table
-    const columns = ['Name', 'Location', 'Price', 'Description'];
-    const rows = data.map(destination => [
-      destination.name,
-      destination.location,
-      `$${destination.price}`,
-      destination.description,
+    const columns = ['Vehicle Type', 'Registration Number', 'Price', 'Status'];
+    const rows = data.map(vehicle => [
+      vehicle.vehicleType,
+      vehicle.registrationNumber,
+      `$${vehicle.rentalPrice}`,
+      vehicle.status,
     ]);
-
+  
     // Add a table with images
     doc.autoTable({
       startY: 30,
@@ -114,24 +115,25 @@ const DestinationList = () => {
         }
       }
     });
-
+  
     // Save the PDF with a custom name
-    doc.save('Destination_Report.pdf');
+    doc.save('Vehicle_Report.pdf');
   };
+  
 
   return (
-    <Container maxWidth="lg" style={{ padding: '0 16px' }}>
-      <Typography variant="h4" gutterBottom>
-        All Destinations
+    <div style={{ padding: '2rem' }}>
+      <Typography variant="h4" gutterBottom style={{ marginBottom: '1rem' }}>
+        All Vehicles
       </Typography>
 
       <Button
         variant="contained"
         color="primary"
-        onClick={() => navigate('/destination/add')}
-        style={{ marginBottom: '20px' }}
+        onClick={() => navigate('/vehicle/add')}
+        style={{ marginBottom: '1rem' }}
       >
-        Add Destination
+        Add Vehicle
       </Button>
 
       <TextField
@@ -139,7 +141,7 @@ const DestinationList = () => {
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: '20px', width: '100%' }}
+        style={{ marginBottom: '1rem', width: '100%' }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -155,14 +157,14 @@ const DestinationList = () => {
           onChange={handleTabChange}
           aria-label="tabs"
         >
-          <Tab label="Destination List" />
+          <Tab label="Vehicle List" />
           <Tab label="Generate Report" />
         </Tabs>
         {tabValue === 1 && (
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => generatePDFReport(filteredDestinations)}
+            onClick={() => generatePDFReport(filteredVehicles)} 
             style={{ marginTop: '1rem' }}
           >
             Generate Report
@@ -171,50 +173,50 @@ const DestinationList = () => {
       </Box>
 
       {error && <Typography color="error">{error}</Typography>}
-
+      
       <TableContainer component={Paper} style={{ border: '1px solid #ddd' }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell style={{ border: '1px solid #ddd' }}>Image</TableCell>
-              <TableCell style={{ border: '1px solid #ddd' }}>Name</TableCell>
-              <TableCell style={{ border: '1px solid #ddd' }}>Location</TableCell>
+              <TableCell style={{ border: '1px solid #ddd' }}>Type</TableCell>
+              <TableCell style={{ border: '1px solid #ddd' }}>Registration</TableCell>
               <TableCell style={{ border: '1px solid #ddd' }}>Price</TableCell>
-              <TableCell style={{ border: '1px solid #ddd' }}>Description</TableCell>
+              <TableCell style={{ border: '1px solid #ddd' }}>Status</TableCell>
               <TableCell style={{ border: '1px solid #ddd' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredDestinations.map(destination => (
-              <TableRow key={destination._id}>
+            {filteredVehicles.map(vehicle => (
+              <TableRow key={vehicle._id}>
                 <TableCell style={{ border: '1px solid #ddd' }}>
-                  {destination.image ? (
+                  {vehicle.image ? (
                     <img
-                      src={destination.image}
-                      alt="Destination"
+                      src={vehicle.image}
+                      alt="Vehicle"
                       style={{ width: '100px', height: 'auto', objectFit: 'cover' }}
                     />
                   ) : 'No Image'}
                 </TableCell>
-                <TableCell style={{ border: '1px solid #ddd' }}>{destination.name}</TableCell>
-                <TableCell style={{ border: '1px solid #ddd' }}>{destination.location}</TableCell>
-                <TableCell style={{ border: '1px solid #ddd' }}>${destination.price}</TableCell>
-                <TableCell style={{ border: '1px solid #ddd' }}>{destination.description}</TableCell>
+                <TableCell style={{ border: '1px solid #ddd' }}>{vehicle.vehicleType}</TableCell>
+                <TableCell style={{ border: '1px solid #ddd' }}>{vehicle.registrationNumber}</TableCell>
+                <TableCell style={{ border: '1px solid #ddd' }}>${vehicle.rentalPrice}</TableCell>
+                <TableCell style={{ border: '1px solid #ddd' }}>{vehicle.status}</TableCell>
                 <TableCell style={{ border: '1px solid #ddd' }}>
                   <IconButton
                     color="primary"
                     aria-label="edit"
-                    onClick={() => navigate(`/destination/update/${destination._id}`)}
+                    onClick={() => navigate(`/vehicle/update/${vehicle._id}`)}
                   >
                     <Edit />
                   </IconButton>
                   <IconButton
                     color="secondary"
                     aria-label="delete"
-                    onClick={() => handleDelete(destination._id)}
-                    disabled={deletingId === destination._id}
+                    onClick={() => handleDelete(vehicle._id)}
+                    disabled={deletingId === vehicle._id}
                   >
-                    {deletingId === destination._id ? (
+                    {deletingId === vehicle._id ? (
                       <CircularProgress size={24} />
                     ) : (
                       <Delete />
@@ -226,8 +228,8 @@ const DestinationList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+    </div>
   );
 };
 
-export default DestinationList;
+export default VehicleList;
