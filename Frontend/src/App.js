@@ -63,6 +63,8 @@ import AddHotel from './components/hotel/AddHotel';
 import UpdateHotel from './components/hotel/UpdateHotel';
 import HotelList from './components/hotel/HotelList';
 import HotelListUser from './components/hotel/HotelListUser';
+import HotelReservationList from './components/hotel_reservation/HotelReservationList';
+import AddedHotelReservations from './components/hotel_reservation/AddedHotelReservations';
 
 
 
@@ -147,6 +149,8 @@ function App() {
         <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
         <Route path="/hotellist" element={<HotelList />} />
         <Route path="/hotellistuser" element={<HotelListUser />} />
+        <Route path="/hotelreservationlist" element={<HotelReservationList />} />
+        <Route path="/addedhotelreservations" element={<AddedHotelReservations />} />
 
        
             

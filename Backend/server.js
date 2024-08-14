@@ -31,6 +31,7 @@ const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleRe
 
 
 const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
+const hotelReservationRoutes = require('./routes/hotel_management/hotelReservationRoutes');
 
 
 
@@ -74,6 +75,7 @@ app.use('/api/activities', specialActivityRoutes)
 
 
 app.use('/api/hotels', hotelRoutes);
+app.use('/api/hotelreservations', hotelReservationRoutes);
 
 
 
@@ -81,6 +83,7 @@ app.use('/uploads', express.static('uploads'));
 
 
 
+hotelReservationRoutes
 
 // Environment Variables & Port Confniguration
 const PORT = process.env.PORT || 5000;

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Hotel = require('../../models/hotel_management/hotel');
 const path = require('path');
 const fs = require('fs');
@@ -14,7 +15,7 @@ exports.getHotels = async (req, res) => {
 
 // Add a new hotel with image upload
 exports.addHotel = async (req, res) => {
-  const { name, owner, address, country, city, contactNumber, email } = req.body;
+  const { name, owner, address, country, city, price, contactNumber, email, roomType } = req.body;
   let imagePath = null;
 
   if (req.file) {
@@ -28,8 +29,10 @@ exports.addHotel = async (req, res) => {
       address,
       country,
       city,
+      price,
       contactNumber,
       email,
+      roomType, // Include roomType here
       approvalStatus: 'pending',
       image: imagePath ? { data: fs.readFileSync(imagePath), contentType: req.file.mimetype } : null,
     });
@@ -48,7 +51,7 @@ exports.addHotel = async (req, res) => {
 // Update hotel details, including image
 exports.updateHotel = async (req, res) => {
   const { id } = req.params;
-  const { name, owner, address, country, city, contactNumber, email, approvalStatus } = req.body;
+  const { name, owner, address, country, city, price, contactNumber, email, approvalStatus, roomType } = req.body;
   let imagePath = null;
 
   if (req.file) {
@@ -66,9 +69,11 @@ exports.updateHotel = async (req, res) => {
     hotel.address = address || hotel.address;
     hotel.country = country || hotel.country;
     hotel.city = city || hotel.city;
+    hotel.price = price || hotel.price; // Update price
     hotel.contactNumber = contactNumber || hotel.contactNumber;
     hotel.email = email || hotel.email;
     hotel.approvalStatus = approvalStatus || hotel.approvalStatus;
+    hotel.roomType = roomType || hotel.roomType; // Update roomType
     if (imagePath) {
       hotel.image = { data: fs.readFileSync(imagePath), contentType: req.file.mimetype };
     }

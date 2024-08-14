@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Box, Input, Grid, InputAdornment } from '@mui/material';
+import { Button, TextField, Typography, Box, Input, Grid, InputAdornment, MenuItem, Select } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { CloudUpload, LocationOn, Person, Home, Public, Phone, Email } from '@mui/icons-material';
-
+import { CloudUpload, LocationOn, Person, Home, Public, Phone, Email, AttachMoney } from '@mui/icons-material';
 
 const AddHotel = () => {
   const [name, setName] = useState('');
@@ -11,8 +10,10 @@ const AddHotel = () => {
   const [address, setAddress] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
+  const [price, setPrice] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [roomType, setRoomType] = useState('Deluxe Room'); // Default value
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -29,8 +30,10 @@ const AddHotel = () => {
     formData.append('address', address);
     formData.append('country', country);
     formData.append('city', city);
+    formData.append('price', price);
     formData.append('contactNumber', contactNumber);
     formData.append('email', email);
+    formData.append('roomType', roomType); // Append roomType to formData
     if (image) formData.append('image', image);
 
     try {
@@ -144,9 +147,21 @@ const AddHotel = () => {
             fullWidth
             margin="normal"
             variant="outlined"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            fullWidth
+            margin="normal"
+            variant="outlined"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
+                  <AttachMoney />
                 </InputAdornment>
               ),
             }}
@@ -187,6 +202,29 @@ const AddHotel = () => {
               ),
             }}
           />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Room Type"
+            select
+            value={roomType}
+            onChange={(e) => setRoomType(e.target.value)}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Home />
+                </InputAdornment>
+              ),
+            }}
+          >
+            <MenuItem value="Deluxe Room">Deluxe Room</MenuItem>
+            <MenuItem value="Standard Room">Standard Room</MenuItem>
+            <MenuItem value="Executive Room">Executive Room</MenuItem>
+          </TextField>
         </Grid>
 
         <Grid item xs={12}>
