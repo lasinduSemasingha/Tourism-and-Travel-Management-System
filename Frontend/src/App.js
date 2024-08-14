@@ -64,6 +64,8 @@ import AddHotel from './components/hotel/AddHotel';
 import UpdateHotel from './components/hotel/UpdateHotel';
 import HotelList from './components/hotel/HotelList';
 import HotelListUser from './components/hotel/HotelListUser';
+import CategoryBoxes from './components/special_activities/Boxes/CategoryBoxes';
+import AdminDashboard from './components/Admin/AdminDashboard';
 
 
 
@@ -136,19 +138,24 @@ function App() {
         <Route path="/booking/:id" element={<ActivityBooking />} />
         <Route path="/book-confirmation/:id" element={<BookingConfirmation />} />
         <Route path="/user-bookings" element={<UserBookings />} />
+        <Route path="/sports" element={<CategoryBoxes />} />
 
 
         {/*
         <Route path="*" />*/}
         {/*ADMIN Routes */}
         <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
-        <Route path="/manage-restaurants" element={<AdminManageRestaurantsPage />} />
+        <Route path="/admin-manage-restaurants" element={<AdminManageRestaurantsPage />} />
+        <Route path="/manage-restaurants-reservations" element={<ManageReservations />} />
 
 
         <Route path="/hotel/add" element={<AddHotel />} />
         <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
         <Route path="/hotellist" element={<HotelList />} />
         <Route path="/hotellistuser" element={<HotelListUser />} />
+
+        <Route path="/available-restaurants" element={<AvailableRestaurants />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
        
             

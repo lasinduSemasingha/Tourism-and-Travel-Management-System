@@ -69,7 +69,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/vehiclereservations', vehicleReservationRoutes);
 
 app.use('/api/restaurants', restaurantRoutes);
-app.use('/api/reservations', rest_reservations);
+app.use('/api/restaurant-reservations', rest_reservations);
 app.use('/api/feedback', rest_feedback);
 app.use('/api/activities', specialActivityRoutes)
 app.use('/api/special/', specialActivityBooking)

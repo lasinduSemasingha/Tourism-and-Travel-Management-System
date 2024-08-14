@@ -7,35 +7,15 @@ import Grid from '@mui/material/Grid';
 
 const images = [
   {
-    url: '/ticket.jpg',
-    title: 'Book a Ticket',
-    link: '/tickets',
+    url: '/activity-B.jpg',
+    title: 'Book a Activity',
+    link: '/activity-list',
   },
   {
-    url: '/hotel.jpg',
-    title: 'Hotel & Accommodation',
-    link: '/ella',
-  },
-  {
-    url: '/stupa.jpg',
-    title: 'Tour Packages',
-    link: '/packages',
-  },
-  {
-    url: '/food.jpg',
-    title: 'Restaurants',
-    link: '/available-restaurants',
-  },
-  {
-    url: '/sports.jpg',
-    title: 'Special Activities',
-    link: '/sports',
-  },
-  {
-    url: '/vehicle.jpg',
-    title: 'Vehicle Reservation',
-    link: '/vehicleuser',
-  },
+    url: '/activity-T.jpg',
+    title: 'View Bookings',
+    link: '/user-bookings',
+  }
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({

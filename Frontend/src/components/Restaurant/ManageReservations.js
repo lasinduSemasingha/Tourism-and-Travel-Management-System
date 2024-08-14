@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Grid, Paper, TextField, IconButton, Snackbar } from '@mui/material';
-import { Edit, Delete, CalendarToday, Group, ErrorOutline } from '@mui/icons-material';
+import { Edit, Delete, CalendarToday, Group, ErrorOutline, CheckCircleOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const ManageReservations = () => {
@@ -9,20 +9,20 @@ const ManageReservations = () => {
     const [editReservation, setEditReservation] = useState(null);
     const [updatedDate, setUpdatedDate] = useState('');
     const [updatedNumOfPeople, setUpdatedNumOfPeople] = useState('');
-    const [error, setError] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const navigate = useNavigate();
     const userId = JSON.parse(localStorage.getItem('userInfo'))?._id; // Retrieve user ID from localStorage
 
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/reservations/user/${userId}`);
+                const response = await axios.get(`http://localhost:5000/api/restaurant-reservations/user/${userId}`);
                 setReservations(response.data);
             } catch (error) {
                 console.error('Error fetching reservations', error);
-                setError('Failed to fetch reservations');
-                setOpenSnackbar(true);
+                setSnackbarMessage('Failed to fetch reservations');
+                setSnackbarOpen(true);
             }
         };
 
@@ -31,7 +31,7 @@ const ManageReservations = () => {
 
     const handleUpdate = async (reservation) => {
         try {
-            await axios.put(`http://localhost:5000/api/reservations/${reservation._id}`, {
+            await axios.put(`http://localhost:5000/api/restaurant-reservations/${reservation._id}`, {
                 date: updatedDate || reservation.date,
                 numOfPeople: updatedNumOfPeople || reservation.numOfPeople
             });
@@ -43,25 +43,26 @@ const ManageReservations = () => {
             setEditReservation(null);
             setUpdatedDate('');
             setUpdatedNumOfPeople('');
-            setOpenSnackbar(true);
+            setSnackbarMessage('Reservation updated successfully');
+            setSnackbarOpen(true);
         } catch (error) {
             console.error('Error updating reservation', error);
-            setError('Failed to update reservation');
-            setOpenSnackbar(true);
+            setSnackbarMessage('Failed to update reservation');
+            setSnackbarOpen(true);
         }
     };
 
     const handleDelete = async (id) => {
-        console.log('Attempting to delete reservation with ID:', id);
         try {
-            const response = await axios.delete(`http://localhost:5000/api/reservations/${id}`);
+            const response = await axios.delete(`http://localhost:5000/api/restaurant-reservations/${id}`);
             console.log('Delete response:', response.data);
             setReservations((prev) => prev.filter((res) => res._id !== id));
-            setOpenSnackbar(true);
+            setSnackbarMessage('Reservation deleted successfully');
+            setSnackbarOpen(true);
         } catch (error) {
             console.error('Error deleting reservation', error);
-            setError('Failed to delete reservation');
-            setOpenSnackbar(true);
+            setSnackbarMessage('Failed to delete reservation');
+            setSnackbarOpen(true);
         }
     };
 
@@ -70,19 +71,17 @@ const ManageReservations = () => {
             <Typography variant="h4" gutterBottom>
                 Manage Reservations
             </Typography>
-            {error && (
-                <Snackbar
-                    open={openSnackbar}
-                    autoHideDuration={6000}
-                    onClose={() => setOpenSnackbar(false)}
-                    message={error}
-                    action={
-                        <IconButton size="small" color="inherit" onClick={() => setOpenSnackbar(false)}>
-                            <ErrorOutline />
-                        </IconButton>
-                    }
-                />
-            )}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackbarOpen(false)}
+                message={snackbarMessage}
+                action={
+                    <IconButton size="small" color="inherit" onClick={() => setSnackbarOpen(false)}>
+                        {snackbarMessage.includes('Failed') ? <ErrorOutline /> : <CheckCircleOutline />}
+                    </IconButton>
+                }
+            />
             <Grid container spacing={2}>
                 {reservations.map((reservation) => (
                     <Grid item xs={12} sm={6} md={4} key={reservation._id}>

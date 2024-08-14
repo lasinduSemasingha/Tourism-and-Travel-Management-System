@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
-import { Place, Restaurant } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import { Place, Restaurant, ArrowForward } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const AvailableRestaurants = () => {
     const [restaurants, setRestaurants] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -19,6 +20,10 @@ const AvailableRestaurants = () => {
 
         fetchRestaurants();
     }, []);
+
+    const handleViewMenu = (id) => {
+        navigate(`/restaurant/${id}`);
+    };
 
     return (
         <div style={{ padding: '2rem', maxWidth: '1200px', margin: 'auto' }}>
@@ -39,11 +44,15 @@ const AvailableRestaurants = () => {
                                 <Typography variant="body2">
                                     <Restaurant style={{ verticalAlign: 'middle' }} /> {restaurant.cuisine}
                                 </Typography>
-                                <Link to={`/restaurant/${restaurant._id}`} style={{ textDecoration: 'none' }}>
-                                    <Typography variant="body2" color="primary" style={{ marginTop: '1rem', display: 'block' }}>
-                                        View Menu
-                                    </Typography>
-                                </Link>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<ArrowForward />}
+                                    style={{ marginTop: '1rem' }}
+                                    onClick={() => handleViewMenu(restaurant._id)}
+                                >
+                                    View Menu
+                                </Button>
                             </CardContent>
                         </Card>
                     </Grid>
