@@ -34,8 +34,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a reservation
-// Delete a reservation
-router.delete('/:userId', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     console.log(`Received request to delete reservation with ID: ${req.params.id}`);
     try {
         const reservation = await Reservation.findByIdAndDelete(req.params.id);

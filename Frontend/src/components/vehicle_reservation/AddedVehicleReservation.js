@@ -52,7 +52,7 @@ const AddedVehicleReservation = () => {
             <Typography variant="h4">My Vehicle Reservations</Typography>
             <Grid container spacing={3}>
                 {vehicleReservations.map(reservation => (
-                    <Grid item xs={12} sm={6} md={4} key={reservation._id}>
+                    <Grid item xs={12} sm={6} md={2} key={reservation._id}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6">

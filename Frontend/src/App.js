@@ -47,6 +47,7 @@ import ActivityList from './components/special_activities/ActivityList';
 import ActivityBooking from './components/special_activities/ActivityBooking';
 import BookingConfirmation from './components/special_activities/BookingConfirmation';
 import ActivityForm from './components/special_activities/ActivityForm';
+import UserBookings from './components/special_activities/UserBookings';
 
 import AddVehicle from './components/vehicle/AddVehicle';
 import VehicleList from './components/vehicle/VehicleList';
@@ -56,6 +57,15 @@ import VehicleReservationList from './components/vehicle_reservation/VehicleRese
 import AddedVehicleReservation from './components/vehicle_reservation/AddedVehicleReservation';
 import Checkout from './components/vehicle_reservation/Checkout';
 import Payment from './components/vehicle_reservation/Payment';
+import ReservationChart from './components/vehicle_reservation/ReservationChart';
+
+
+import AddHotel from './components/hotel/AddHotel';
+import UpdateHotel from './components/hotel/UpdateHotel';
+import HotelList from './components/hotel/HotelList';
+import HotelListUser from './components/hotel/HotelListUser';
+import CategoryBoxes from './components/special_activities/Boxes/CategoryBoxes';
+import AdminDashboard from './components/Admin/AdminDashboard';
 
 
 
@@ -104,6 +114,7 @@ function App() {
         <Route path="/addedvehiclereservations" element={<AddedVehicleReservation />} /> 
         <Route path="/Checkout" element={<Checkout />} /> 
         <Route path="/Payment" element={<Payment />} /> 
+        <Route path="/reservationchart" element={<ReservationChart />} />
 
 
         <Route path="*" />
@@ -125,14 +136,28 @@ function App() {
 
 
         <Route path="/booking/:id" element={<ActivityBooking />} />
-        <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+        <Route path="/book-confirmation/:id" element={<BookingConfirmation />} />
+        <Route path="/user-bookings" element={<UserBookings />} />
+        <Route path="/sports" element={<CategoryBoxes />} />
 
 
         {/*
         <Route path="*" />*/}
         {/*ADMIN Routes */}
         <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
-        <Route path="/manage-restaurants" element={<AdminManageRestaurantsPage />} />
+        <Route path="/admin-manage-restaurants" element={<AdminManageRestaurantsPage />} />
+        <Route path="/manage-restaurants-reservations" element={<ManageReservations />} />
+
+
+        <Route path="/hotel/add" element={<AddHotel />} />
+        <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
+        <Route path="/hotellist" element={<HotelList />} />
+        <Route path="/hotellistuser" element={<HotelListUser />} />
+
+        <Route path="/available-restaurants" element={<AvailableRestaurants />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+       
             
       </Routes>
   );

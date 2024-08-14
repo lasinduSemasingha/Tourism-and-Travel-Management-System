@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Card, CardContent, Typography, Button, Grid, IconButton } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete, Preview } from '@mui/icons-material';
 
 const ActivityList = () => {
   const [activities, setActivities] = useState([]);
@@ -45,7 +45,7 @@ const ActivityList = () => {
                 <Typography variant="body2">Price: ${activity.price}</Typography>
                 <Typography variant="body2">{activity.description}</Typography>
                 <IconButton color="primary" onClick={() => window.location.href = `/activity/${activity._id}`}>
-                  <Edit />
+                  <Preview />
                 </IconButton>
                 <IconButton color="secondary" onClick={() => handleDelete(activity._id)}>
                   <Delete />

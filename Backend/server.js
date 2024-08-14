@@ -18,6 +18,7 @@ const packageRoutes = require('./routes/tour_packages/packages');
 
 //importing special activity routing
 const specialActivityRoutes = require('./routes/special_activity/activities');
+const specialActivityBooking = require('./routes/special_activity/booking')
 
 //restaurant management
 const restaurantRoutes = require('./routes/restaurants/restaurants');
@@ -30,6 +31,7 @@ const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
 const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
 
 
+const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
 
 
 
@@ -67,9 +69,15 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/vehiclereservations', vehicleReservationRoutes);
 
 app.use('/api/restaurants', restaurantRoutes);
-app.use('/api/reservations', rest_reservations);
+app.use('/api/restaurant-reservations', rest_reservations);
 app.use('/api/feedback', rest_feedback);
 app.use('/api/activities', specialActivityRoutes)
+app.use('/api/special/', specialActivityBooking)
+
+
+app.use('/api/hotels', hotelRoutes);
+
+
 
 app.use('/uploads', express.static('uploads'));
 

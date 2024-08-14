@@ -14,7 +14,7 @@ const ReservationPage = ({ match }) => {
 
     const handleReservation = async () => {
         try {
-            await axios.post(`http://localhost:5000/api/reservations`, { restaurantId, ...reservationDetails });
+            await axios.post(`http://localhost:5000/api/restaurant-reservations`, { restaurantId, ...reservationDetails });
             setSuccess('Reservation confirmed!');
             setOpenFeedbackDialog(true);
             setError('');

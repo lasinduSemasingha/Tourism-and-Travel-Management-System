@@ -4,6 +4,10 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const ActivityBooking = () => {
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const userID = userInfo ? userInfo._id : null;
+  
   const { id } = useParams(); // Extracting id from useParams
   const [date, setDate] = useState('');
   const [error, setError] = useState(null);
@@ -28,12 +32,16 @@ const ActivityBooking = () => {
     setLoading(true);
     try {
       // Ensure that this endpoint exists and is correct for booking
-      const response = await axios.post('http://localhost:5000/api/activities/booking', {
+      const response = await axios.post('http://localhost:5000/api/special/', {
         activityId: id,
-        date,
+        userId: userID,
+        activityName: activity.name,
+        activityLocation: activity.location,
+        price: activity.price,
+        date: date,
       });
       // Navigate to booking confirmation page
-      navigate('/book-confirmation', {
+      navigate(`/book-confirmation/${response.data._id}`, {
         state: { booking: response.data },
       });
     } catch (err) {
