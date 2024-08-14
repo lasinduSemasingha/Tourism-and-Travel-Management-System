@@ -9,6 +9,8 @@ const statusOptions = [
   { value: 'pending', label: 'Pending' }
 ];
 
+const vehicleOptions = ['car', 'bike', 'truck', 'cab', 'van'];
+
 const AddVehicle = () => {
   const [vehicleType, setVehicleType] = useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
@@ -63,16 +65,22 @@ const AddVehicle = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <TextField
-            label="Vehicle Type"
+      <Grid item xs={12}>
+        <FormControl fullWidth margin="normal" variant="outlined">
+          <InputLabel>Vehicle Type</InputLabel>
+          <Select
             value={vehicleType}
             onChange={(e) => setVehicleType(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-        </Grid>
+            label="Vehicle Type"
+          >
+            {vehicleOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
 
         <Grid item xs={12}>
           <TextField

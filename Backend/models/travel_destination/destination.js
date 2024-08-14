@@ -20,6 +20,10 @@ const destinationSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  image: { 
+    data: Buffer,
+    contentType: String
+  },
 }, {
   timestamps: true,
 });
