@@ -96,7 +96,6 @@ function App() {
         <Route path="/packages/:id" element={<PackageDetails />} />
 
 
-<<<<<<< HEAD
         <Route path="/vehicle/add" element={<AddVehicle />} />
         <Route path="/vehiclelist" element={<VehicleList />} />
         <Route path="/vehicle/update/:id" element={<UpdateVehicle />} />
@@ -108,7 +107,6 @@ function App() {
 
 
         <Route path="*" />
-=======
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -135,7 +133,6 @@ function App() {
         {/*ADMIN Routes */}
         <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
         <Route path="/manage-restaurants" element={<AdminManageRestaurantsPage />} />
->>>>>>> ef7ad2553f0452267924a9f2dc0bb8e32b7b70d1
             
       </Routes>
   );

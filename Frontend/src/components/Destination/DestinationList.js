@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, IconButton, CircularProgress, TextField, Tabs, Tab, Box, InputAdornment } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Tabs, Tab, Box, InputAdornment, Card, CardContent, Typography, Grid, IconButton, CircularProgress, Container } from '@mui/material';
 import { Edit, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-=======
-import { Card, CardContent, Typography, Button, Grid, IconButton, CircularProgress, Container } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
->>>>>>> ef7ad2553f0452267924a9f2dc0bb8e32b7b70d1
 
 const DestinationList = () => {
   const [destinations, setDestinations] = useState([]);
@@ -22,7 +15,6 @@ const DestinationList = () => {
   const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
@@ -51,85 +43,6 @@ const DestinationList = () => {
         destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         destination.location.toLowerCase().includes(searchQuery.toLowerCase())
       )
-=======
-    useEffect(() => {
-        const fetchDestinations = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/destinations');
-                setDestinations(response.data);
-            } catch (err) {
-                console.error("Error fetching destinations:", err.response ? err.response.data : err.message);
-                setError('Error fetching destinations');
-            }
-        };
-
-        fetchDestinations();
-    }, []);
-
-    const handleDelete = async (id) => {
-        setDeletingId(id);
-        try {
-            await axios.delete(`http://localhost:5000/api/destinations/${id}`);
-            setDestinations(destinations.filter(destination => destination._id !== id));
-        } catch (err) {
-            console.error("Error deleting destination:", err.response ? err.response.data : err.message);
-            setError('Error deleting destination');
-        } finally {
-            setDeletingId(null);
-        }
-    };
-
-    return (
-        <Container maxWidth="lg" style={{ padding: '0 16px' }}>
-            <Typography variant="h4" gutterBottom>
-                All Destinations
-            </Typography>
-
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/destination/add')}
-                style={{ marginBottom: '20px' }}
-            >
-                Add Destination
-            </Button>
-
-            {error && <Typography color="error">{error}</Typography>}
-            <Grid container spacing={3}>
-                {destinations.map(destination => (
-                    <Grid item xs={12} sm={6} md={4} key={destination._id}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h5">{destination.name}</Typography>
-                                <Typography variant="body1">{destination.location}</Typography>
-                                <Typography variant="body2">Price: ${destination.price}</Typography>
-                                <Typography variant="body2">{destination.description}</Typography>
-                                <IconButton
-                                    color="primary"
-                                    aria-label="edit"
-                                    onClick={() => navigate(`/destination/update/${destination._id}`)}
-                                >
-                                    <Edit />
-                                </IconButton>
-                                <IconButton
-                                    color="secondary"
-                                    aria-label="delete"
-                                    onClick={() => handleDelete(destination._id)}
-                                    disabled={deletingId === destination._id}
-                                >
-                                    {deletingId === destination._id ? (
-                                        <CircularProgress size={24} />
-                                    ) : (
-                                        <Delete />
-                                    )}
-                                </IconButton>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Container>
->>>>>>> ef7ad2553f0452267924a9f2dc0bb8e32b7b70d1
     );
   }, [searchQuery, destinations]);
 
@@ -207,8 +120,8 @@ const DestinationList = () => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <Typography variant="h4" gutterBottom style={{ marginBottom: '1rem' }}>
+    <Container maxWidth="lg" style={{ padding: '0 16px' }}>
+      <Typography variant="h4" gutterBottom>
         All Destinations
       </Typography>
 
@@ -216,7 +129,7 @@ const DestinationList = () => {
         variant="contained"
         color="primary"
         onClick={() => navigate('/destination/add')}
-        style={{ marginBottom: '1rem' }}
+        style={{ marginBottom: '20px' }}
       >
         Add Destination
       </Button>
@@ -226,7 +139,7 @@ const DestinationList = () => {
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: '1rem', width: '100%' }}
+        style={{ marginBottom: '20px', width: '100%' }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -258,7 +171,7 @@ const DestinationList = () => {
       </Box>
 
       {error && <Typography color="error">{error}</Typography>}
-      
+
       <TableContainer component={Paper} style={{ border: '1px solid #ddd' }}>
         <Table>
           <TableHead>
@@ -313,7 +226,7 @@ const DestinationList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Container>
   );
 };
 
