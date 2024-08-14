@@ -59,6 +59,12 @@ import Payment from './components/vehicle_reservation/Payment';
 import ReservationChart from './components/vehicle_reservation/ReservationChart';
 
 
+import AddHotel from './components/hotel/AddHotel';
+import UpdateHotel from './components/hotel/UpdateHotel';
+import HotelList from './components/hotel/HotelList';
+import HotelListUser from './components/hotel/HotelListUser';
+
+
 
 function App() {
   return (
@@ -135,6 +141,14 @@ function App() {
         {/*ADMIN Routes */}
         <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
         <Route path="/manage-restaurants" element={<AdminManageRestaurantsPage />} />
+
+
+        <Route path="/hotel/add" element={<AddHotel />} />
+        <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
+        <Route path="/hotellist" element={<HotelList />} />
+        <Route path="/hotellistuser" element={<HotelListUser />} />
+
+       
             
       </Routes>
   );
