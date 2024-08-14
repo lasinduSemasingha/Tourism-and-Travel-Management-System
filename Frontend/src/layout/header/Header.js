@@ -33,7 +33,7 @@ const Navbar = () => {
           <Button color="inherit" component={Link} to="/aboutus">About</Button>
           {isAuthenticated && (
             <>
-             <Button color="inherit" component={Link} to="/destination">Destinations</Button>
+             
               {userId && <Button color="inherit" component={Link} to={`/booked-tickets/${userId}`}>Bookings</Button>}
               <Button
                 color="inherit"
@@ -59,9 +59,24 @@ const Navbar = () => {
             ) : (
               <>
                 <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
-                <Button color="inherit" component={Link} to="/addedreservations">Reservations</Button>
-                <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
-                <Button color="inherit" component={Link} to="/booked-tickets">Bookings</Button>
+                <Button color="inherit" component={Link} to="/vehicleuser">Vehicles</Button>
+                <Button
+                color="inherit"
+                onClick={handleMenuClick}
+                endIcon={<ArrowDropDown />}
+              >
+                Reeservations
+              </Button>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleMenuClose} component={Link} to="/addedreservations">Destination Reservation</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/addedvehiclereservations">Vehicle Resevation</MenuItem>
+              </Menu>
+
+                
               </>
             )}
         </div>

@@ -23,19 +23,16 @@ const AddedReservation = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch reservations for the current user
         const fetchReservations = async () => {
             try {
-                // Assuming the API endpoint fetches all reservations and includes user ID in the response
                 const response = await axios.get('http://localhost:5000/api/reservations');
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
                 if (!userInfo) {
-                    navigate('/login'); // Redirect to login if no user info is found
+                    navigate('/login');
                     return;
                 }
 
-                // Filter reservations based on the current user's ID
                 const userReservations = response.data.filter(reservation => reservation.userId === userInfo._id);
                 setReservations(userReservations);
             } catch (err) {
@@ -60,7 +57,10 @@ const AddedReservation = () => {
                     <Grid item xs={12} sm={6} md={4} key={reservation._id}>
                         <Card>
                             <CardContent>
-                                <Typography variant="h6">{reservation.destinationId.name}</Typography>
+                                {/* Check if destinationId and its properties are not null */}
+                                <Typography variant="h6">
+                                    {reservation.destinationId ? reservation.destinationId.name : 'Destination Not Found'}
+                                </Typography>
                                 <Typography variant="body1">
                                     From: {new Date(reservation.fromDate).toLocaleDateString()}
                                 </Typography>

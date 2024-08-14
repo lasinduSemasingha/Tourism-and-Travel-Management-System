@@ -56,6 +56,7 @@ import VehicleReservationList from './components/vehicle_reservation/VehicleRese
 import AddedVehicleReservation from './components/vehicle_reservation/AddedVehicleReservation';
 import Checkout from './components/vehicle_reservation/Checkout';
 import Payment from './components/vehicle_reservation/Payment';
+import ReservationChart from './components/vehicle_reservation/ReservationChart';
 
 
 
@@ -104,6 +105,7 @@ function App() {
         <Route path="/addedvehiclereservations" element={<AddedVehicleReservation />} /> 
         <Route path="/Checkout" element={<Checkout />} /> 
         <Route path="/Payment" element={<Payment />} /> 
+        <Route path="/reservationchart" element={<ReservationChart />} />
 
 
         <Route path="*" />
