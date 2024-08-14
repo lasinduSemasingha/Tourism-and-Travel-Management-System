@@ -56,14 +56,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.post('/booking', async (req, res) => {
-    try {
-      const newBooking = new Booking(req.body);
-      await newBooking.save();
-      res.status(201).json(newBooking);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
 module.exports = router;

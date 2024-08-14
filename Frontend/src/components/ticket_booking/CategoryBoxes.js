@@ -29,12 +29,12 @@ const images = [
   {
     url: '/sports.jpg',
     title: 'Special Activities',
-    link: '/example2',
+    link: '/activity-list',
   },
   {
     url: '/vehicle.jpg',
     title: 'Vehicle Reservation',
-    link: '/example3',
+    link: '/vehicleuser',
   },
 ];
 

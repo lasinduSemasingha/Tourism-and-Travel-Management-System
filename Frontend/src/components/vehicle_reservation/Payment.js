@@ -14,15 +14,62 @@ const Payment = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
+  const validateCardNumber = (number) => {
+    return /^[0-9]{16}$/.test(number); // Basic check for 16 digit card numbers
+  };
+
+  const validateExpiryDate = (date) => {
+    const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+    if (!regex.test(date)) return false;
+    const [month, year] = date.split('/').map(Number);
+    const now = new Date();
+    const currentYear = now.getFullYear() % 100;
+    const currentMonth = now.getMonth() + 1;
+    return year > currentYear || (year === currentYear && month >= currentMonth);
+  };
+
+  const validateCvv = (cvv) => {
+    return /^[0-9]{3}$/.test(cvv); // Restrict CVV to exactly 3 digits
+  };
+
+  const handleExpiryDateChange = (e) => {
+    const value = e.target.value;
+    // Remove non-digit characters and format as MM/YY
+    const formattedValue = value
+      .replace(/\D/g, '') // Remove all non-digit characters
+      .replace(/^(\d{2})(\d{0,2})/, '$1/$2') // Add / after month
+      .slice(0, 5); // Limit length to MM/YY
+    setExpiryDate(formattedValue);
+  };
+
+  const handleCvvChange = (e) => {
+    const value = e.target.value;
+    // Allow only digits and limit to 3 characters
+    const formattedValue = value
+      .replace(/\D/g, '') // Remove all non-digit characters
+      .slice(0, 3); // Limit length to 3 digits
+    setCvv(formattedValue);
+  };
+
   const handlePayment = () => {
-    // Perform validation
     if (!cardName || !cardNumber || !expiryDate || !cvv) {
       setError('All fields are required');
       return;
     }
-    // Additional validations like regex for card number, expiry date format, etc.
-    
-    // If validation passes, simulate payment processing and redirect
+    if (!validateCardNumber(cardNumber)) {
+      setError('Invalid card number');
+      return;
+    }
+    if (!validateExpiryDate(expiryDate)) {
+      setError('Invalid or expired expiry date');
+      return;
+    }
+    if (!validateCvv(cvv)) {
+      setError('Invalid CVV');
+      return;
+    }
+
+    setError(null);
     setTimeout(() => {
       setSuccessMessage('Payment successful! Vehicle reserved.');
       setTimeout(() => {
@@ -68,24 +115,27 @@ const Payment = () => {
             onChange={(e) => setCardNumber(e.target.value)}
             fullWidth
             margin="normal"
+            inputProps={{ maxLength: 16 }} // Limit input length
           />
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
                 label="Expiry Date (MM/YY)"
                 value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
+                onChange={handleExpiryDateChange}
                 fullWidth
                 margin="normal"
+                inputProps={{ maxLength: 5 }} // Limit input length
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 label="CVV"
                 value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
+                onChange={handleCvvChange}
                 fullWidth
                 margin="normal"
+                inputProps={{ maxLength: 3 }} // Limit input length
               />
             </Grid>
           </Grid>

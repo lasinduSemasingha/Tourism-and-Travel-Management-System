@@ -47,6 +47,7 @@ import ActivityList from './components/special_activities/ActivityList';
 import ActivityBooking from './components/special_activities/ActivityBooking';
 import BookingConfirmation from './components/special_activities/BookingConfirmation';
 import ActivityForm from './components/special_activities/ActivityForm';
+import UserBookings from './components/special_activities/UserBookings';
 
 import AddVehicle from './components/vehicle/AddVehicle';
 import VehicleList from './components/vehicle/VehicleList';
@@ -127,7 +128,8 @@ function App() {
 
 
         <Route path="/booking/:id" element={<ActivityBooking />} />
-        <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+        <Route path="/book-confirmation/:id" element={<BookingConfirmation />} />
+        <Route path="/user-bookings" element={<UserBookings />} />
 
 
         {/*
