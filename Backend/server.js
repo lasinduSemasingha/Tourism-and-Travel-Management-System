@@ -31,6 +31,7 @@ const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
 const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
 
 
+const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
 
 
 
@@ -72,6 +73,11 @@ app.use('/api/reservations', rest_reservations);
 app.use('/api/feedback', rest_feedback);
 app.use('/api/activities', specialActivityRoutes)
 app.use('/api/special/', specialActivityBooking)
+
+
+app.use('/api/hotels', hotelRoutes);
+
+
 
 app.use('/uploads', express.static('uploads'));
 

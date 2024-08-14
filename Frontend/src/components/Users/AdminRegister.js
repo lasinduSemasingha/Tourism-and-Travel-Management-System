@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container } from '@mui/material';
+import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, InputAdornment } from '@mui/material';
 import axios from 'axios';
+import { AccountCircle, Email, Lock } from '@mui/icons-material';
 
 const AdminRegister = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,17 @@ const AdminRegister = () => {
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    const managerRoles = [
+        'User and Destination Manager',
+        'Ticketing Manager',
+        'Accommodation Manager',
+        'Tour Manager',
+        'Restaurant Manager',
+        'Activity Manager',
+        'Vehicle Manager',
+        'Item Manager'
+    ];
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,14 +51,27 @@ const AdminRegister = () => {
             {error && <Typography color="error">{error}</Typography>}
             {success && <Typography color="primary">{success}</Typography>}
             <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                />
+                <FormControl fullWidth margin="normal">
+                    <InputLabel id="manager-role-label">Manager Role</InputLabel>
+                    <Select
+                        labelId="manager-role-label"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        fullWidth
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <AccountCircle />
+                            </InputAdornment>
+                        }
+                    >
+                        {managerRoles.map((role) => (
+                            <MenuItem key={role} value={role}>
+                                {role}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <TextField
                     label="Email"
                     name="email"
@@ -55,6 +80,13 @@ const AdminRegister = () => {
                     fullWidth
                     margin="normal"
                     type="email"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Email />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
                 <TextField
                     label="Password"
@@ -64,8 +96,15 @@ const AdminRegister = () => {
                     fullWidth
                     margin="normal"
                     type="password"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Lock />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                <Button type="submit" variant="contained" color="primary" fullWidth>
+                <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '1rem' }}>
                     Register Admin
                 </Button>
             </form>
