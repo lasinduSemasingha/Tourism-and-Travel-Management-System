@@ -17,6 +17,8 @@ import UserLogin from './components/Users/UserLogin';
 import AdminLogin from './components/Users/AdminLogin';
 import UserRegister from './components/Users/Register';
 import AdminRegister from './components/Users/AdminRegister';
+import HotelOwnerRegister from './components/Users/HotelOwnerRegister';
+import HotelOwnerLogin from './components/Users/HotelOwnerLogin';
 import ProfilePictureUpdate from './components/Users/ProfilePictureUpload';
 
 import Tickets from './components/ticket_booking/TicketsFilter';
@@ -98,6 +100,8 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin/register" element={<AdminRegister />} />
+        <Route path="/hotelowner/register" element={<HotelOwnerRegister />} />
+        <Route path="/hotelownerlogin" element={<HotelOwnerLogin />} />
         <Route path="/profile-update" element={<ProfilePictureUpdate />} />
 
 

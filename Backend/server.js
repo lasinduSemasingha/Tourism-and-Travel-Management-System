@@ -4,8 +4,10 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/user_managemnt/authRoutes');
 const userRoutes = require('./routes/user_managemnt/userRoutes');
 const adminRoutes = require('./routes/user_managemnt/adminRoutes');
+const hotelOwnerRoutes = require('./routes/user_managemnt/hotelOwnerRoutes');
 const destinationRoutes = require('./routes/travel_destination/destinationRoutes');
 const reservationRoutes = require('./routes/travel_destination/reservationRoutes');
+
 //importing ticket routing
 const ticketRoutes = require('./routes/ticket_booking/ticketRoutes');
 //importing booking routing
@@ -56,6 +58,7 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/hotelOwner', hotelOwnerRoutes);
 app.use('/api/destinations', destinationRoutes);
 app.use('/api/reservations', reservationRoutes);
 
