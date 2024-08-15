@@ -1,8 +1,5 @@
 import React from 'react';
 import '../../css/homepage.css';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { Bookmark } from '@mui/icons-material';
 import SlideShow from './HomePageSlider/SlidShow';
 import CategoryBoxes from './CategoryBoxes';
 

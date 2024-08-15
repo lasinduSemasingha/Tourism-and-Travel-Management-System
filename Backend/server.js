@@ -17,6 +17,7 @@ const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 //importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
+const emailRoutes = require('./routes/tour_packages/emailRoutes');
 
 //importing special activity routing
 const specialActivityRoutes = require('./routes/special_activity/activities');
@@ -81,6 +82,10 @@ app.use('/api/special/', specialActivityBooking)
 
 app.use('/api/hotels', hotelRoutes);
 app.use('/api/hotelreservations', hotelReservationRoutes);
+app.use('/api/discount-codes', discountRoutes)
+
+// Use routes
+app.use('/api/email', emailRoutes);
 
 
 

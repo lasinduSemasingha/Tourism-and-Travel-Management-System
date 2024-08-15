@@ -72,6 +72,8 @@ import AddedHotelReservations from './components/hotel_reservation/AddedHotelRes
 
 import CategoryBoxes from './components/special_activities/Boxes/CategoryBoxes';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import AdminDiscountCodePage from './components/Admin/ticket_booking/AdminDiscountCodePage';
+import PromotionEmailForm from './components/tour_packages/PromotionEmailForm';
 
 
 
@@ -112,6 +114,8 @@ function App() {
         <Route path="/package-manager" element={<PackageManagement />} />
         <Route path="/packages" element={<PackageList />} />
         <Route path="/packages/:id" element={<PackageDetails />} />
+
+        <Route path="/email-send" element={<PromotionEmailForm />} />
 
 
         <Route path="/vehicle/add" element={<AddVehicle />} />
@@ -166,7 +170,7 @@ function App() {
 
         <Route path="/available-restaurants" element={<AvailableRestaurants />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
-
+        <Route path="/admin/ticket/discount" element={<AdminDiscountCodePage />} />
        
             
       </Routes>
