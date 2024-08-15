@@ -151,7 +151,7 @@ function App() {
 
         <Route path="/hotel/add" element={<AddHotel />} />
         <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
-        <Route path="/hotellist" element={<HotelList />} />
+        <Route path="/admin/hotellist" element={<HotelList />} />
         <Route path="/hotellistuser" element={<HotelListUser />} />
 
         <Route path="/available-restaurants" element={<AvailableRestaurants />} />
