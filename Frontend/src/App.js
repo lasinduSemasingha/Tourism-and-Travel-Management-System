@@ -17,6 +17,8 @@ import UserLogin from './components/Users/UserLogin';
 import AdminLogin from './components/Users/AdminLogin';
 import UserRegister from './components/Users/Register';
 import AdminRegister from './components/Users/AdminRegister';
+import HotelOwnerRegister from './components/Users/HotelOwnerRegister';
+import HotelOwnerLogin from './components/Users/HotelOwnerLogin';
 import ProfilePictureUpdate from './components/Users/ProfilePictureUpload';
 
 import Tickets from './components/ticket_booking/TicketsFilter';
@@ -64,6 +66,10 @@ import AddHotel from './components/hotel/AddHotel';
 import UpdateHotel from './components/hotel/UpdateHotel';
 import HotelList from './components/hotel/HotelList';
 import HotelListUser from './components/hotel/HotelListUser';
+import HotelReservationList from './components/hotel_reservation/HotelReservationList';
+import AddedHotelReservations from './components/hotel_reservation/AddedHotelReservations';
+
+
 import CategoryBoxes from './components/special_activities/Boxes/CategoryBoxes';
 import AdminDashboard from './components/Admin/AdminDashboard';
 
@@ -94,6 +100,8 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin/register" element={<AdminRegister />} />
+        <Route path="/hotelowner/register" element={<HotelOwnerRegister />} />
+        <Route path="/hotelownerlogin" element={<HotelOwnerLogin />} />
         <Route path="/profile-update" element={<ProfilePictureUpdate />} />
 
 
@@ -128,7 +136,7 @@ function App() {
         <Route path="/restaurant/:id" element={<RestaurantFood />} />
         <Route path="/restaurant-reservations" element={<ManageReservations />} />
 
-        {/*Special Activity*/}
+     
         <Route path="/activity-list" element={<ActivityList />} />
         <Route path="/activity/:id" element={<ActivityBooking />} />
         <Route path="/add-activity" element={<ActivityForm />} />
@@ -142,7 +150,7 @@ function App() {
 
 
         {/*
-        <Route path="*" />*/}
+        <Route path="" />/}
         {/*ADMIN Routes */}
         <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
         <Route path="/admin-manage-restaurants" element={<AdminManageRestaurantsPage />} />
@@ -153,6 +161,8 @@ function App() {
         <Route path="/hotelupdate/:id" element={<UpdateHotel />} />
         <Route path="/admin/hotellist" element={<HotelList />} />
         <Route path="/hotellistuser" element={<HotelListUser />} />
+        <Route path="/hotelreservationlist" element={<HotelReservationList />} />
+        <Route path="/addedhotelreservations" element={<AddedHotelReservations />} />
 
         <Route path="/available-restaurants" element={<AvailableRestaurants />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

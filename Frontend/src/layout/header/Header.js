@@ -59,6 +59,8 @@ const Navbar = () => {
             ) : (
               <>
                 <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
+                <Button color="inherit" component={Link} to="/vehicleuser">Vehicles</Button>
+                <Button color="inherit" component={Link} to="/hotellistuser">Hotels</Button>
                 <Button
                 color="inherit"
                 onClick={handleMenuClick}
@@ -74,6 +76,7 @@ const Navbar = () => {
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedreservations">Destination Reservation</MenuItem>
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedvehiclereservations">Vehicle Resevation</MenuItem>
                 <MenuItem onClick={handleMenuClose} component={Link} to="/manage-restaurants-reservations">Restaurant Resevations</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/addedhotelreservations">Hotel Resevation</MenuItem>
               </Menu>
 
                 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, Button, Grid, CircularProgress, TextField } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const HotelListUser = () => {
   const [hotels, setHotels] = useState([]);
   const [error, setError] = useState(null);
   const [reservingId, setReservingId] = useState(null);
+  const [reservationDates, setReservationDates] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,8 +34,26 @@ const HotelListUser = () => {
     fetchHotels();
   }, []);
 
+  const handleDateChange = (hotelId, e) => {
+    setReservationDates(prevDates => ({
+      ...prevDates,
+      [hotelId]: {
+        ...prevDates[hotelId],
+        [e.target.name]: e.target.value
+      }
+    }));
+  };
+
   const handleReserve = async (id) => {
     setReservingId(id);
+    const { checkInDate, checkOutDate } = reservationDates[id] || {};
+
+    if (!checkInDate || !checkOutDate) {
+      setError('Please select both check-in and check-out dates.');
+      setReservingId(null);
+      return;
+    }
+
     try {
       const hotel = hotels.find(h => h._id === id);
       if (!hotel) {
@@ -42,14 +61,14 @@ const HotelListUser = () => {
         return;
       }
 
-      // Replace this URL with your actual reservation endpoint
-      await axios.post('http://localhost:5000/api/hotelreservations/hoteladd', {
+      await axios.post('http://localhost:5000/api/hotelreservations/add', {
         hotelId: id,
         userId: JSON.parse(localStorage.getItem('userInfo'))._id,
+        checkInDate,
+        checkOutDate,
       });
 
-      // Redirect to reservation confirmation page
-      navigate('/reservation-confirmation', { state: { hotelId: id } });
+      navigate('/addedhotelreservations', { state: { hotelId: id } });
     } catch (err) {
       console.error("Error reserving hotel:", err.response ? err.response.data : err.message);
       setError('Error reserving hotel');
@@ -67,7 +86,7 @@ const HotelListUser = () => {
       {error && <Typography color="error">{error}</Typography>}
       <Grid container spacing={1}>
         {hotels.map(hotel => (
-          <Grid item xs={12} sm={6} md={4} key={hotel._id}>
+          <Grid item xs={12} sm={6} md={3} key={hotel._id}>
             <Card
               style={{
                 display: 'flex',
@@ -113,6 +132,28 @@ const HotelListUser = () => {
                 <Typography variant="body1" style={{ marginBottom: '0.5rem' }}>
                   Status: {hotel.approvalStatus}
                 </Typography>
+                
+                <TextField
+                  label="Check-In Date"
+                  name="checkInDate"
+                  type="date"
+                  value={reservationDates[hotel._id]?.checkInDate || ''}
+                  onChange={(e) => handleDateChange(hotel._id, e)}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{ shrink: true }}
+                />
+                <TextField
+                  label="Check-Out Date"
+                  name="checkOutDate"
+                  type="date"
+                  value={reservationDates[hotel._id]?.checkOutDate || ''}
+                  onChange={(e) => handleDateChange(hotel._id, e)}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{ shrink: true }}
+                />
+
                 <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end' }}>
                   <Button
                     variant="contained"

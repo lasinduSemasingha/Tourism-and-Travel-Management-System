@@ -21,6 +21,10 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: {
+    type: String,
+    required: true,
+  },
   contactNumber: {
     type: String,
     required: true,
@@ -33,6 +37,11 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending',
+  },
+  roomType: {
+    type: String,
+    enum: ['Deluxe Room', 'Standard Room', 'Executive Room'],
+    required: true,
   },
   image: { 
     data: Buffer,

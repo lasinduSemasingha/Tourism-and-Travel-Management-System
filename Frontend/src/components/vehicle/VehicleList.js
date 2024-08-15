@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-
 const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -39,10 +38,13 @@ const VehicleList = () => {
   }, []);
 
   useEffect(() => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
     setFilteredVehicles(
       vehicles.filter(vehicle =>
-        vehicle.vehicleType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vehicle.registrationNumber.toLowerCase().includes(searchQuery.toLowerCase())
+        vehicle.vehicleType.toLowerCase().includes(lowerCaseQuery) ||
+        vehicle.registrationNumber.toLowerCase().includes(lowerCaseQuery) ||
+        vehicle.rentalPrice.toString().includes(lowerCaseQuery) ||
+        vehicle.status.toLowerCase().includes(lowerCaseQuery)
       )
     );
   }, [searchQuery, vehicles]);
@@ -119,7 +121,6 @@ const VehicleList = () => {
     // Save the PDF with a custom name
     doc.save('Vehicle_Report.pdf');
   };
-  
 
   return (
     <div style={{ padding: '2rem' }}>
