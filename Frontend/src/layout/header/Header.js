@@ -75,6 +75,7 @@ const Navbar = () => {
               >
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedreservations">Destination Reservation</MenuItem>
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedvehiclereservations">Vehicle Resevation</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/manage-restaurants-reservations">Restaurant Resevations</MenuItem>
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedhotelreservations">Hotel Resevation</MenuItem>
               </Menu>
 

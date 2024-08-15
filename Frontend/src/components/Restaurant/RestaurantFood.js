@@ -17,7 +17,7 @@ const RestaurantFood = () => {
     useEffect(() => {
         const fetchMenu = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/restaurants/${id}/menu`);
+                const response = await axios.get(`http://localhost:5000/api/restaurant-restaurants/${id}/menu`);
                 setMenu(response.data);
             } catch (error) {
                 console.error('Error fetching menu', error);
@@ -41,7 +41,7 @@ const RestaurantFood = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5000/api/reservations', {
+            const response = await axios.post('http://localhost:5000/api/restaurant-reservations', {
                 restaurantId: id,
                 date: reservationDate,
                 numOfPeople,
@@ -49,6 +49,7 @@ const RestaurantFood = () => {
             });
             setReservationSuccess(true);
             setError('');
+            window.location.href = '/available-restaurants';
         } catch (error) {
             setError('Error creating reservation');
         }
