@@ -8,36 +8,38 @@ const hotelOwnerRoutes = require('./routes/user_managemnt/hotelOwnerRoutes');
 const destinationRoutes = require('./routes/travel_destination/destinationRoutes');
 const reservationRoutes = require('./routes/travel_destination/reservationRoutes');
 
-//importing ticket routing
+// Importing ticket routing
 const ticketRoutes = require('./routes/ticket_booking/ticketRoutes');
-//importing booking routing
+// Importing booking routing
 const bookingRoutes = require('./routes/ticket_booking/bookingRoutes');
-//importing feedback routing
+// Importing feedback routing
 const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
-//importing discount routing
+// Importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
 const emailRoutes = require('./routes/tour_packages/emailRoutes');
 
 
-//importing special activity routing
+// Importing special activity routing
 const specialActivityRoutes = require('./routes/special_activity/activities');
 const specialActivityBooking = require('./routes/special_activity/booking')
 
-//restaurant management
+// Restaurant management
 const restaurantRoutes = require('./routes/restaurants/restaurants');
 const rest_reservations = require('./routes/restaurants/reservations');
 const rest_feedback = require('./routes/restaurants/feedback');
 
 const cors = require('cors');
+const bodyParser = require('body-parser'); // Import body-parser
 
 const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
 const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
 
-
 const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
 const hotelReservationRoutes = require('./routes/hotel_management/hotelReservationRoutes');
 
+const travelItemRoutes = require('./routes/travel_management/travelItemRoutes');
+const itemReservationRoutes = require('./routes/travel_management/ItemReservationRoutes');
 
 const reportRoutes = require('./routes/user_managemnt/reportRoutes')
 
@@ -52,11 +54,11 @@ connectDB();
 
 const app = express();
 
-app.use(express.json());
+// Middleware to handle large payloads
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-
-app.use(cors()); 
-
+app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -82,7 +84,6 @@ app.use('/api/feedback', rest_feedback);
 app.use('/api/activities', specialActivityRoutes)
 app.use('/api/special/', specialActivityBooking)
 
-
 app.use('/api/hotels', hotelRoutes);
 app.use('/api/hotelreservations', hotelReservationRoutes);
 app.use('/api/discount-codes', discountRoutes)
@@ -90,17 +91,15 @@ app.use('/api/discount-codes', discountRoutes)
 // Use routes
 app.use('/api/email', emailRoutes);
 
+app.use('/api/travelitem', travelItemRoutes);
+app.use('/api/travelitemreservation', itemReservationRoutes);
 
 
 app.use('/uploads', express.static('uploads'));
 
 app.use('report', reportRoutes)
 
-
-
-hotelReservationRoutes
-
-// Environment Variables & Port Confniguration
+// Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
