@@ -80,7 +80,6 @@ import ItemReservationList from './components/Travel_management/ItemReservationL
 
 
 import CategoryBoxes from './components/special_activities/Boxes/CategoryBoxes';
-import AdminDashboard from './components/Restaurant/Admin/AdminDashboard';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import AdminDiscountCodePage from './components/Admin/ticket_booking/AdminDiscountCodePage';
 import PromotionEmailForm from './components/tour_packages/PromotionEmailForm';
