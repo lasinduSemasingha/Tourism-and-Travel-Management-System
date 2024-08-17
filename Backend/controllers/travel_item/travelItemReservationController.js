@@ -1,6 +1,9 @@
 const ItemReservation = require('../../models/travel_item/itemReservation');
 const Item = require('../../models/travel_item/item');
 
+
+const { sendRestockAlert } = require('../../utils/emailstock');
+
 // Get all item reservations with item details
 exports.getItemReservations = async (req, res) => {
   try {
@@ -12,38 +15,37 @@ exports.getItemReservations = async (req, res) => {
   }
 };
 
-// reservationController.js
 exports.addItemReservation = async (req, res) => {
   const cart = req.body.cart;
   try {
-    // Process each item in the cart
     for (const item of cart) {
       const { _id: itemId, quantity, userId } = item;
 
-      // Check if the item exists
       const itemDoc = await Item.findById(itemId);
       if (!itemDoc) {
         return res.status(404).json({ message: `Item not found: ${itemId}` });
       }
 
-      // Check if there's enough stock available
       if (itemDoc.stockAmount < quantity) {
         return res.status(400).json({ message: `Insufficient stock for item: ${itemId}` });
       }
 
-      // Create the reservation
       const reservation = new ItemReservation({
         itemId,
         userId,
         quantity,
-        status: 'in-stock', // Default status
+        status: 'in-stock',
       });
 
       await reservation.save();
 
-      // Update the item’s stock amount
       itemDoc.stockAmount -= quantity;
       await itemDoc.save();
+
+      if (itemDoc.stockAmount < 5) {
+        const itemNames = itemDoc.itemName;
+        await sendRestockAlert(itemNames); // Call the email function
+      }
     }
 
     res.status(201).json({ message: 'Reservations created successfully' });

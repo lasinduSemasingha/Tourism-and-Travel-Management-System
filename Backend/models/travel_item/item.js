@@ -17,12 +17,6 @@ const itemSchema = new mongoose.Schema({
     required: true,
     default: 0, // Default stock amount is 0 if not provided
   },
-  quantity: {
-    type: Number,
-    required: true,
-   default: 0, // Default stock amount is 0 if not provided
-  },
-
   category: {
     type: String,
     required: true,
