@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Typography, TextField, Button, Card, CardContent, Avatar, IconButton, CircularProgress, Alert } from '@mui/material';
+import { Container, Grid, Typography, TextField, Button, Card, CardContent, Avatar, IconButton, CircularProgress, Alert, Badge } from '@mui/material';
 import { Edit, Save, Cancel, Upload } from '@mui/icons-material';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import CheckIcon from '@mui/icons-material/Check';
+import BookingBadge from './BookingBadge';
 
 const UserProfilePage = () => {
   const { users } = useAuth();
@@ -13,30 +14,35 @@ const UserProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null); // State to hold selected image
+  const [bookings, setBookings] = useState(0);
 
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/users/${userInfo._id}`);
-        setUser(response.data);
-        setFormData({
-          name: response.data.name,
-          email: response.data.email,
-          address: response.data.address,
-          country: response.data.country,
-          gender: response.data.gender,
-        });
-      } catch (err) {
-        setError('Error fetching user profile');
-      } finally {
-        setLoading(false);
-      }
+        try {
+            const response = await axios.get(`http://localhost:5000/api/users/${userInfo._id}`);
+            setUser(response.data);
+            setFormData({
+                name: response.data.name,
+                email: response.data.email,
+                address: response.data.address,
+                country: response.data.country,
+                gender: response.data.gender,
+            });
+
+            const bookingsResponse = await axios.get(`http://localhost:5000/api/bookings/count/${userInfo._id}`);
+            setBookings(bookingsResponse.data.bookingCount);
+        } catch (err) {
+            setError('Error fetching user profile or bookings');
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchUserProfile();
-  }, [userInfo._id]);
+}, [userInfo._id]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +88,7 @@ const UserProfilePage = () => {
   const handleUpload = async () => {
     if (selectedImage) {
       try {
-        const response = await axios.post(
+        await axios.post(
           `http://localhost:5000/api/users/${userInfo._id}/upload`,
           { profilePicture: selectedImage },
           { headers: { 'Content-Type': 'application/json' } }
@@ -126,8 +132,10 @@ const UserProfilePage = () => {
                   component="span"
                   startIcon={<Upload />}
                 >
+                  Upload
                 </Button>
-              </label><br />
+              </label>
+              <BookingBadge bookings={bookings} /> {/* Display booking badge */}
               {selectedImage && (
                 <Button
                   variant="contained"
@@ -136,6 +144,7 @@ const UserProfilePage = () => {
                   style={{ marginTop: '1rem' }}
                   startIcon={<CheckIcon />}
                 >
+                  Save
                 </Button>
               )}
             </Grid>

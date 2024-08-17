@@ -3,7 +3,7 @@ const router = express.Router();
 const bookingController = require('../../controllers/ticket_booking/bookingController')
 
 router.post('/', bookingController.createBooking);
-router.get('/', bookingController.getBookings)
+router.get('/', bookingController.getAllBookings)
 router.get('/user/:userId', bookingController.getBookingsByUserId)
 
 
@@ -12,5 +12,7 @@ router.put('/:id', bookingController.updateBooking);
 
 // Route to delete a ticket by ID
 router.delete('/:id', bookingController.deleteBooking);
+
+router.get('/count/:userId', bookingController.countBookingsByUserId)
 
 module.exports = router;

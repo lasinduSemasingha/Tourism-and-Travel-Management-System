@@ -78,6 +78,8 @@ import PromotionEmailForm from './components/tour_packages/PromotionEmailForm';
 
 import ReservationPage from './components/Restaurant/ReservationPage';
 import VehicleDashboard from './components/Admin/vehicle/vehicledashboard';
+import TicketManagement from './components/Admin/ticket_booking/TicketManagement';
+import UserList from './components/Admin/user/UserList';
 
 
 function App() {
@@ -114,7 +116,7 @@ function App() {
         <Route path="/booked-tickets/:id" element={<BookedTickets />} />
         <Route path="/add-tickets" element={<TicketForm />} />
 
-        <Route path="/package-manager" element={<PackageManagement />} />
+        <Route path="/admin/package-manager" element={<PackageManagement />} />
         <Route path="/packages" element={<PackageList />} />
         <Route path="/packages/:id" element={<PackageDetails />} />
 
@@ -141,13 +143,13 @@ function App() {
 
         <Route path="/search-restaurants" element={<AvailableRestaurants />} />
         <Route path="/restaurant/:id" element={<RestaurantFood />} />
-        <Route path="/restaurant-reservations" element={<ManageReservations />} />
+        <Route path="/admin/reservations" element={<ManageReservations />} />
         <Route path="/restaurant-reserve" element={<ReservationPage />} />
 
      
         <Route path="/activity-list" element={<ActivityList />} />
         <Route path="/activity/:id" element={<ActivityBooking />} />
-        <Route path="/add-activity" element={<ActivityForm />} />
+        <Route path="/admin/activity" element={<ActivityForm />} />
         <Route path="/book-confirmation" element={<BookingConfirmation />} />
 
 
@@ -160,9 +162,8 @@ function App() {
         {/*
         <Route path="" />/}
         {/*ADMIN Routes */}
-        <Route path="/add-restaurants" element={<AdminAddRestaurantPage />} />
-        <Route path="/admin-manage-restaurants" element={<AdminManageRestaurantsPage />} />
-        <Route path="/manage-restaurants-reservations" element={<ManageReservations />} />
+        <Route path="/admin/add-restaurants" element={<AdminAddRestaurantPage />} />
+        <Route path="/admin/restaurants" element={<AdminManageRestaurantsPage />} />
 
 
         <Route path="/hotel/add" element={<AddHotel />} />
@@ -176,6 +177,8 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin/ticket/discount" element={<AdminDiscountCodePage />} />
         <Route path="/admin/vehicles" element={<VehicleDashboard />} />
+        <Route path="/admin/tickets" element={<TicketManagement />} />
+        <Route path="/admin/users" element={<UserList />} />
        
             
       </Routes>

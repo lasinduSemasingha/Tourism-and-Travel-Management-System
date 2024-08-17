@@ -3,6 +3,21 @@ const router = express.Router();
 const Reservation = require('../../models/restaurant/Rest_Reservation');
 const auth = require('../../middlewares/auth');
 
+// Get all reservations
+router.get('/', async (req, res) => {
+    try {
+        const reservations = await Reservation.find();
+        if (reservations.length === 0) {
+            return res.status(404).json({ message: 'No reservations found' });
+        }
+        res.status(200).json(reservations);
+    } catch (err) {
+        console.error('Error fetching all reservations', err);
+        res.status(500).json({ error: 'Error fetching all reservations' });
+    }
+});
+
+
 // Get reservations for a specific user
 router.get('/user/:userId', async (req, res) => {
     try {

@@ -39,6 +39,8 @@ const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
 const hotelReservationRoutes = require('./routes/hotel_management/hotelReservationRoutes');
 
 
+const reportRoutes = require('./routes/user_managemnt/reportRoutes')
+
 
 
 
@@ -91,6 +93,8 @@ app.use('/api/email', emailRoutes);
 
 
 app.use('/uploads', express.static('uploads'));
+
+app.use('report', reportRoutes)
 
 
 

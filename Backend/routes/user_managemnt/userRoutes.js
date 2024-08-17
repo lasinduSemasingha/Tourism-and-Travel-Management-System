@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../../models/user_managemnt/user');
 const multer = require('multer');
 const path = require('path');
+const userController = require('../../controllers/user_management/userController')
 
 // Configure multer for file uploads (for other files if needed)
 const storage = multer.diskStorage({
@@ -102,5 +103,12 @@ router.post('/:id/upload', async (req, res) => {
     res.status(500).json({ message: 'Error uploading profile picture' });
   }
 });
+
+// Get all users
+router.get('/', userController.getAllUsers);
+
+// Delete a user by ID
+router.delete('/:id', userController.deleteUser);
+
 
 module.exports = router;

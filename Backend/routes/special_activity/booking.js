@@ -1,31 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const Booking =  require('../../models/special_activity/Booking');
+const Booking = require('../../models/special_activity/Booking');
+const bookingController = require('../../controllers/ticket_booking/bookingController'); // Adjust path as necessary
 
-//add new Booking
+// Add new Booking
 router.post('/', async (req, res) => {
     try {
-      const newBooking = new Booking(req.body);
-      await newBooking.save();
-      res.status(201).json(newBooking);
+        const newBooking = new Booking(req.body);
+        await newBooking.save();
+        res.status(201).json(newBooking);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 
+// Get Booking by ID
 router.get('/:id', async (req, res) => {
     try {
-      const booking = await Booking.findById(req.params.id);
-      if (!booking) {
-        return res.status(404).json({ error: 'Booking not found' });
-      }
-      res.status(200).json(booking);
+        const booking = await Booking.findById(req.params.id);
+        if (!booking) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+        res.status(200).json(booking);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  });
+});
 
-  router.put('/:id', async (req, res) => {
+// Update Booking by ID
+router.put('/:id', async (req, res) => {
     try {
         const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
             new: true, // Return the updated document
@@ -42,19 +45,8 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.get('/user/:userId', async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const bookings = await Booking.find({ userId: userId });
 
-        if (bookings.length === 0) {
-            return res.status(404).json({ error: 'No bookings found for this user' });
-        }
-
-        res.status(200).json(bookings);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+// Route to count bookings by userId
+router.get('/count/:userId', bookingController.countBookingsByUserId);
 
 module.exports = router;

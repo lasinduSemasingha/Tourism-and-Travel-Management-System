@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Button, Grid, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, TextField, InputAdornment, Snackbar } from '@mui/material';
-import { Edit, Delete, Restaurant, LocationOn, Phone, AttachMoney, Description, Visibility } from '@mui/icons-material';
+import { Edit, Delete, Restaurant, LocationOn, Phone, AttachMoney, Description, Visibility, Add } from '@mui/icons-material';
 import axios from 'axios';
 import MuiAlert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
@@ -68,11 +68,24 @@ const AdminManageRestaurantsPage = () => {
         setSelectedRestaurant({ ...selectedRestaurant, [e.target.name]: e.target.value });
     };
 
+    const handleAddRestaurant = () => {
+        window.location.href = '/admin/add-restaurants' // Redirect to the add restaurant page
+    };
+
     return (
         <Container maxWidth="md" style={{ marginTop: '2rem' }}>
             <Typography variant="h4" gutterBottom>
                 Manage Restaurants
             </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                startIcon={<Add />}
+                onClick={handleAddRestaurant}
+                style={{ marginBottom: '1rem' }}
+            >
+                Add Restaurant
+            </Button>
             {restaurants.map((restaurant) => (
                 <Card key={restaurant._id} style={{ marginBottom: '1rem' }}>
                     <CardContent>
