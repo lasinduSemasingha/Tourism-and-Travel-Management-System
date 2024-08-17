@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Grid, Paper, TextField, IconButton, Snackbar } from '@mui/material';
-import { Edit, Delete, CalendarToday, Group, ErrorOutline, CheckCircleOutline } from '@mui/icons-material';
+import { Edit, Delete, CalendarToday, Group, ErrorOutline, CheckCircleOutline, Add } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const ManageReservations = () => {
     const [reservations, setReservations] = useState([]);
-    const [editReservation, setEditReservation] = useState(null);
-    const [updatedDate, setUpdatedDate] = useState('');
-    const [updatedNumOfPeople, setUpdatedNumOfPeople] = useState('');
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const navigate = useNavigate();
-    const userId = JSON.parse(localStorage.getItem('userInfo'))?._id; // Retrieve user ID from localStorage
 
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/restaurant-reservations/user/${userId}`);
+                const response = await axios.get('http://localhost:5000/api/restaurant-reservations');
                 setReservations(response.data);
             } catch (error) {
                 console.error('Error fetching reservations', error);
@@ -27,35 +23,11 @@ const ManageReservations = () => {
         };
 
         fetchReservations();
-    }, [userId]);
-
-    const handleUpdate = async (reservation) => {
-        try {
-            await axios.put(`http://localhost:5000/api/restaurant-reservations/${reservation._id}`, {
-                date: updatedDate || reservation.date,
-                numOfPeople: updatedNumOfPeople || reservation.numOfPeople
-            });
-            setReservations((prev) =>
-                prev.map((res) =>
-                    res._id === reservation._id ? { ...res, date: updatedDate, numOfPeople: updatedNumOfPeople } : res
-                )
-            );
-            setEditReservation(null);
-            setUpdatedDate('');
-            setUpdatedNumOfPeople('');
-            setSnackbarMessage('Reservation updated successfully');
-            setSnackbarOpen(true);
-        } catch (error) {
-            console.error('Error updating reservation', error);
-            setSnackbarMessage('Failed to update reservation');
-            setSnackbarOpen(true);
-        }
-    };
-
+    }, []);
+    
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/restaurant-reservations/${id}`);
-            console.log('Delete response:', response.data);
+            await axios.delete(`http://localhost:5000/api/restaurant-reservations/${id}`);
             setReservations((prev) => prev.filter((res) => res._id !== id));
             setSnackbarMessage('Reservation deleted successfully');
             setSnackbarOpen(true);
@@ -96,20 +68,12 @@ const ManageReservations = () => {
                                 </Typography>
                                 <div style={{ marginTop: '1rem' }}>
                                     <Button
-                                        startIcon={<Edit />}
-                                        onClick={() => setEditReservation(reservation)}
-                                        variant="outlined"
-                                        style={{ marginRight: '1rem' }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
                                         startIcon={<Delete />}
                                         onClick={() => handleDelete(reservation._id)}
                                         variant="outlined"
                                         color="error"
                                     >
-                                        Delete
+                                        Reject
                                     </Button>
                                 </div>
                             </CardContent>
@@ -117,38 +81,6 @@ const ManageReservations = () => {
                     </Grid>
                 ))}
             </Grid>
-            {editReservation && (
-                <Paper elevation={2} style={{ padding: '1rem', marginTop: '1rem' }}>
-                    <Typography variant="h6">Edit Reservation</Typography>
-                    <TextField
-                        label="Date"
-                        type="date"
-                        value={updatedDate}
-                        onChange={(e) => setUpdatedDate(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Number of People"
-                        type="number"
-                        value={updatedNumOfPeople}
-                        onChange={(e) => setUpdatedNumOfPeople(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <div style={{ marginTop: '1rem' }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleUpdate(editReservation)}
-                            style={{ marginRight: '1rem' }}
-                        >
-                            Update
-                        </Button>
-                        <Button onClick={() => setEditReservation(null)}>Cancel</Button>
-                    </div>
-                </Paper>
-            )}
         </Paper>
     );
 };

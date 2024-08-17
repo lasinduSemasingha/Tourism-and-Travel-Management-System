@@ -49,7 +49,7 @@ const RestaurantFood = () => {
             });
             setReservationSuccess(true);
             setError('');
-            window.location.href = '/available-restaurants';
+            window.location.href = '/feedback';
         } catch (error) {
             setError('Error creating reservation');
         }

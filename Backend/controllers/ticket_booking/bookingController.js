@@ -25,7 +25,7 @@ exports.createBooking = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
- 
+
 // Get bookings by user ID
 exports.getBookingsByUserId = async (req, res) => {
   try {
@@ -52,12 +52,22 @@ exports.getBookingsByUserId = async (req, res) => {
   }
 };
 
-
 // Get all bookings for the logged-in user
 exports.getBookings = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming you have middleware to set req.user
     const bookings = await Booking.find({ userId }).populate('ticketId');
+    res.status(200).json(bookings);
+  } catch (err) {
+    console.error('Error fetching bookings:', err); // Log the error
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get all bookings
+exports.getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find().populate('ticketId'); // Fetch all bookings with ticket details
     res.status(200).json(bookings);
   } catch (err) {
     console.error('Error fetching bookings:', err); // Log the error
@@ -93,22 +103,44 @@ exports.updateBooking = async (req, res) => {
   }
 };
 
-
-// Delete a ticket by ID
+// Delete a booking by ID
 exports.deleteBooking = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedTicket = await Booking.findByIdAndDelete(id);
+    const deletedBooking = await Booking.findByIdAndDelete(id);
 
-    if (!deletedTicket) {
-      return res.status(404).json({ error: 'Ticket not found' });
+    if (!deletedBooking) {
+      return res.status(404).json({ error: 'Booking not found' });
     }
 
-    res.status(200).json({ message: 'Ticket deleted successfully' });
+    res.status(200).json({ message: 'Booking deleted successfully' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error deleting ticket' });
+    res.status(500).json({ error: 'Error deleting booking' });
   }
 };
 
+// Get all bookings for all users
+exports.getAllBookingsForAllUsers = async (req, res) => {
+  try {
+    const bookings = await Booking.find().populate('ticketId').populate('userId'); // Populate ticketId and userId
+    res.status(200).json(bookings);
+  } catch (err) {
+    console.error('Error fetching all bookings for all users:', err); // Log the error
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.countBookingsByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const bookings = await Booking.find({ userId: userId });
+    const bookingCount = bookings.length;
+    
+    res.json({ bookingCount });
+  } catch (err) {
+    console.error('Error fetching bookings:', err);
+    res.status(500).json({ message: 'Error fetching bookings', error: err.message });
+  }
+};

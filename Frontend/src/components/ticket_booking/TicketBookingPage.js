@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Grid, Card, CardContent, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, Divider } from '@mui/material';
-import { CalendarToday, People, AttachMoney, CreditCard, DateRange, Payment } from '@mui/icons-material';
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  CircularProgress,
+  Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputAdornment
+} from '@mui/material';
+import { CalendarToday, People, AttachMoney, CreditCard, DateRange } from '@mui/icons-material';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -11,8 +26,11 @@ const TicketBookingPage = () => {
   const navigate = useNavigate();
   const [ticket, setTicket] = useState(null);
   const [numOfPassengers, setNumOfPassengers] = useState('');
-  const [totalAmount, setTotalAmount] = useState('');
   const [date, setDate] = useState('');
+  const [totalAmount, setTotalAmount] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [previousPrice, setPreviousPrice] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -32,7 +50,7 @@ const TicketBookingPage = () => {
         const response = await axios.get(`http://localhost:5000/api/tickets/${id}`);
         setTicket(response.data);
       } catch (err) {
-        setError('Error fetching data');
+        setError('Error fetching ticket data');
       } finally {
         setLoading(false);
       }
@@ -43,11 +61,14 @@ const TicketBookingPage = () => {
 
   useEffect(() => {
     if (ticket && numOfPassengers) {
-      setTotalAmount(numOfPassengers * ticket.price);
+      const price = numOfPassengers * ticket.price;
+      setPreviousPrice(price);
+      const discountedAmount = price - (price * discountPercentage / 100);
+      setTotalAmount(discountedAmount);
     } else {
       setTotalAmount('');
     }
-  }, [numOfPassengers, ticket]);
+  }, [numOfPassengers, ticket, discountPercentage]);
 
   useEffect(() => {
     const validateCardDetails = () => {
@@ -55,7 +76,7 @@ const TicketBookingPage = () => {
       const cardNumberValid = cardNumber.length === 16;
       const expiryDateValid = /^((0[1-9]|1[0-2])\/\d{2})$/.test(expiryDate);
       const cvvValid = cvv.length === 3;
-      
+
       setIsCardValid(cardNumberValid && expiryDateValid && cvvValid);
     };
 
@@ -63,6 +84,14 @@ const TicketBookingPage = () => {
   }, [cardDetails]);
 
   const handleBooking = async () => {
+    if (!userID) {
+      setError('You must login to book a ticket');
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000); // Redirect after 2 seconds
+      return;
+    }
+
     try {
       await axios.post('http://localhost:5000/api/bookings', {
         ticketId: id,
@@ -73,45 +102,40 @@ const TicketBookingPage = () => {
       });
       setOpenPaymentModal(true);
     } catch (err) {
-      setError('Error booking ticket You must login to book a ticket');
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000); // Delay of 2 seconds
+      setError('Error booking ticket');
     }
   };
 
   const handlePayment = async () => {
     try {
       console.log('Processing payment with card details:', cardDetails);
-  
+
       // Generate receipt
       const doc = new jsPDF();
-      
-      // Set the title
       doc.setFontSize(22);
       doc.setFont("Helvetica", "bold");
       doc.text('Travel Sphere', 105, 20, { align: 'center' });
-  
-      // Draw a thinner border around the receipt
+
       const margin = 10;
       const width = 190;
       const height = 130;
-      doc.setLineWidth(1); // Reduced thickness
+      doc.setLineWidth(1);
       doc.rect(margin, 30, width, height);
-  
-      // Set content font size and style
+
       doc.setFontSize(12);
       doc.setFont("Helvetica", "normal");
-  
-      // Add content with centered alignment
+
       const lineHeight = 10;
-      let y = 40; // Starting Y position after title
-      
+      let y = 40;
       const centerX = margin + width / 2;
-      
+
       doc.text(`Ticket ID: ${id}`, centerX, y, { align: 'center' });
       y += lineHeight;
       doc.text(`Number of Passengers: ${numOfPassengers}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Previous Price: $${previousPrice}`, centerX, y, { align: 'center' });
+      y += lineHeight;
+      doc.text(`Discount Applied: ${discountPercentage}%`, centerX, y, { align: 'center' });
       y += lineHeight;
       doc.text(`Total Amount: $${totalAmount}`, centerX, y, { align: 'center' });
       y += lineHeight;
@@ -124,12 +148,12 @@ const TicketBookingPage = () => {
       doc.text(`Travel Date: ${new Date(ticket.travelDate).toLocaleDateString()}`, centerX, y, { align: 'center' });
       y += lineHeight;
       doc.text(`Price per Seat: $${ticket.price}`, centerX, y, { align: 'center' });
-  
+
       doc.save('receipt.pdf');
-  
+
       alert("Payment successful!");
       setOpenPaymentModal(false);
-      
+
       navigate('/feedback'); // Redirect to feedback page
     } catch (err) {
       setError('Error processing payment');
@@ -152,6 +176,20 @@ const TicketBookingPage = () => {
   const handleCVVChange = (e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 3);
     setCardDetails(prev => ({ ...prev, cvv: value }));
+  };
+
+  const handleApplyDiscount = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/discount-codes/${discountCode}`);
+      if (response.data) {
+        setDiscountPercentage(response.data.percentage);
+        //alert('Discount applied!');
+      } else {
+        alert('Invalid discount code.');
+      }
+    } catch (err) {
+      alert('Error applying discount code.');
+    }
   };
 
   if (loading) return <CircularProgress />;
@@ -192,7 +230,13 @@ const TicketBookingPage = () => {
                   <Typography variant="h6" gutterBottom>
                     <DateRange color="primary" /> Travel Date
                   </Typography>
-                  <Typography variant="body1">{new Date(ticket.travelDate).toLocaleDateString()}</Typography>
+                  <TextField
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                  />
                 </CardContent>
               </Card>
             </Grid>
@@ -200,140 +244,106 @@ const TicketBookingPage = () => {
               <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    <AttachMoney color="primary" /> Price per Seat
+                    <People color="primary" /> Number of Passengers
                   </Typography>
-                  <Typography variant="body1">Rs. {ticket.price}</Typography>
+                  <TextField
+                    type="number"
+                    value={numOfPassengers}
+                    onChange={(e) => setNumOfPassengers(e.target.value)}
+                    fullWidth
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">x</InputAdornment>,
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <AttachMoney color="primary" /> Discount Code
+                  </Typography>
+                  <TextField
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    fullWidth
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Button variant="contained" color="primary" onClick={handleApplyDiscount}>
+                            Apply
+                          </Button>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12}>
+              <Card style={{ padding: '1rem', backgroundColor: '#f5f5f5' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    <AttachMoney color="primary" /> Price Details
+                  </Typography>
+                  <Typography variant="body1">Previous Price: ${previousPrice}</Typography>
+                  <Typography variant="body1">Discount Applied: {discountPercentage}%</Typography>
+                  <Typography variant="h6">Total Amount: ${totalAmount}</Typography>
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: '1rem' }}
+            onClick={handleBooking}
+          >
+            Proceed to Payment
+          </Button>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            Booking Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type='date'
-                label='Booking Date'
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <CalendarToday />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                label="Number of Passengers"
-                type="number"
-                value={numOfPassengers}
-                onChange={(e) => setNumOfPassengers(e.target.value)}
-                margin="normal"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <People />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                label="Total Amount $"
-                type="number"
-                value={totalAmount}
-                margin="normal"
-                disabled
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      Rs. 
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleBooking}
-                fullWidth
-                style={{ marginTop: '1rem' }}
-              >
-                Confirm Booking
-              </Button>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      {/* Payment Modal */}
       <Dialog open={openPaymentModal} onClose={() => setOpenPaymentModal(false)}>
-        <DialogTitle>Enter Payment Details</DialogTitle>
+        <DialogTitle>Payment Details</DialogTitle>
         <DialogContent>
           <TextField
-            fullWidth
             label="Card Number"
-            type="text"
+            variant="outlined"
+            fullWidth
             value={cardDetails.cardNumber}
             onChange={handleCardNumberChange}
             margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CreditCard />
-                </InputAdornment>
-              ),
-            }}
+            InputProps={{ startAdornment: <InputAdornment position="start"><CreditCard /></InputAdornment> }}
           />
           <TextField
-            fullWidth
             label="Expiry Date (MM/YY)"
-            type="text"
+            variant="outlined"
+            fullWidth
             value={cardDetails.expiryDate}
             onChange={handleExpiryDateChange}
             margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <DateRange />
-                </InputAdornment>
-              ),
-            }}
           />
           <TextField
-            fullWidth
             label="CVV"
-            type="text"
+            variant="outlined"
+            fullWidth
             value={cardDetails.cvv}
             onChange={handleCVVChange}
             margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Payment />
-                </InputAdornment>
-              ),
-            }}
+            type="password"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenPaymentModal(false)} color="secondary">
+          <Button onClick={() => setOpenPaymentModal(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handlePayment} color="primary" disabled={!isCardValid}>
+          <Button
+            onClick={handlePayment}
+            color="primary"
+            disabled={!isCardValid}
+          >
             Pay
           </Button>
         </DialogActions>

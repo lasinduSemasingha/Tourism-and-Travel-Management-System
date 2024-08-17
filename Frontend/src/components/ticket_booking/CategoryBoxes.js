@@ -14,7 +14,7 @@ const images = [
   {
     url: '/hotel.jpg',
     title: 'Hotel & Accommodation',
-    link: '/ella',
+    link: '/hotellistuser',
   },
   {
     url: '/stupa.jpg',

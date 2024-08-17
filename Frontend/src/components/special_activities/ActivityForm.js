@@ -45,7 +45,7 @@ const ActivityForm = () => {
       } else {
         await axios.post('http://localhost:5000/api/activities', activity);
       }
-      navigate('/activity-list');
+      navigate('/admin-dashboard');
     } catch (err) {
       setError('Error saving activity');
     }

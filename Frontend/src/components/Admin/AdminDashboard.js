@@ -4,13 +4,14 @@ import { styled } from '@mui/material/styles';
 
 const categories = [
   { title: 'Manage Users', link: '/admin/users', image: '/users.jpg' },
-  { title: 'Manage Reservations', link: '/admin/reservations', image: '/reservations.jpg' },
-  { title: 'Manage Restaurants', link: '/admin/restaurants', image: '/restaurants.jpg' },
-  { title: 'Manage Tickets', link: '/admin/tickets', image: '/tickets.jpg' },
-  { title: 'Manage Hotels', link: '/admin/hotels', image: '/hotel.jpg' },
-  { title: 'Manage Tours', link: '/admin/tours', image: '/tours.jpg' },
-  { title: 'Manage Vehicles', link: '/admin/vehicles', image: '/vehicles.jpg' },
-  { title: 'Manage Feedback', link: '/admin/feedback', image: '/feedback.jpg' },
+  { title: 'Manage Reservations', link: '/admin/reservations', image: '/reservation.jpg' },
+  { title: 'Manage Restaurants', link: '/admin/restaurants', image: '/food.jpg' },
+  { title: 'Manage Tickets', link: '/admin/tickets', image: '/ticket.jpg' },
+  { title: 'Manage Hotels', link: '/admin/hotellist', image: '/hotel.jpg' },
+  { title: 'Manage Tours', link: '/admin/tours', image: '/tour.jpg' },
+  { title: 'Manage Vehicles', link: '/admin/vehicles', image: '/vehicle.jpg' },
+  { title: 'Add Activities', link: '/admin/activity', image: '/sports.jpg' },
+  { title: 'Add Tour Packages', link: '/admin/package-manager', image: '/package.jpg' },
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({

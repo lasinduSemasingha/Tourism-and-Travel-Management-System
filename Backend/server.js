@@ -17,6 +17,8 @@ const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
 // Importing discount routing
 const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
+const emailRoutes = require('./routes/tour_packages/emailRoutes');
+
 
 // Importing special activity routing
 const specialActivityRoutes = require('./routes/special_activity/activities');
@@ -38,6 +40,10 @@ const hotelReservationRoutes = require('./routes/hotel_management/hotelReservati
 
 const travelItemRoutes = require('./routes/travel_management/travelItemRoutes');
 const itemReservationRoutes = require('./routes/travel_management/ItemReservationRoutes');
+
+const reportRoutes = require('./routes/user_managemnt/reportRoutes')
+
+
 
 
 // Load environment variables
@@ -80,12 +86,18 @@ app.use('/api/special/', specialActivityBooking)
 
 app.use('/api/hotels', hotelRoutes);
 app.use('/api/hotelreservations', hotelReservationRoutes);
+app.use('/api/discount-codes', discountRoutes)
+
+// Use routes
+app.use('/api/email', emailRoutes);
 
 app.use('/api/travelitem', travelItemRoutes);
 app.use('/api/travelitemreservation', itemReservationRoutes);
 
 
 app.use('/uploads', express.static('uploads'));
+
+app.use('report', reportRoutes)
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;
