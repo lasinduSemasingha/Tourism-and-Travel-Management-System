@@ -38,8 +38,8 @@ import TermsOfService from './components/site_data/TermsOfService';
 import CookiePolicy from './components/tour_packages/CookiePolicy';
 
 //ADMIN
-import AdminAddRestaurantPage from './components/Restaurant/Admin/AdminAddRestaurantPage';
-import AdminManageRestaurantsPage from './components/Restaurant/Admin/AdminManageRestaurantsPage';
+import AdminAddRestaurantPage from './components/Admin/restraurants/AdminAddRestaurantPage';
+import AdminManageRestaurantsPage from './components/Admin/restraurants/AdminManageRestaurantsPage';
 import AvailableRestaurants from './components/Restaurant/AvailableRestaurant';
 import RestaurantFood from './components/Restaurant/RestaurantFood';
 import ManageReservations from './components/Restaurant/ManageReservations';
@@ -75,6 +75,9 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import AdminDiscountCodePage from './components/Admin/ticket_booking/AdminDiscountCodePage';
 import PromotionEmailForm from './components/tour_packages/PromotionEmailForm';
 
+
+import ReservationPage from './components/Restaurant/ReservationPage';
+import VehicleDashboard from './components/Admin/vehicle/vehicledashboard';
 
 
 function App() {
@@ -139,6 +142,7 @@ function App() {
         <Route path="/search-restaurants" element={<AvailableRestaurants />} />
         <Route path="/restaurant/:id" element={<RestaurantFood />} />
         <Route path="/restaurant-reservations" element={<ManageReservations />} />
+        <Route path="/restaurant-reserve" element={<ReservationPage />} />
 
      
         <Route path="/activity-list" element={<ActivityList />} />
@@ -171,6 +175,7 @@ function App() {
         <Route path="/available-restaurants" element={<AvailableRestaurants />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin/ticket/discount" element={<AdminDiscountCodePage />} />
+        <Route path="/admin/vehicles" element={<VehicleDashboard />} />
        
             
       </Routes>

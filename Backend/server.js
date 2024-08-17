@@ -19,6 +19,7 @@ const discountRoutes = require('./routes/ticket_booking/discountRoutes');
 const packageRoutes = require('./routes/tour_packages/packages');
 const emailRoutes = require('./routes/tour_packages/emailRoutes');
 
+
 //importing special activity routing
 const specialActivityRoutes = require('./routes/special_activity/activities');
 const specialActivityBooking = require('./routes/special_activity/booking')

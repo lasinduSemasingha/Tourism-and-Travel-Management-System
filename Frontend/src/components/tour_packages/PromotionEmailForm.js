@@ -7,8 +7,7 @@ const PromotionEmailForm = () => {
   const [emailDetails, setEmailDetails] = useState({
     to: '',
     subject: '',
-    text: '',
-    html: ''
+    text: ''
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -57,16 +56,6 @@ const PromotionEmailForm = () => {
           label="Text Body"
           name="text"
           value={emailDetails.text}
-          onChange={handleChange}
-          margin="normal"
-          multiline
-          rows={4}
-        />
-        <TextField
-          fullWidth
-          label="HTML Body"
-          name="html"
-          value={emailDetails.html}
           onChange={handleChange}
           margin="normal"
           multiline

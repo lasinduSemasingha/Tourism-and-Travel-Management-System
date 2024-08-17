@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Paper, Box, Rating } from '@mui/material';
 import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 
 const FeedbackPage = () => {
+  const { user } = useAuth();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
   const handleSubmit = async () => {
-    await axios.post('http://localhost:5000/api/feedback', { rating, comment });
-    // Handle feedback submission confirmation
+    await axios.post('http://localhost:5000/api/feedback', { userId: user._id, rating: rating, comment: comment });
+    window.location.href = '/';
   };
 
   return (

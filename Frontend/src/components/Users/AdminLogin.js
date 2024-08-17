@@ -19,8 +19,8 @@ const AdminLogin = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/admin/login', formData); // Adjust the API endpoint as needed
-            localStorage.setItem('userInfo', JSON.stringify(response.data));
-            navigate('/admin-dashboard'); // Redirect to admin dashboard page
+            localStorage.setItem('adminInfo', JSON.stringify(response.data));
+            window.location.href = '/admin-dashboard' // Redirect to admin dashboard page
         } catch (err) {
             setError('Invalid email or password');
         }

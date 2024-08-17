@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Typography, IconButton, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Button, Typography, Menu, MenuItem } from '@mui/material';
 import { Home, ArrowDropDown } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
-import { green } from '@mui/material/colors';
 
 const Navbar = () => {
-  const { isAuthenticated, logout, user } = useAuth(); // Access user from context
+  const { isAuthenticated, logout, user, isAdmin, isUser, adminLogout } = useAuth(); // Access isAdmin from context
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu
-
-  // Safely access user ID
-  const userId = user ? user._id : null;
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget); // Open menu
@@ -31,42 +27,18 @@ const Navbar = () => {
         <div style={{ flexGrow: 1 }}>
           <Button startIcon={<Home />} color="inherit" component={Link} to="/">Home</Button>
           <Button color="inherit" component={Link} to="/aboutus">About</Button>
-          {isAuthenticated && (
+          {isAuthenticated && !isAdmin && ( // Hide these buttons if the user is an admin
             <>
-             
-              {userId && <Button color="inherit" component={Link} to={`/booked-tickets/${userId}`}>Bookings</Button>}
+              <Button color="inherit" component={Link} to={`/booked-tickets/${user?._id}`}>Bookings</Button>
+              <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
+              <Button color="inherit" component={Link} to="/vehicleuser">Vehicles</Button>
+              <Button color="inherit" component={Link} to="/hotellistuser">Hotels</Button>
               <Button
                 color="inherit"
                 onClick={handleMenuClick}
                 endIcon={<ArrowDropDown />}
               >
-                Packages
-              </Button>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={handleMenuClose} component={Link} to="/package-manager">Add New Package</MenuItem>
-                <MenuItem onClick={handleMenuClose} component={Link} to="/packages">View All Packages</MenuItem>
-              </Menu>
-            </>
-          )}
-            {!isAuthenticated ? (
-              <>
-                
-              </>
-            ) : (
-              <>
-                <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
-                <Button color="inherit" component={Link} to="/vehicleuser">Vehicles</Button>
-                <Button color="inherit" component={Link} to="/hotellistuser">Hotels</Button>
-                <Button
-                color="inherit"
-                onClick={handleMenuClick}
-                endIcon={<ArrowDropDown />}
-              >
-                Reeservations
+                Reservations
               </Button>
               <Menu
                 anchorEl={anchorEl}
@@ -74,14 +46,12 @@ const Navbar = () => {
                 onClose={handleMenuClose}
               >
                 <MenuItem onClick={handleMenuClose} component={Link} to="/addedreservations">Destination Reservation</MenuItem>
-                <MenuItem onClick={handleMenuClose} component={Link} to="/addedvehiclereservations">Vehicle Resevation</MenuItem>
-                <MenuItem onClick={handleMenuClose} component={Link} to="/manage-restaurants-reservations">Restaurant Resevations</MenuItem>
-                <MenuItem onClick={handleMenuClose} component={Link} to="/addedhotelreservations">Hotel Resevation</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/addedvehiclereservations">Vehicle Reservation</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/manage-restaurants-reservations">Restaurant Reservations</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/addedhotelreservations">Hotel Reservation</MenuItem>
               </Menu>
-
-                
-              </>
-            )}
+            </>
+          )}
         </div>
         <div>
           {!isAuthenticated ? (
@@ -91,8 +61,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/userprofile">Profile</Button>
-              <Button color="inherit" onClick={logout}>Logout</Button>
+              {!isAdmin && <Button color="inherit" component={Link} to="/userprofile">Profile</Button>}
+              {isUser && <Button color="inherit" onClick={logout}>Logout</Button>}
+              {isAdmin && <Button color="inherit" onClick={adminLogout}>Logout</Button>}
             </>
           )}
         </div>
