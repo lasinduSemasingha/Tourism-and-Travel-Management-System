@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
-import { purple, orange, grey } from '@mui/material/colors';
+import { brown, orange, grey } from '@mui/material/colors';
 
 const BookingBadge = ({ bookings }) => {
-  let badgeColor = '#CD7F32'; // Default color
-  let dotColor = purple[500]; // Default dot color
+  let badgeColor = brown[500]; // Default color
+  let dotColor = brown[500]; // Default dot color
   let title = "BRONZE \n MEMBER"
 
   if (bookings > 10) {
