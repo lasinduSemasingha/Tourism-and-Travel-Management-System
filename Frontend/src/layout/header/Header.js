@@ -27,7 +27,8 @@ const Navbar = () => {
         <div style={{ flexGrow: 1 }}>
           <Button startIcon={<Home />} color="inherit" component={Link} to="/">Home</Button>
           <>
-            {isAdmin && <Button color="inherit" component={Link} to={`/admin-dashboard`}>Dashboard</Button>}
+            {isAdmin && !isOwner && <Button color="inherit" component={Link} to={`/admin-dashboard`}>Dashboard</Button>}
+            {!isAdmin && isOwner && <Button color="inherit" component={Link} to={`/owner/dashboard`}>Dashboard</Button>}
           </>
           <Button color="inherit" component={Link} to="/aboutus">About</Button>
           {isAuthenticated && !isAdmin && !isOwner && ( // Hide these buttons if the user is an admin

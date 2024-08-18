@@ -89,6 +89,7 @@ import ReservationPage from './components/Restaurant/ReservationPage';
 import VehicleDashboard from './components/Admin/vehicle/vehicledashboard';
 import TicketManagement from './components/Admin/ticket_booking/TicketManagement';
 import UserList from './components/Admin/user/UserList';
+import HotelDashboard from './components/hotel/hotelDashboard';
 
 
 function App() {
@@ -198,6 +199,9 @@ function App() {
         <Route path="/admin/vehicles" element={<VehicleDashboard />} />
         <Route path="/admin/tickets" element={<TicketManagement />} />
         <Route path="/admin/users" element={<UserList />} />
+
+        {/* Hotel Owner Routings */}
+        <Route path="/owner/dashboard" element={<HotelDashboard />} />
        
             
       </Routes>
