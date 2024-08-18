@@ -6,24 +6,37 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false); // Add isAdmin state
-  const [isUser, setIsUser] = useState(false); // Add isAdmin state
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAuth = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const adminInfo = JSON.parse(localStorage.getItem('adminInfo'));
+      const ownerInfo = JSON.parse(localStorage.getItem('ownerInfo'));
+
       if (userInfo) {
         setIsAuthenticated(true);
         setUser(userInfo);
-        setIsAdmin(false); // Set isAdmin to false if userInfo is present
-        setIsUser(true)
+        setIsUser(true);
+        setIsAdmin(false);
+        setIsOwner(false);
       } else if (adminInfo) {
         setIsAuthenticated(true);
         setUser(adminInfo);
-        setIsAdmin(true); // Set isAdmin to true if adminInfo is present
+        setIsAdmin(true);
+        setIsUser(false);
+        setIsOwner(false);
+      } else if (ownerInfo) {
+        setIsAuthenticated(true);
+        setUser(ownerInfo);
+        setIsOwner(true);
+        setIsUser(false);
+        setIsAdmin(false);
       }
     };
+
     checkAuth();
   }, []);
 
@@ -33,7 +46,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       setIsAuthenticated(true);
       setUser(response.data);
-      setIsAdmin(false); // Set isAdmin to false when user logs in
+      setIsUser(true);
+      setIsAdmin(false);
+      setIsOwner(false);
     } catch (error) {
       console.error('Login failed', error);
       setIsAuthenticated(false);
@@ -46,7 +61,24 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('adminInfo', JSON.stringify(response.data));
       setIsAuthenticated(true);
       setUser(response.data);
-      setIsAdmin(true); // Set isAdmin to true when admin logs in
+      setIsAdmin(true);
+      setIsUser(false);
+      setIsOwner(false);
+    } catch (error) {
+      console.error('Login failed', error);
+      setIsAuthenticated(false);
+    }
+  };
+
+  const ownerLogin = async (email, password) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/hotelowner/login', { email, password });
+      localStorage.setItem('ownerInfo', JSON.stringify(response.data));
+      setIsAuthenticated(true);
+      setUser(response.data);
+      setIsOwner(true);
+      setIsUser(false);
+      setIsAdmin(false);
     } catch (error) {
       console.error('Login failed', error);
       setIsAuthenticated(false);
@@ -57,19 +89,34 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('userInfo');
     setIsAuthenticated(false);
     setUser(null);
-    setIsAdmin(false); // Reset isAdmin on logout
+    setIsAdmin(false);
+    setIsUser(false);
+    setIsOwner(false);
     window.location.href = '/';
   };
+
   const adminLogout = () => {
     localStorage.removeItem('adminInfo');
     setIsAuthenticated(false);
     setUser(null);
-    setIsAdmin(false); // Reset isAdmin on logout
+    setIsAdmin(false);
+    setIsUser(false);
+    setIsOwner(false);
+    window.location.href = '/';
+  };
+
+  const ownerLogout = () => {
+    localStorage.removeItem('ownerInfo');
+    setIsAuthenticated(false);
+    setUser(null);
+    setIsAdmin(false);
+    setIsUser(false);
+    setIsOwner(false);
     window.location.href = '/';
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, isUser ,isAdmin, login, logout, adminLogout, adminLogin }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, isUser, isAdmin, isOwner, login, logout, adminLogout, adminLogin, ownerLogin, ownerLogout }}>
       {children}
     </AuthContext.Provider>
   );

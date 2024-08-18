@@ -21,7 +21,7 @@ const HotelOwnerLogin = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/hotelowner/login', formData); // Adjust the API endpoint as needed
             localStorage.setItem('hotelOwnerInfo', JSON.stringify(response.data));
-            navigate('/hotel/add'); // Redirect to hotel owner dashboard page
+            window.location.href = '/hotel/add' // Redirect to hotel owner dashboard page
         } catch (err) {
             setError('Invalid email or password');
         }

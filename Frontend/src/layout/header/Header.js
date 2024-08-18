@@ -5,7 +5,7 @@ import { Home, ArrowDropDown } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
-  const { isAuthenticated, logout, user, isAdmin, isUser, adminLogout } = useAuth(); // Access isAdmin from context
+  const { isAuthenticated, logout, user, isAdmin, isUser, adminLogout , isOwner, ownerLogout} = useAuth(); // Access isAdmin from context
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu
 
   const handleMenuClick = (event) => {
@@ -30,7 +30,7 @@ const Navbar = () => {
             {isAdmin && <Button color="inherit" component={Link} to={`/admin-dashboard`}>Dashboard</Button>}
           </>
           <Button color="inherit" component={Link} to="/aboutus">About</Button>
-          {isAuthenticated && !isAdmin && ( // Hide these buttons if the user is an admin
+          {isAuthenticated && !isAdmin && !isOwner && ( // Hide these buttons if the user is an admin
             <>
               <Button color="inherit" component={Link} to={`/booked-tickets/${user?._id}`}>Bookings</Button>
               <Button color="inherit" component={Link} to="/destinationuser">Destinations</Button>
@@ -73,14 +73,16 @@ const Navbar = () => {
               >
                 <MenuItem onClick={handleMenuClose} component={Link} to="/adminlogin">Admin</MenuItem>
                 <MenuItem onClick={handleMenuClose} component={Link} to="/userlogin">User</MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/hotelownerlogin">Hotel Owner</MenuItem>
               </Menu>
               <Button color="inherit" component={Link} to="/register">Register</Button>
             </>
           ) : (
             <>
-              {!isAdmin && <Button color="inherit" component={Link} to="/userprofile">Profile</Button>}
+              {!isAdmin && !isOwner && <Button color="inherit" component={Link} to="/userprofile">Profile</Button>}
               {isUser && <Button color="inherit" onClick={logout}>Logout</Button>}
-              {isAdmin && <Button color="inherit" onClick={adminLogout}>Logout</Button>}
+              {isAdmin && !isUser && !isUser && <Button color="inherit" onClick={adminLogout}>Logout</Button>}
+              {isOwner && !isAdmin && !isUser && <Button color="inherit" onClick={ownerLogout}>Logout</Button>}
             </>
           )}
         </div>
