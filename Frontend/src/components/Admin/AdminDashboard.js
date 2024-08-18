@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ButtonBase, Typography, Grid, Paper } from '@mui/material';
+import { Box, ButtonBase, Typography, Grid, Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const categories = [
@@ -51,6 +51,23 @@ const AdminDashboard = () => {
       <Typography variant="h4" gutterBottom>
         Admin Dashboard
       </Typography>
+      <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          style={{ marginRight: '1rem' }} 
+          onClick={() => handleClick('/admin/register')}
+        >
+          Register Admin
+        </Button>
+        <Button 
+          variant="contained" 
+          color="secondary" 
+          onClick={() => handleClick('/hotelowner/register')}
+        >
+          Register Hotel Owner
+        </Button>
+      </Box>
       <Grid container spacing={2}>
         {categories.map((category) => (
           <Grid item xs={12} sm={6} md={4} key={category.title}>
