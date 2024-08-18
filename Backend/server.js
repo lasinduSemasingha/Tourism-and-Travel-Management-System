@@ -1,11 +1,54 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/user_managemnt/authRoutes');
+const userRoutes = require('./routes/user_managemnt/userRoutes');
+const adminRoutes = require('./routes/user_managemnt/adminRoutes');
+const hotelOwnerRoutes = require('./routes/user_managemnt/hotelOwnerRoutes');
+const destinationRoutes = require('./routes/travel_destination/destinationRoutes');
+const reservationRoutes = require('./routes/travel_destination/reservationRoutes');
+
+// Importing ticket routing
+const ticketRoutes = require('./routes/ticket_booking/ticketRoutes');
+// Importing booking routing
+const bookingRoutes = require('./routes/ticket_booking/bookingRoutes');
+// Importing feedback routing
+const feedbackRoutes = require('./routes/ticket_booking/feedbackRoutes');
+// Importing discount routing
+const discountRoutes = require('./routes/ticket_booking/discountRoutes');
+const packageRoutes = require('./routes/tour_packages/packages');
+const emailRoutes = require('./routes/tour_packages/emailRoutes');
+
+
+// Importing special activity routing
+const specialActivityRoutes = require('./routes/special_activity/activities');
+const specialActivityBooking = require('./routes/special_activity/booking')
+
+// Restaurant management
+const restaurantRoutes = require('./routes/restaurants/restaurants');
+const rest_reservations = require('./routes/restaurants/reservations');
+const rest_feedback = require('./routes/restaurants/feedback');
+
 const cors = require('cors');
-const morgan = require('morgan');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+const bodyParser = require('body-parser'); // Import body-parser
+
+const vehicleRoutes = require('./routes/vehicle_reservation/vehicleRoutes');
+const vehicleReservationRoutes = require('./routes/vehicle_reservation/vehicleReservationRoutes');
+
+const hotelRoutes = require('./routes/hotel_management/hotelRoutes');
+const hotelReservationRoutes = require('./routes/hotel_management/hotelReservationRoutes');
+
+const travelItemRoutes = require('./routes/travel_management/travelItemRoutes');
+const itemReservationRoutes = require('./routes/travel_management/ItemReservationRoutes');
+
+const reportRoutes = require('./routes/user_managemnt/reportRoutes')
+
+const contactRoutes = require('./routes/contact/contactRoutes')
+
+const notificationRoutes = require('./routes/notification/notificationRoutes')
+
+
+
 
 // Load environment variables
 dotenv.config();
@@ -15,18 +58,54 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());  // Enable CORS
-app.use(morgan('dev'));  // Log HTTP requests
-app.use(express.json());  // Parse JSON bodies
+// Middleware to handle large payloads
+app.use(bodyParser.json({ limit: '10mb' })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/hotelOwner', hotelOwnerRoutes);
+app.use('/api/destinations', destinationRoutes);
+app.use('/api/reservations', reservationRoutes);
 
-// Error Handling Middleware
-app.use(notFound);
-app.use(errorHandler);
+app.use('/api/tickets', ticketRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/discounts', discountRoutes);
+
+app.use('/api/packages', packageRoutes);
+
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/vehiclereservations', vehicleReservationRoutes);
+
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/restaurant-reservations', rest_reservations);
+app.use('/api/feedback', rest_feedback);
+app.use('/api/activities', specialActivityRoutes)
+app.use('/api/special/', specialActivityBooking)
+
+app.use('/api/hotels', hotelRoutes);
+app.use('/api/hotelreservations', hotelReservationRoutes);
+app.use('/api/discount-codes', discountRoutes)
+
+// Use routes
+app.use('/api/email', emailRoutes);
+
+app.use('/api/travelitem', travelItemRoutes);
+app.use('/api/travelitemreservation', itemReservationRoutes);
+
+
+app.use('/uploads', express.static('uploads'));
+
+app.use('report', reportRoutes)
+
+app.use('/api/contact', contactRoutes);
+
+app.use('/api/notifications', notificationRoutes);
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;
