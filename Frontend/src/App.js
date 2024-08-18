@@ -89,7 +89,11 @@ import ReservationPage from './components/Restaurant/ReservationPage';
 import VehicleDashboard from './components/Admin/vehicle/vehicledashboard';
 import TicketManagement from './components/Admin/ticket_booking/TicketManagement';
 import UserList from './components/Admin/user/UserList';
+import Contacts from './components/Admin/Contact/Contacts'
+
+
 import HotelDashboard from './components/hotel/hotelDashboard';
+import ContactUs from './components/site_data/ContactUs';
 
 
 function App() {
@@ -103,12 +107,12 @@ function App() {
 
        //destination and reservation routes
 
-       <Route path="/destination" element={<DestinationList />} />
-            <Route path="/destination/add" element={<AddDestination />} />
-            <Route path="/destination/update/:id" element={<UpdateDestination />} />
-            <Route path="/destinationuser" element={<DestinationListUser />} />
-            <Route path="/ReservationList" element={<ReservationList />} />
-            <Route path="/addedreservations" element={<AddedReservation />} /> 
+       <Route path="/admin/destinations" element={<DestinationList />} />
+        <Route path="/destination/add" element={<AddDestination />} />
+        <Route path="/destination/update/:id" element={<UpdateDestination />} />
+        <Route path="/destinationuser" element={<DestinationListUser />} />
+        <Route path="/ReservationList" element={<ReservationList />} />
+        <Route path="/addedreservations" element={<AddedReservation />} /> 
 
 
       {/* User and Admin Authentication routes */}
@@ -149,6 +153,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/contact" element={<ContactUs />} />
 
 
         <Route path="/search-restaurants" element={<AvailableRestaurants />} />
@@ -199,6 +204,7 @@ function App() {
         <Route path="/admin/vehicles" element={<VehicleDashboard />} />
         <Route path="/admin/tickets" element={<TicketManagement />} />
         <Route path="/admin/users" element={<UserList />} />
+        <Route path="/admin/contacts" element={<Contacts />} />
 
         {/* Hotel Owner Routings */}
         <Route path="/owner/dashboard" element={<HotelDashboard />} />

@@ -2,7 +2,7 @@ import React from 'react';
 import '../../css/homepage.css';
 import SlideShow from './HomePageSlider/SlidShow';
 import CategoryBoxes from './CategoryBoxes';
-import FeedbackList from '../Feedback/Feedback';
+import FeedbackGrid from '../Feedback/FeedbackGrid';
 
 const HomePage = () => {
   return (
@@ -10,7 +10,7 @@ const HomePage = () => {
       <h1>Welcome to Travel Sphere</h1>
       <div className='container'><SlideShow /></div><br /><br />
       <CategoryBoxes />
-      <FeedbackList />
+      <FeedbackGrid />
     </>
   );
 };

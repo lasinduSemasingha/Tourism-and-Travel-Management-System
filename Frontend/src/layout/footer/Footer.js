@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const Footer = () => {
 
-  const {isOwner, isAdmin} = useAuth();
+  const {isOwner, isAdmin, isAuthenticated} = useAuth();
   return (
     <footer style={{ backgroundColor: '#1A385A', color: 'white', padding: '1rem 0' }}>
       <Container>
@@ -27,7 +27,7 @@ const Footer = () => {
                 </ListItemText>
               </ListItem>
               <ListItem>
-                { isOwner && isAdmin &&
+                { isAuthenticated && !isOwner && !isAdmin &&
                 <ListItemText>
                   <Link href="/destination" color="inherit" underline="hover">Destinations</Link>
                 </ListItemText>

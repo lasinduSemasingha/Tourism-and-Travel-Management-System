@@ -43,6 +43,8 @@ const itemReservationRoutes = require('./routes/travel_management/ItemReservatio
 
 const reportRoutes = require('./routes/user_managemnt/reportRoutes')
 
+const contactRoutes = require('./routes/contact/contactRoutes')
+
 
 
 
@@ -98,6 +100,8 @@ app.use('/api/travelitemreservation', itemReservationRoutes);
 app.use('/uploads', express.static('uploads'));
 
 app.use('report', reportRoutes)
+
+app.use('/api/contact', contactRoutes);
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;

@@ -8,7 +8,7 @@ const categories = [
   { title: 'Manage Restaurants', link: '/admin/restaurants', image: '/food.jpg' },
   { title: 'Manage Tickets', link: '/admin/tickets', image: '/ticket.jpg' },
   { title: 'Manage Hotels', link: '/admin/hotellist', image: '/hotel.jpg' },
-  { title: 'Manage Tours', link: '/admin/tours', image: '/tour.jpg' },
+  { title: 'Manage Destinations', link: '/admin/destinations', image: '/tour.jpg' },
   { title: 'Manage Vehicles', link: '/admin/vehicles', image: '/vehicle.jpg' },
   { title: 'Add Activities', link: '/admin/activity', image: '/sports.jpg' },
   { title: 'Add Tour Packages', link: '/admin/package-manager', image: '/package.jpg' },
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
       <Typography variant="h4" gutterBottom>
         Admin Dashboard
       </Typography>
-      <Box display="flex" justifyContent="flex-end" mb={2}>
+      <Box gap={2} display="flex" justifyContent="flex-end" mb={2}>
         <Button 
           variant="contained" 
           color="primary" 
@@ -63,9 +63,17 @@ const AdminDashboard = () => {
         <Button 
           variant="contained" 
           color="secondary" 
+          style={{ marginRight: '1rem' }} 
           onClick={() => handleClick('/hotelowner/register')}
         >
           Register Hotel Owner
+        </Button>
+        <Button 
+          variant="contained" 
+          color="success" // Set the color to 'success' for a green button
+          onClick={() => handleClick('/admin/contacts')}
+        >
+          Contact Requests
         </Button>
       </Box>
       <Grid container spacing={2}>

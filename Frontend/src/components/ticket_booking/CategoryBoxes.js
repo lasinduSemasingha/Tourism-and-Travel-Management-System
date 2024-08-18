@@ -4,6 +4,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
+import { useAuth } from '../../contexts/AuthContext';
 
 const images = [
   {
@@ -94,6 +95,12 @@ const ImageMarked = styled('span')(({ theme }) => ({
 }));
 
 const CategoryBoxes = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return null; // Render nothing if not authenticated
+  }
+
   const handleClick = (link) => {
     window.location.href = link;
   };
