@@ -43,7 +43,7 @@ const AddHotel = () => {
         }
       });
       alert("Successfully Registered!");
-      window.location.href = 'hotel/add'
+      window.location.href = '/hotel/add'
     } catch (err) {
       console.error("Error adding hotel:", err.response ? err.response.data : err.message);
       setError('Error adding hotel');
