@@ -42,7 +42,7 @@ const AddHotel = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      navigate('/hotellist');
+      navigate('/hotel/add');
     } catch (err) {
       console.error("Error adding hotel:", err.response ? err.response.data : err.message);
       setError('Error adding hotel');
