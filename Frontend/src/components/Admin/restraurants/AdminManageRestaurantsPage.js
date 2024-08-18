@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Button, Grid, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, TextField, InputAdornment, Snackbar } from '@mui/material';
-import { Edit, Delete, Restaurant, LocationOn, Phone, AttachMoney, Description, Visibility, Add } from '@mui/icons-material';
+import { Edit, Delete, Restaurant, LocationOn, Phone, AttachMoney, Description, Visibility, Add, PictureAsPdf } from '@mui/icons-material';
 import axios from 'axios';
 import MuiAlert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
 
 const AdminManageRestaurantsPage = () => {
     const [restaurants, setRestaurants] = useState([]);
@@ -69,8 +70,63 @@ const AdminManageRestaurantsPage = () => {
     };
 
     const handleAddRestaurant = () => {
-        window.location.href = '/admin/add-restaurants' // Redirect to the add restaurant page
+        window.location.href = '/admin/add-restaurants'; // Redirect to the add restaurant page
     };
+
+    const generateReport = () => {
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+    
+        // Set a title with larger font size and center alignment
+        doc.setFontSize(22);
+        doc.text("Restaurant Report", pageWidth / 2, 20, { align: "center" });
+    
+        // Add a line under the title for better aesthetics
+        doc.setLineWidth(0.5);
+        doc.line(10, 25, pageWidth - 10, 25);
+    
+        // Set the font size for content
+        doc.setFontSize(12);
+    
+        // Initial Y position for content
+        let yPosition = 35;
+    
+        restaurants.forEach((restaurant, index) => {
+            // Add a little spacing between each restaurant entry
+            if (yPosition > pageHeight - 40) { 
+                doc.addPage(); // Add a new page if the content goes beyond the page height
+                yPosition = 20; // Reset Y position
+            }
+    
+            // Display restaurant index and name
+            doc.setFontSize(16);
+            doc.text(`${index + 1}. ${restaurant.name}`, 10, yPosition);
+            yPosition += 10; // Move down for the next line
+    
+            // Display address, phone, cuisine, price range, and description with indentation
+            doc.setFontSize(12);
+            doc.text(`Address: ${restaurant.address}`, 15, yPosition);
+            yPosition += 8;
+            doc.text(`Phone: ${restaurant.phone}`, 15, yPosition);
+            yPosition += 8;
+            doc.text(`Cuisine: ${restaurant.cuisine}`, 15, yPosition);
+            yPosition += 8;
+            doc.text(`Price Range: ${restaurant.priceRange}`, 15, yPosition);
+            yPosition += 8;
+    
+            // Handle longer descriptions with word wrapping
+            const description = doc.splitTextToSize(`Description: ${restaurant.description}`, pageWidth - 25);
+            doc.text(description, 15, yPosition);
+            yPosition += description.length * 8; // Adjust for multiline descriptions
+    
+            yPosition += 10; // Add extra spacing before the next restaurant entry
+        });
+    
+        // Save the generated PDF
+        doc.save("Restaurant_Report.pdf");
+    };
+    
 
     return (
         <Container maxWidth="md" style={{ marginTop: '2rem' }}>
@@ -85,6 +141,15 @@ const AdminManageRestaurantsPage = () => {
                 style={{ marginBottom: '1rem' }}
             >
                 Add Restaurant
+            </Button>
+            <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<PictureAsPdf />}
+                onClick={generateReport}
+                style={{ marginBottom: '1rem', marginLeft: '1rem' }}
+            >
+                Generate Report
             </Button>
             {restaurants.map((restaurant) => (
                 <Card key={restaurant._id} style={{ marginBottom: '1rem' }}>
@@ -119,7 +184,7 @@ const AdminManageRestaurantsPage = () => {
                     </CardContent>
                 </Card>
             ))}
-            
+
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>{dialogMode === 'edit' ? 'Edit Restaurant' : 'View Restaurant'}</DialogTitle>
                 <DialogContent>
@@ -245,7 +310,7 @@ const AdminManageRestaurantsPage = () => {
                 autoHideDuration={6000}
                 onClose={() => setOpenSnackbar(false)}
             >
-                <MuiAlert onClose={() => setOpenSnackbar(false)} severity="success">
+                <MuiAlert onClose={() => setOpenSnackbar(false)} severity="success" elevation={6} variant="filled">
                     {snackbarMessage}
                 </MuiAlert>
             </Snackbar>

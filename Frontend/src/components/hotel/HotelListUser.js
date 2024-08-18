@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 const HotelListUser = () => {
   const [hotels, setHotels] = useState([]);
+  const [filteredHotels, setFilteredHotels] = useState([]);
   const [error, setError] = useState(null);
   const [reservingId, setReservingId] = useState(null);
   const [reservationDates, setReservationDates] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +27,7 @@ const HotelListUser = () => {
           })
         );
         setHotels(hotelsWithImages);
+        setFilteredHotels(hotelsWithImages); // Initialize filteredHotels
       } catch (err) {
         console.error("Error fetching hotels:", err.response ? err.response.data : err.message);
         setError('Error fetching hotels');
@@ -33,6 +36,14 @@ const HotelListUser = () => {
 
     fetchHotels();
   }, []);
+
+  useEffect(() => {
+    // Filter hotels based on search query
+    const filtered = hotels.filter(hotel =>
+      hotel.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredHotels(filtered);
+  }, [searchQuery, hotels]);
 
   const handleDateChange = (hotelId, e) => {
     setReservationDates(prevDates => ({
@@ -77,6 +88,10 @@ const HotelListUser = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div style={{ padding: '2rem' }}>
       <Typography variant="h4" gutterBottom style={{ marginBottom: '1rem' }}>
@@ -84,8 +99,18 @@ const HotelListUser = () => {
       </Typography>
 
       {error && <Typography color="error">{error}</Typography>}
+      
+      <TextField
+        label="Search Hotels"
+        variant="outlined"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        fullWidth
+        margin="normal"
+      />
+
       <Grid container spacing={1}>
-        {hotels.map(hotel => (
+        {filteredHotels.map(hotel => (
           <Grid item xs={12} sm={6} md={3} key={hotel._id}>
             <Card
               style={{

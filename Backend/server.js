@@ -45,6 +45,8 @@ const reportRoutes = require('./routes/user_managemnt/reportRoutes')
 
 const contactRoutes = require('./routes/contact/contactRoutes')
 
+const notificationRoutes = require('./routes/notification/notificationRoutes')
+
 
 
 
@@ -102,6 +104,8 @@ app.use('/uploads', express.static('uploads'));
 app.use('report', reportRoutes)
 
 app.use('/api/contact', contactRoutes);
+
+app.use('/api/notifications', notificationRoutes);
 
 // Environment Variables & Port Configuration
 const PORT = process.env.PORT || 5000;

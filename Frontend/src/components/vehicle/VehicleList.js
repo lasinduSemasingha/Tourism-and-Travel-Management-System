@@ -52,7 +52,7 @@ const VehicleList = () => {
   const handleDelete = async (id) => {
     setDeletingId(id);
     try {
-      await axios.delete(`http://localhost:5000/api/vehicles/delete/${id}`);
+      await axios.delete(`http://localhost:5000/api/vehicles/${id}`);
       setVehicles(vehicles.filter(vehicle => vehicle._id !== id));
       setFilteredVehicles(filteredVehicles.filter(vehicle => vehicle._id !== id));
     } catch (err) {

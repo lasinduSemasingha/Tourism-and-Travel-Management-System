@@ -75,7 +75,7 @@ const HotelList = () => {
     setStatusUpdatingId(id);
   
     try {
-      const response = await axios.put(`http://localhost:5000/api/hotels/update/${id}`, { approvalStatus: newStatus });
+      const response = await axios.put(`http://localhost:5000/api/hotels/updatestatus/${id}`, { approvalStatus: newStatus });
       console.log('Response:', response.data);
   
       setHotels(prevHotels => 

@@ -16,6 +16,30 @@ const AdminAddRestaurantPage = () => {
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [formErrors, setFormErrors] = useState({});
+
+    // Validate the form inputs
+    const validateForm = () => {
+        const errors = {};
+        const phonePattern = /^[\d\s-]{10,15}$/; // Simple phone number validation
+
+        // Required fields validation
+        if (!formData.name) errors.name = 'Restaurant name is required';
+        if (!formData.address) errors.address = 'Address is required';
+        if (!formData.phone || !phonePattern.test(formData.phone)) errors.phone = 'Valid phone number is required';
+        if (!formData.area) errors.area = 'Area is required';
+        if (!formData.cuisine) errors.cuisine = 'Cuisine type is required';
+        if (!formData.priceRange) errors.priceRange = 'Price range is required';
+        if (!formData.description) errors.description = 'Description is required';
+
+        // Validate menu items
+        formData.menu.forEach((item, index) => {
+            if (!item.item) errors[`menuItem${index}`] = 'Menu item name is required';
+            if (item.price <= 0) errors[`menuPrice${index}`] = 'Price must be a positive number';
+        });
+
+        return errors;
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,10 +62,19 @@ const AdminAddRestaurantPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            setError('Please correct the errors above.');
+            setSuccess('');
+            return;
+        }
+
         try {
             await axios.post('http://localhost:5000/api/restaurants', formData);
             setSuccess('Restaurant added successfully');
             setError('');
+            setFormErrors({});
             setFormData({
                 name: '',
                 address: '',
@@ -77,6 +110,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.name)}
+                                    helperText={formErrors.name}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -94,6 +129,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.address}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.address)}
+                                    helperText={formErrors.address}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -111,6 +148,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.phone}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.phone)}
+                                    helperText={formErrors.phone}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -128,6 +167,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.area}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.area)}
+                                    helperText={formErrors.area}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -138,6 +179,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.cuisine}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.cuisine)}
+                                    helperText={formErrors.cuisine}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -148,6 +191,8 @@ const AdminAddRestaurantPage = () => {
                                     value={formData.priceRange}
                                     onChange={handleChange}
                                     margin="normal"
+                                    error={Boolean(formErrors.priceRange)}
+                                    helperText={formErrors.priceRange}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -167,6 +212,8 @@ const AdminAddRestaurantPage = () => {
                                     margin="normal"
                                     multiline
                                     rows={4}
+                                    error={Boolean(formErrors.description)}
+                                    helperText={formErrors.description}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -188,6 +235,8 @@ const AdminAddRestaurantPage = () => {
                                                 value={menuItem.item}
                                                 onChange={(e) => handleMenuChange(index, e)}
                                                 margin="normal"
+                                                error={Boolean(formErrors[`menuItem${index}`])}
+                                                helperText={formErrors[`menuItem${index}`]}
                                             />
                                         </Grid>
                                         <Grid item xs={5}>
@@ -199,6 +248,8 @@ const AdminAddRestaurantPage = () => {
                                                 value={menuItem.price}
                                                 onChange={(e) => handleMenuChange(index, e)}
                                                 margin="normal"
+                                                error={Boolean(formErrors[`menuPrice${index}`])}
+                                                helperText={formErrors[`menuPrice${index}`]}
                                             />
                                         </Grid>
                                         <Grid item xs={2}>

@@ -37,6 +37,11 @@ const images = [
     title: 'Vehicle Reservation',
     link: '/vehicleuser',
   },
+  {
+    url: '/item.jpg',
+    title: 'Travel Items',
+    link: '/travelitemuser',
+  },
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({

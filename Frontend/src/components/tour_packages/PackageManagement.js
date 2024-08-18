@@ -16,6 +16,18 @@ const PackageManagement = () => {
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Name is required';
+    if (!formData.description.trim()) errors.description = 'Description is required';
+    if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0) errors.price = 'Price must be a positive number';
+    if (formData.accommodations.trim() && !Number(formData.accommodations)) errors.accommodations = 'Accommodations must be a number';
+    if (formData.tours.trim() && !Number(formData.tours)) errors.tours = 'Tours must be a number';
+    if (formData.transfers.trim() && !Number(formData.transfers)) errors.transfers = 'Transfers must be a number';
+    return errors;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,6 +35,11 @@ const PackageManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
     try {
       await axios.post('http://localhost:5000/api/packages', formData);
       setSuccessMessage('Package added successfully!');
@@ -36,6 +53,7 @@ const PackageManagement = () => {
         packageType: 'Day Tour',
         specialDiscounts: ''
       });
+      setFormErrors({});
     } catch (err) {
       setError('Error adding package');
     }
@@ -59,6 +77,8 @@ const PackageManagement = () => {
                   fullWidth
                   margin="normal"
                   required
+                  error={Boolean(formErrors.name)}
+                  helperText={formErrors.name}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -78,6 +98,8 @@ const PackageManagement = () => {
                   margin="normal"
                   multiline
                   rows={4}
+                  error={Boolean(formErrors.description)}
+                  helperText={formErrors.description}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -97,6 +119,8 @@ const PackageManagement = () => {
                   fullWidth
                   margin="normal"
                   required
+                  error={Boolean(formErrors.price)}
+                  helperText={formErrors.price}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -114,6 +138,8 @@ const PackageManagement = () => {
                   onChange={handleChange}
                   fullWidth
                   margin="normal"
+                  error={Boolean(formErrors.accommodations)}
+                  helperText={formErrors.accommodations}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -131,6 +157,8 @@ const PackageManagement = () => {
                   onChange={handleChange}
                   fullWidth
                   margin="normal"
+                  error={Boolean(formErrors.tours)}
+                  helperText={formErrors.tours}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -148,6 +176,8 @@ const PackageManagement = () => {
                   onChange={handleChange}
                   fullWidth
                   margin="normal"
+                  error={Boolean(formErrors.transfers)}
+                  helperText={formErrors.transfers}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">

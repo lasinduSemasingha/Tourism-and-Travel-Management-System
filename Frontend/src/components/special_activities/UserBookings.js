@@ -18,7 +18,7 @@ const UserBookings = () => {
 
       if (userID) {
         try {
-          const response = await fetch(`http://localhost:5000/api/special/user/${userID}`);
+          const response = await fetch(`http://localhost:5000/api/special/${userID}`);
           if (!response.ok) throw new Error('Network response was not ok');
           
           const data = await response.json();

@@ -12,16 +12,16 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+}); 
 
-// Get Booking by ID
-router.get('/:id', async (req, res) => {
+// Get Bookings by User ID
+router.get('/:userId', async (req, res) => {
     try {
-        const booking = await Booking.findById(req.params.id);
-        if (!booking) {
-            return res.status(404).json({ error: 'Booking not found' });
+        const bookings = await Booking.find({ userId: req.params.userId });
+        if (bookings.length === 0) {
+            return res.status(404).json({ error: 'No bookings found for this user' });
         }
-        res.status(200).json(booking);
+        res.status(200).json(bookings);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -45,6 +45,20 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+// Delete Booking by ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
+
+        if (!deletedBooking) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Booking deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // Route to count bookings by userId
 router.get('/count/:userId', bookingController.countBookingsByUserId);

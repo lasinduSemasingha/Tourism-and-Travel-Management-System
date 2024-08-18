@@ -48,7 +48,7 @@ import ManageReservations from './components/Restaurant/ManageReservations';
 import ActivityList from './components/special_activities/ActivityList';
 import ActivityBooking from './components/special_activities/ActivityBooking';
 import BookingConfirmation from './components/special_activities/BookingConfirmation';
-import ActivityForm from './components/special_activities/ActivityForm';
+import ActivityForm from './components/Admin/activities/ActivityForm';
 import UserBookings from './components/special_activities/UserBookings';
 
 import AddVehicle from './components/vehicle/AddVehicle';
@@ -94,6 +94,13 @@ import Contacts from './components/Admin/Contact/Contacts'
 
 import HotelDashboard from './components/hotel/hotelDashboard';
 import ContactUs from './components/site_data/ContactUs';
+import TourDashboard from './components/Admin/tour/TourDashboard';
+import NotificationForm from './components/Admin/notification/NotificationForm';
+import NotificationDetail from './components/notification/NotificationDetail';
+import ReservationUserList from './components/Restaurant/reservationUserList';
+import ViewActivity from './components/Admin/activities/ViewActivity';
+import ActivityDashboard from './components/Admin/activities/ActivityDashboard';
+import TravelDashboard from './components/Admin/travel/TravelDashboard';
 
 
 function App() {
@@ -130,11 +137,12 @@ function App() {
         <Route path="/booked-tickets/:id" element={<BookedTickets />} />
         <Route path="/add-tickets" element={<TicketForm />} />
 
-        <Route path="/admin/package-manager" element={<PackageManagement />} />
+        <Route path="/tour/package-manager" element={<PackageManagement />} />
         <Route path="/packages" element={<PackageList />} />
         <Route path="/packages/:id" element={<PackageDetails />} />
 
-        <Route path="/email-send" element={<PromotionEmailForm />} />
+        <Route path="/admin/email-send" element={<PromotionEmailForm />} />
+        <Route path="/admin/notification" element={<NotificationForm />} />
 
 
         <Route path="/vehicle/add" element={<AddVehicle />} />
@@ -160,11 +168,12 @@ function App() {
         <Route path="/restaurant/:id" element={<RestaurantFood />} />
         <Route path="/admin/reservations" element={<ManageReservations />} />
         <Route path="/restaurant-reserve" element={<ReservationPage />} />
+        <Route path="/manage-restaurants-reservations" element={<ReservationUserList />} />
 
      
         <Route path="/activity-list" element={<ActivityList />} />
         <Route path="/activity/:id" element={<ActivityBooking />} />
-        <Route path="/admin/activity" element={<ActivityForm />} />
+        <Route path="/admin/activity/add" element={<ActivityForm />} />
         <Route path="/book-confirmation" element={<BookingConfirmation />} />
 
 
@@ -208,7 +217,12 @@ function App() {
 
         {/* Hotel Owner Routings */}
         <Route path="/owner/dashboard" element={<HotelDashboard />} />
-       
+
+        <Route path="/admin/tour" element={<TourDashboard />} />
+        <Route path="/notification/:id" element={<NotificationDetail />} />
+        <Route path="/admin/add/activity" element={<ViewActivity />} />
+        <Route path="/admin/activities" element={<ActivityDashboard />} />
+        <Route path="/admin/travel" element={<TravelDashboard />} />
             
       </Routes>
   );

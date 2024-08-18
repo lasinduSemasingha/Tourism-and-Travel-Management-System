@@ -10,8 +10,9 @@ const categories = [
   { title: 'Manage Hotels', link: '/admin/hotellist', image: '/hotel.jpg' },
   { title: 'Manage Destinations', link: '/admin/destinations', image: '/tour.jpg' },
   { title: 'Manage Vehicles', link: '/admin/vehicles', image: '/vehicle.jpg' },
-  { title: 'Add Activities', link: '/admin/activity', image: '/sports.jpg' },
-  { title: 'Add Tour Packages', link: '/admin/package-manager', image: '/package.jpg' },
+  { title: 'Manage Activities', link: '/admin/activities', image: '/sports.jpg' },
+  { title: 'Tour Package Management', link: '/admin/tour', image: '/package.jpg' },
+  { title: 'Travel Item Management', link: '/admin/travel', image: '/item.jpg' },
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -74,6 +75,13 @@ const AdminDashboard = () => {
           onClick={() => handleClick('/admin/contacts')}
         >
           Contact Requests
+        </Button>
+        <Button 
+          variant="contained" 
+          color="primary" // Set the color to 'success' for a green button
+          onClick={() => handleClick('/admin/notification')}
+        >
+          Share Recipes
         </Button>
       </Box>
       <Grid container spacing={2}>

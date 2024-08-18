@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Button, TextField } from '@mui/material';
 import { Place, Restaurant, ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const AvailableRestaurants = () => {
     const [restaurants, setRestaurants] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(''); // State to manage search query
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,6 +22,11 @@ const AvailableRestaurants = () => {
         fetchRestaurants();
     }, []);
 
+    // Filter restaurants based on search query
+    const filteredRestaurants = restaurants.filter(restaurant =>
+        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const handleViewMenu = (id) => {
         navigate(`/restaurant/${id}`);
     };
@@ -30,8 +36,19 @@ const AvailableRestaurants = () => {
             <Typography variant="h4" gutterBottom>
                 Available Restaurants
             </Typography>
+            
+            {/* Search Bar */}
+            <TextField
+                label="Search Restaurants"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            
             <Grid container spacing={2}>
-                {restaurants.map((restaurant) => (
+                {filteredRestaurants.map((restaurant) => (
                     <Grid item xs={12} sm={6} md={4} key={restaurant._id}>
                         <Card variant="outlined">
                             <CardContent>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Grid, Card, CardContent, Button, CircularProgress, Alert, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete, PictureAsPdf } from '@mui/icons-material';
+import jsPDF from 'jspdf';
 
 const PackageList = () => {
   const [packages, setPackages] = useState([]);
@@ -14,6 +15,7 @@ const PackageList = () => {
     description: '',
     price: ''
   });
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -80,6 +82,34 @@ const PackageList = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredPackages = packages.filter(pkg =>
+    pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pkg.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF();
+  
+    doc.setFontSize(18);
+    doc.text('Tour Packages', 20, 20);
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+  
+    filteredPackages.forEach((pkg, index) => {
+      const y = 30 + (index * 30); // Adjust the vertical spacing between packages
+      doc.text(`Package Name: ${pkg.name}`, 20, y);
+      doc.text(`Description: ${pkg.description}`, 20, y + 7);
+      doc.text(`Price: $${pkg.price}`, 20, y + 14);
+      doc.line(20, y + 20, 190, y + 20); // Add a line separator between packages
+    });
+  
+    doc.save('packages.pdf');
+  };
+
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
@@ -88,8 +118,24 @@ const PackageList = () => {
       <Typography variant="h4" gutterBottom>
         Tour Packages
       </Typography>
+      <TextField
+        label="Search Packages"
+        fullWidth
+        margin="normal"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<PictureAsPdf />}
+        onClick={handleGeneratePdf}
+        style={{ marginBottom: '1rem' }}
+      >
+        Download PDF
+      </Button>
       <Grid container spacing={3}>
-        {packages.map(pkg => (
+        {filteredPackages.map(pkg => (
           <Grid item xs={12} sm={6} md={4} key={pkg._id}>
             <Card>
               <CardContent>

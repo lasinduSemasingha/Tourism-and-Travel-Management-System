@@ -77,7 +77,7 @@ const UpdateHotel = () => {
       });
       setSuccessMessage('Hotel updated successfully!');
       setTimeout(() => {
-        navigate('/hotellist');
+        window.location.href = '/admin/hotellist'
       }, 2000);
     } catch (err) {
       setError('Error updating hotel. Please try again.');

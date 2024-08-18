@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, Button, Grid, CircularProgress, TextField, InputAdornment } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
 
 const VehicleListUser = () => {
   const [vehicles, setVehicles] = useState([]);
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [error, setError] = useState(null);
   const [reservingId, setReservingId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +24,7 @@ const VehicleListUser = () => {
           return vehicle;
         }));
         setVehicles(vehiclesWithImages);
+        setFilteredVehicles(vehiclesWithImages); // Initialize filteredVehicles
       } catch (err) {
         console.error("Error fetching vehicles:", err.response ? err.response.data : err.message);
         setError('Error fetching vehicles');
@@ -29,6 +33,14 @@ const VehicleListUser = () => {
 
     fetchVehicles();
   }, []);
+
+  useEffect(() => {
+    // Filter vehicles based on search query
+    const filtered = vehicles.filter(vehicle =>
+      vehicle.vehicleType.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredVehicles(filtered);
+  }, [searchQuery, vehicles]);
 
   const handleReserve = async (id) => {
     setReservingId(id);
@@ -39,7 +51,6 @@ const VehicleListUser = () => {
         return;
       }
 
-      // You may need to replace this URL with your actual reservation endpoint
       await axios.post('http://localhost:5000/api/vehiclereservations/vehicleadd', {
         vehicleId: id,
         userId: JSON.parse(localStorage.getItem('userInfo'))._id,
@@ -55,6 +66,10 @@ const VehicleListUser = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div style={{ padding: '2rem' }}>
       <Typography variant="h4" gutterBottom style={{ marginBottom: '1rem' }}>
@@ -62,8 +77,25 @@ const VehicleListUser = () => {
       </Typography>
 
       {error && <Typography color="error">{error}</Typography>}
+
+      <TextField
+        label="Search Vehicles"
+        variant="outlined"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        fullWidth
+        margin="normal"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+
       <Grid container spacing={1}>
-        {vehicles.map(vehicle => (
+        {filteredVehicles.map(vehicle => (
           <Grid item xs={12} sm={6} md={3} key={vehicle._id}>
             <Card
               style={{
