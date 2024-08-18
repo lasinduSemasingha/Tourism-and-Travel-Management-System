@@ -42,6 +42,7 @@ const AddHotel = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
+      alert("Successfully Registered!");
       navigate('/hotel/add');
     } catch (err) {
       console.error("Error adding hotel:", err.response ? err.response.data : err.message);
