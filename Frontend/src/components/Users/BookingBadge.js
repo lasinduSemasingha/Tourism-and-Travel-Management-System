@@ -1,15 +1,15 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
-import { purple, red, grey } from '@mui/material/colors';
+import { purple, orange, grey } from '@mui/material/colors';
 
 const BookingBadge = ({ bookings }) => {
-  let badgeColor = purple[500]; // Default color
+  let badgeColor = '#CD7F32'; // Default color
   let dotColor = purple[500]; // Default dot color
   let title = "BRONZE \n MEMBER"
 
   if (bookings > 10) {
-    badgeColor = red[500]; // Red color
-    dotColor = red[500]; // Red dot color
+    badgeColor = orange[500]; // Red color
+    dotColor = orange[500]; // Red dot color
     title = "GOLD \n MEMBER"
   } else if (bookings > 6) {
     badgeColor = grey[500]; // Yellow color
